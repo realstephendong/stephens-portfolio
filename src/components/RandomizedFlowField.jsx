@@ -98,7 +98,7 @@ const RandomizedFlowField = () => {
   
   // Configuration parameters with randomness-friendly values
   const config = {
-    particleCount: 800,
+    particleCount: 350,
     baseSpeed: 1.2,
     noiseScale: 0.002,
     flowStrength: 0.8,
