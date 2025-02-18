@@ -8,6 +8,9 @@ import FeaturedProject from '../components/FeaturedProject';
 import projects from '../data/projects';
 import { blogPosts } from '../data/blogData';
 
+// Import the enhanced flow field animation
+import EnhancedFlowField from '../components/RandomizedFlowField';
+
 function Home() {
   const scrollRef = useRef(null);
   const featuredProject = [...projects].sort((a, b) => 
@@ -35,7 +38,12 @@ function Home() {
 
   return (
     <main className="min-h-screen overflow-x-hidden" ref={scrollRef}>
-      <div className="max-w-7xl mx-auto px-8">
+      {/* Animation background with theme support */}
+      <div className="fixed inset-0 z-0 opacity-75 transition-opacity duration-500">
+        <EnhancedFlowField />
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-8 relative z-10">
         {/* Hero Section */}
         <section 
           className="min-h-screen flex flex-col justify-center relative px-6"
@@ -47,7 +55,7 @@ function Home() {
               transform: 'translate(calc(var(--mouse-x) * 20px), calc(var(--mouse-y) * 20px))'
             }}
           />
-          <div className="space-y-8 relative">
+          <div className="space-y-8 relative backdrop-blur-sm bg-background/30 p-8 rounded-xl">
             <div className="space-y-4">
               <TypewriterEffect />
               <h1 className="text-7xl font-semibold">
@@ -87,7 +95,7 @@ function Home() {
           </div>
           
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
-            <div className="flex flex-col items-center text-muted-foreground">
+            <div className="flex flex-col items-center text-muted-foreground backdrop-blur-sm bg-background/30 p-2 rounded-full">
               <MousePointer2 className="h-6 w-6" />
               <span className="text-sm">Scroll to explore</span>
             </div>
@@ -103,7 +111,7 @@ function Home() {
           <div className="w-full relative group">
             <div className="absolute -inset-1 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 
                             group-hover:shadow-2xl group-hover:shadow-primary/20"></div>
-            <Card className="w-full relative z-10">
+            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
               <CardContent className="p-12 space-y-8">
                 <h2 className="text-6xl font-bold text-primary">Latest Ideas</h2>
                 <div className="grid md:grid-cols-2 gap-12">
@@ -152,7 +160,7 @@ function Home() {
           <div className="w-full relative group">
             <div className="absolute -inset-1 bg-[#2DB19B]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
                             group-hover:shadow-2xl group-hover:shadow-[#2DB19B]/20"></div>
-            <Card className="w-full relative z-10">
+            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
               <CardContent className="p-12 space-y-12">
                 <h2 className="text-6xl font-bold text-[#2DB19B]">About Me</h2>
                 <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -189,7 +197,7 @@ function Home() {
           <div className="w-full relative group">
             <div className="absolute -inset-1 bg-[lightcoral]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
                             group-hover:shadow-2xl group-hover:shadow-[lightcoral]/20"></div>
-            <Card className="w-full relative z-10">
+            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
               <CardContent className="p-12 space-y-12">
                 <h2 className="text-6xl font-bold text-[lightcoral]">Projects</h2>
                 <FeaturedProject project={featuredProject} />
