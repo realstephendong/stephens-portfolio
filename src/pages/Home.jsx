@@ -95,7 +95,7 @@ function Home() {
           </div>
           
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
-            <div className="flex flex-col items-center text-muted-foreground backdrop-blur-sm bg-background/30 p-2 rounded-full">
+            <div className="flex flex-col items-center text-muted-foreground p-2 rounded-full">
               <MousePointer2 className="h-6 w-6" />
               <span className="text-sm">Scroll to explore</span>
             </div>
