@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, Sun, Moon, Laptop } from 'lucide-react';
+import { Mail, Sun, Moon, Laptop, Menu, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import {
@@ -9,6 +9,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 import websiteLogo from "../images/websitelogo.png"
 
@@ -28,7 +35,7 @@ const LinkedInIcon = ({ className }) => (
   </svg>
 );
 
-const NavLink = ({ to, children }) => {
+const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   
@@ -40,6 +47,7 @@ const NavLink = ({ to, children }) => {
           ? 'text-primary' 
           : 'text-muted-foreground hover:text-foreground'
       }`}
+      onClick={onClick}
     >
       <span className="relative z-10">{children}</span>
       {isActive && (
@@ -50,18 +58,138 @@ const NavLink = ({ to, children }) => {
   );
 };
 
-const Navbar = () => {
-  const { setTheme } = useTheme();
-
+const SocialIcons = ({ className = "" }) => {
   return (
-    <header className="fixed top-0 left-0 w-full z-50">
+    <div className={`flex items-center space-x-1 sm:space-x-2 ${className}`}>
+      <a 
+        href="https://github.com/realstephendong" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="group"
+      >
+        <Button 
+          variant="ghost" 
+          size="icon"
+          className="hover:bg-primary/5"
+        >
+          <GitHubIcon className="h-5 w-5 transition-colors group-hover:text-primary" />
+        </Button>
+      </a>
+      <a 
+        href="https://www.linkedin.com/in/stephen-dong/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="group"
+      >
+        <Button 
+          variant="ghost" 
+          size="icon"
+          className="hover:bg-primary/5"
+        >
+          <LinkedInIcon className="h-5 w-5 transition-colors group-hover:text-primary" />
+        </Button>
+      </a>
+      <a 
+        href="mailto:realstephendong@gmail.com"
+        className="group"
+      >
+        <Button 
+          variant="ghost" 
+          size="icon"
+          className="hover:bg-primary/5"
+        >
+          <Mail className="h-5 w-5 transition-colors group-hover:text-primary" />
+        </Button>
+      </a>
+    </div>
+  );
+};
+
+const ThemeSwitcher = () => {
+  const { setTheme } = useTheme();
+  
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button 
+          variant="outline" 
+          size="icon"
+          className="border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+        >
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          <Sun className="mr-2 h-4 w-4" />
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <Moon className="mr-2 h-4 w-4" />
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          <Laptop className="mr-2 h-4 w-4" />
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const MobileMenu = () => {
+  const [open, setOpen] = useState(false);
+  
+  const handleLinkClick = () => {
+    setOpen(false);
+  };
+  
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="md:hidden"
+        >
+          <Menu className="h-6 w-6" />
+          <span className="sr-only">Toggle menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[80vw] sm:w-[350px] pt-12">
+        <SheetHeader className="mb-6">
+          <SheetTitle className="text-center text-2xl font-bold">Menu</SheetTitle>
+        </SheetHeader>
+        <div className="flex flex-col items-start space-y-6 pt-4">
+          <NavLink to="/" onClick={handleLinkClick}>Home</NavLink>
+          <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
+          <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
+          <NavLink to="/blog" onClick={handleLinkClick}>Blog</NavLink>
+          
+          <div className="h-px w-full bg-border my-2"></div>
+          
+          <div className="flex items-center justify-between w-full pt-4">
+            <SocialIcons />
+            <ThemeSwitcher />
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <header className="fixed top-0 left-0 right-0 w-full z-50 m-0 p-0">
       {/* Gradient border */}
       <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
       
       {/* Navbar content */}
       <div className="bg-background/80 backdrop-blur-md">
-        <nav className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center space-x-8">
+        <nav className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center">
             <Link 
               to="/" 
               className="relative group"
@@ -70,89 +198,29 @@ const Navbar = () => {
               <img 
                 src={websiteLogo}
                 alt="Logo" 
-                className="h-8 relative" 
+                className="h-7 sm:h-8 relative" 
               />
             </Link>
-            <div className="flex items-center space-x-2">
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center ml-8 space-x-2">
               <NavLink to="/about">About</NavLink>
               <NavLink to="/projects">Projects</NavLink>
               <NavLink to="/blog">Blog</NavLink>
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  className="border-primary/20 hover:border-primary/40 hover:bg-primary/5"
-                >
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">Toggle theme</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                  <Sun className="mr-2 h-4 w-4" />
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  <Moon className="mr-2 h-4 w-4" />
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  <Laptop className="mr-2 h-4 w-4" />
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            <ThemeSwitcher />
             <div className="h-5 w-px bg-border"></div>
-
-            <div className="flex items-center space-x-2">
-              <a 
-                href="https://github.com/realstephendong" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group"
-              >
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="hover:bg-primary/5"
-                >
-                  <GitHubIcon className="h-5 w-5 transition-colors group-hover:text-primary" />
-                </Button>
-              </a>
-              <a 
-                href="https://www.linkedin.com/in/stephen-dong/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group"
-              >
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="hover:bg-primary/5"
-                >
-                  <LinkedInIcon className="h-5 w-5 transition-colors group-hover:text-primary" />
-                </Button>
-              </a>
-              <a 
-                href="mailto:realstephendong@gmail.com"
-                className="group"
-              >
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="hover:bg-primary/5"
-                >
-                  <Mail className="h-5 w-5 transition-colors group-hover:text-primary" />
-                </Button>
-              </a>
-            </div>
+            <SocialIcons />
+          </div>
+          
+          {/* Mobile Actions */}
+          <div className="flex md:hidden items-center space-x-2">
+            <ThemeSwitcher />
+            <MobileMenu />
           </div>
         </nav>
       </div>

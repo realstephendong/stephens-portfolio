@@ -46,7 +46,7 @@ const TypewriterEffect = () => {
   }, [text, isDeleting, loopNum, typingSpeed])
 
   return (
-    <span className="font-mono font-light text-7xl">
+    <span className="font-mono font-light text-3xl sm:text-5xl md:text-7xl">
       {text}
       <span className="animate-blink">|</span>
     </span>

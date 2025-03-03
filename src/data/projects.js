@@ -1,4 +1,6 @@
 // src/data/projects.js
+
+// image imports
 import oncoalert from "../images/oncoalert.png"
 import stepcode from "../images/stepcode.png"
 import supermario from "../images/supermario.png"

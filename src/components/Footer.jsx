@@ -29,7 +29,7 @@ const LinkedInIcon = ({ className }) => (
 );
 
 const SocialLink = ({ href, icon: Icon, label, isCustomIcon }) => (
-  <TooltipProvider>
+  <TooltipProvider delayDuration={300}>
     <Tooltip>
       <TooltipTrigger asChild>
         <a
@@ -72,21 +72,21 @@ const Footer = () => {
       {/* Background gradient effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-8 py-16 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-16 relative">
         <Card className="bg-background/50 backdrop-blur-sm border-primary/10">
-          <CardContent className="p-8 md:p-12 space-y-8">
+          <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
             {/* Main content */}
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-semibold bg-gradient-to-r from-primary to-primary/60 text-transparent bg-clip-text animate-glow">
+            <div className="space-y-3 sm:space-y-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold bg-gradient-to-r from-primary to-primary/60 text-transparent bg-clip-text animate-glow">
                 Let's get in touch.
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-base sm:text-lg text-muted-foreground">
                 Now that you know me, let me get to know you!
               </p>
             </div>
 
             {/* Social links */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               <SocialLink 
                 href="https://github.com/realstephendong"
                 icon={GitHubIcon}
@@ -111,17 +111,17 @@ const Footer = () => {
             <div className="h-px bg-border w-full opacity-50" />
 
             {/* Footer credits */}
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Code2 className="w-4 h-4" />
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-muted-foreground">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Code2 className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>Coded and designed by Stephen Dong</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <span>Built with</span>
-                <Heart className="w-4 h-4 text-red-500" />
+                <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500" />
                 <span>using React Vite & Tailwind</span>
               </div>
-              <div>© {currentYear} Stephen Dong</div>
+              <div className="text-xs sm:text-sm">© {currentYear} Stephen Dong</div>
             </div>
           </CardContent>
         </Card>
