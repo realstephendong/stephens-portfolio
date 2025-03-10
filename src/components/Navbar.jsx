@@ -165,6 +165,7 @@ const MobileMenu = () => {
         <div className="flex flex-col items-start space-y-6 pt-4">
           <NavLink to="/" onClick={handleLinkClick}>Home</NavLink>
           <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
+          <NavLink to="/experience" onClick={handleLinkClick}>Experience</NavLink>
           <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
           <NavLink to="/blog" onClick={handleLinkClick}>Blog</NavLink>
           
@@ -205,6 +206,7 @@ const Navbar = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center ml-8 space-x-2">
               <NavLink to="/about">About</NavLink>
+              <NavLink to="/experience">Experience</NavLink>
               <NavLink to="/projects">Projects</NavLink>
               <NavLink to="/blog">Blog</NavLink>
             </div>

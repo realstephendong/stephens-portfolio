@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import TypewriterEffect from '../components/TypewriterEffect';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, MousePointer2, ArrowRight, User } from 'lucide-react';
+import { ChevronRight, MousePointer2, ArrowRight, User, Briefcase } from 'lucide-react';
 import FeaturedProject from '../components/FeaturedProject';
 import projects from '../data/projects';
 import { blogPosts } from '../data/blogData';
+import ExperienceCarousel from '../components/ExperienceCarousel';
 
-// Import the enhanced flow field animation
-import RandomizedFlowField from '../components/RandomizedFlowField';
+// Import the optimized flow field animation
+import OptimizedFlowField from '../components/OptimizedFlowField';
 
 function Home() {
   const scrollRef = useRef(null);
@@ -54,7 +55,7 @@ function Home() {
     <main className="min-h-screen overflow-x-hidden" ref={scrollRef}>
       {/* Animation background with theme support */}
       <div className="fixed inset-0 z-0 opacity-75 transition-opacity duration-500">
-        <RandomizedFlowField />
+        <OptimizedFlowField />
       </div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
@@ -192,6 +193,27 @@ function Home() {
                     <User className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 text-[#2DB19B]/50" />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+        
+        {/* Experience Section */}
+        <section 
+          className="py-10 sm:py-16 flex items-center"
+          data-aos="fade-up" 
+          data-aos-duration="1000"
+        >
+          <div className="w-full relative group">
+            <div className="absolute -inset-1 bg-[#4B93D1]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
+                            group-hover:shadow-2xl group-hover:shadow-[#4B93D1]/20"></div>
+            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
+              <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#4B93D1]">Experience</h2>
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
+                  Places I've worked and projects I've contributed to throughout my career.
+                </p>
+                <ExperienceCarousel />
               </CardContent>
             </Card>
           </div>
