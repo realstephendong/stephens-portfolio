@@ -103,9 +103,8 @@ function Home() {
               </a>
             </div>
           </div>
-          
-          <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
-            <div className="flex flex-col items-center text-muted-foreground p-2 rounded-full">
+          <div className="absolute left-1/2 bottom-12">
+            <div className="flex flex-col items-center text-muted-foreground p-2 rounded-full -translate-x-1/2 animate-bounce">
               <MousePointer2 className="h-5 w-5 sm:h-6 sm:w-6" />
               <span className="text-xs sm:text-sm">Scroll to explore</span>
             </div>
@@ -114,7 +113,7 @@ function Home() {
 
         {/* Latest Blog Section */}
         <section 
-          className="py-10 sm:py-16 flex items-center"
+          className="sm:py-16 flex items-center"
           data-aos="fade-up" 
           data-aos-duration="1000"
         >

@@ -68,7 +68,7 @@ const About = () => {
               <CardContent className="p-6 sm:p-8 md:p-12">
                 <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-[#2DB19B]">Skills & Technologies</h2>
                 <Tabs defaultValue="languages" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
+                  <TabsList className="grid w-full pb-9 grid-cols-3">
                     <TabsTrigger value="languages" className="text-xs sm:text-sm md:text-base">Languages</TabsTrigger>
                     <TabsTrigger value="frameworks" className="text-xs sm:text-sm md:text-base">Frameworks</TabsTrigger>
                     <TabsTrigger value="tools" className="text-xs sm:text-sm md:text-base">Tools</TabsTrigger>

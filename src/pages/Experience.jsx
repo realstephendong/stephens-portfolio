@@ -1,9 +1,37 @@
-import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useRef } from 'react';
+import { 
+  Card, 
+  CardContent 
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Award, Briefcase, MapPin, Calendar, Brain, Monitor, ChevronRight, Github, ExternalLink } from 'lucide-react';
-import { experiences } from '../data/experienceData';
+import { 
+  Award, 
+  Briefcase, 
+  MapPin, 
+  Calendar, 
+  Brain, 
+  Monitor,
+  ChevronRight, 
+  ChevronDown,
+  Github, 
+  ExternalLink,
+  Code,
+  Image as ImageIcon,
+  Check,
+  LineChart,
+  Play,
+  Pause,
+  Film,
+  Maximize,
+  Minimize,
+  Zap,
+  PanelRight,
+  HardDrive,
+  BarChart
+} from 'lucide-react';
+
+import experiences from '../data/experienceData';
 
 const iconMap = {
   "Brain": Brain,
@@ -11,10 +39,233 @@ const iconMap = {
   "Monitor": Monitor,
 };
 
-const ExperienceCard = ({ experience }) => {
-  const { role, company, logo, location, project, dateRange, description, responsibilities, skills, color, icon, githubLink } = experience;
+const MediaShowcase = ({ media, color }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
+  const iframeRef = useRef(null);
+
+  const currentMedia = media[activeIndex];
   
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
+    if (videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+  
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
+    if (videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+  
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+  
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+  
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
+  };
+
+  const renderMedia = () => {
+    switch(currentMedia.type) {
+      case 'video':
+        return (
+          <>
+            <video
+              ref={videoRef}
+              src={currentMedia.url}
+              poster={currentMedia.thumbnail}
+              className="w-full h-full object-contain"
+              onEnded={handleVideoEnd}
+              controls={isFullscreen}
+            />
+            
+            {/* Video controls overlay (only show when not fullscreen) */}
+            {!isFullscreen && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 hover:opacity-100 transition-opacity">
+                <button 
+                  onClick={togglePlay}
+                  className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
+                >
+                  {isPlaying ? (
+                    <Pause className="h-8 w-8 text-white" />
+                  ) : (
+                    <Play className="h-8 w-8 text-white" />
+                  )}
+                </button>
+              </div>
+            )}
+          </>
+        );
+      
+      case 'externalVideo':
+        // For external videos (Google Drive, YouTube, etc.)
+        return (
+          <iframe
+            ref={iframeRef}
+            src={currentMedia.embedUrl}
+            className="w-full h-full"
+            allowFullScreen
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
+        );
+      
+      case 'image':
+      default:
+        return (
+          <img 
+            src={currentMedia.url} 
+            alt={currentMedia.title}
+            className="w-full h-full object-contain"
+          />
+        );
+    }
+  };
+
+  if (!media || media.length === 0) return null;
+
+  return (
+    <div className={`bg-black/5 dark:bg-white/5 rounded-lg transition-all ${isFullscreen ? 'fixed inset-0 z-50 flex items-center justify-center bg-black/90' : ''}`}>
+      <div className={`relative ${isFullscreen ? 'w-full h-full max-w-5xl mx-auto flex flex-col justify-center' : ''}`}>
+        {/* Media display */}
+        <div className={`relative rounded-t-lg overflow-hidden ${isFullscreen ? 'w-full' : currentMedia.aspectRatio ? '' : 'aspect-video'} bg-black/20`}
+             style={currentMedia.aspectRatio && !isFullscreen ? { aspectRatio: currentMedia.aspectRatio } : {}}>
+          
+          {renderMedia()}
+          
+          {/* Fullscreen toggle button - not for external videos which have their own controls */}
+          {currentMedia.type !== 'externalVideo' && (
+            <button 
+              onClick={toggleFullscreen}
+              className="absolute top-3 right-3 p-2 bg-black/30 hover:bg-black/50 rounded-full text-white transition-colors"
+            >
+              {isFullscreen ? (
+                <Minimize className="h-5 w-5" />
+              ) : (
+                <Maximize className="h-5 w-5" />
+              )}
+            </button>
+          )}
+        </div>
+        
+        {/* Media info and navigation */}
+        <div className={`p-4 ${isFullscreen ? 'text-white' : ''}`}>
+          <div className="flex justify-between items-start mb-3">
+            <div>
+              <h4 className="font-medium text-lg" style={{ color: isFullscreen ? 'white' : color }}>
+                {currentMedia.title}
+              </h4>
+              <p className="text-sm text-muted-foreground">{currentMedia.description}</p>
+            </div>
+            
+            {/* Navigation controls */}
+            {media.length > 1 && (
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handlePrev}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronRight className="h-4 w-4 rotate-180" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleNext}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </div>
+          
+          {/* Media counter */}
+          {media.length > 1 && (
+            <div className="flex justify-center gap-1 mt-2">
+              {media.map((_, index) => (
+                <span 
+                  key={index}
+                  className={`h-1.5 rounded-full transition-all ${
+                    index === activeIndex 
+                      ? `w-4 bg-primary` 
+                      : 'w-1.5 bg-gray-300 dark:bg-gray-700'
+                  }`}
+                  style={{ backgroundColor: index === activeIndex ? color : '' }}
+                ></span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Helper function to get appropriate icon for detail sections
+const getDetailIcon = (key) => {
+  switch(key) {
+    case 'technologies':
+      return <Code className="h-4 w-4 mr-2 flex-shrink-0" />;
+    case 'activities':
+      return <Zap className="h-4 w-4 mr-2 flex-shrink-0" />;
+    case 'challenges':
+      return <PanelRight className="h-4 w-4 mr-2 flex-shrink-0" />;
+    case 'results':
+      return <BarChart className="h-4 w-4 mr-2 flex-shrink-0" />;
+    case 'responsibilities':
+      return <HardDrive className="h-4 w-4 mr-2 flex-shrink-0" />;
+    default:
+      return null;
+  }
+};
+
+const ExperienceCard = ({ experience }) => {
+  const { 
+    id, role, company, logo, location, project, dateRange, description, 
+    responsibilities, skills, color, icon, githubLink, media 
+  } = experience;
+  
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [showProjects, setShowProjects] = useState(false);
+  const [showMedia, setShowMedia] = useState(false);
+
   const IconComponent = icon && iconMap[icon] ? iconMap[icon] : Briefcase;
+  
+  const projects = [];
+  
+  // Check if media exists and is not empty
+  const hasMedia = media && media.length > 0;
+  
+  // Check if media includes video
+  const hasVideo = hasMedia && media.some(item => item.type === 'video' || item.type === 'externalVideo');
+
+  const toggleExpand = (index) => {
+    if (expandedIndex === index) {
+      setExpandedIndex(null);
+    } else {
+      setExpandedIndex(index);
+    }
+  };
 
   return (
     <Card 
@@ -72,39 +323,194 @@ const ExperienceCard = ({ experience }) => {
                 </div>
               </div>
               
-              {githubLink && githubLink.trim() !== "" && (
-                <a 
-                  href={githubLink}
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="shrink-0"
-                >
+              <div className="flex flex-wrap gap-2">
+                {/* Media Showcase Button - only show if media exists */}
+                {hasMedia && (
                   <Button 
                     variant="outline" 
                     size="sm"
                     className="gap-2 border-primary/20 hover:border-primary hover:text-primary"
+                    onClick={() => setShowMedia(!showMedia)}
                   >
-                    <Github className="h-4 w-4" />
-                    <span className="hidden sm:inline">View Code</span>
-                    <ExternalLink className="h-3 w-3" />
+                    {hasVideo ? (
+                      <Film className="h-4 w-4" />
+                    ) : (
+                      <ImageIcon className="h-4 w-4" />
+                    )}
+                    <span className="hidden sm:inline">
+                      {showMedia ? "Hide Showcase" : "View Showcase"}
+                    </span>
+                    {showMedia ? 
+                      <ChevronDown className="h-3 w-3" /> : 
+                      <ChevronRight className="h-3 w-3" />
+                    }
                   </Button>
-                </a>
-              )}
+                )}
+                
+                {/* Projects Button - only show if projects exist */}
+                {projects.length > 0 && (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="gap-2 border-primary/20 hover:border-primary hover:text-primary"
+                    onClick={() => setShowProjects(!showProjects)}
+                  >
+                    <Code className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {showProjects ? "Hide Projects" : "View Projects"}
+                    </span>
+                    {showProjects ? 
+                      <ChevronDown className="h-3 w-3" /> : 
+                      <ChevronRight className="h-3 w-3" />
+                    }
+                  </Button>
+                )}
+                
+                {/* GitHub Button - only show if link exists */}
+                {githubLink && githubLink.trim() !== "" && (
+                  <a 
+                    href={githubLink}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="shrink-0"
+                  >
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="gap-2 border-primary/20 hover:border-primary hover:text-primary"
+                    >
+                      <Github className="h-4 w-4" />
+                      <span className="hidden sm:inline">View Code</span>
+                      <ExternalLink className="h-3 w-3" />
+                    </Button>
+                  </a>
+                )}
+              </div>
             </div>
             
             <p className="text-base sm:text-lg text-muted-foreground">
               {description}
             </p>
             
+            {/* Media Showcase (conditionally rendered) */}
+            {showMedia && hasMedia && (
+              <MediaShowcase media={media} color={color} />
+            )}
+            
+            {/* Projects showcase (conditionally rendered) */}
+            {showProjects && projects.length > 0 && (
+              <div className="bg-black/5 dark:bg-white/5 rounded-lg p-4 space-y-4 transition-all">
+                <h4 className="text-base sm:text-lg font-medium flex items-center gap-2">
+                  <Code className="h-5 w-5" style={{ color }} />
+                  Project Showcase:
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {projects.map((project, idx) => (
+                    <div 
+                      key={idx} 
+                      className="bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800"
+                    >
+                      <div className="h-40 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                        <img 
+                          src={project.image} 
+                          alt={project.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="p-4 space-y-2">
+                        <h5 className="font-medium" style={{ color }}>{project.title}</h5>
+                        <p className="text-sm text-muted-foreground">{project.description}</p>
+                        <div className="text-xs text-muted-foreground">{project.details}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="space-y-2 sm:space-y-3">
               <h4 className="text-base sm:text-lg font-medium">Key Responsibilities:</h4>
-              <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
+              <div className="space-y-2">
                 {responsibilities.map((responsibility, index) => (
-                  <li key={index} className="pl-2">
-                    <span className="pl-2">{responsibility}</span>
-                  </li>
+                  <div 
+                    key={index} 
+                    className="border dark:border-gray-800 rounded-lg overflow-hidden"
+                  >
+                    <div 
+                      className="p-3 cursor-pointer flex justify-between items-start hover:bg-black/5 dark:hover:bg-white/5"
+                      onClick={() => toggleExpand(index)}
+                    >
+                      <div className="flex gap-2">
+                        <div className="mt-1 flex-shrink-0">
+                          <Check className="h-4 w-4" style={{ color }} />
+                        </div>
+                        <span className="text-sm sm:text-base">{responsibility.title}</span>
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="ml-2 flex-shrink-0"
+                      >
+                        {expandedIndex === index ? 
+                          <ChevronDown className="h-4 w-4" /> : 
+                          <ChevronRight className="h-4 w-4" />
+                        }
+                      </Button>
+                    </div>
+                    
+                    {expandedIndex === index && responsibility.details && (
+                      <div className="p-4 bg-black/5 dark:bg-white/5 border-t dark:border-gray-800 space-y-4 transition-all">
+                        {/* Description */}
+                        {responsibility.details.description && (
+                          <div className="text-sm">
+                            <p>{responsibility.details.description}</p>
+                          </div>
+                        )}
+                        
+                        {/* Render other detail sections */}
+                        {Object.entries(responsibility.details).map(([key, value]) => {
+                          // Skip rendering the description as we've already handled it above
+                          if (key === 'description') return null;
+                          
+                          // Handle array values (technologies, activities, etc.)
+                          if (Array.isArray(value)) {
+                            return (
+                              <div key={key} className="mt-3">
+                                <h5 className="text-sm font-medium mb-2 flex items-center" style={{ color }}>
+                                  {getDetailIcon(key)}
+                                  {key.charAt(0).toUpperCase() + key.slice(1)}:
+                                </h5>
+                                <div className="flex flex-wrap gap-2">
+                                  {value.map((item, i) => (
+                                    <Badge 
+                                      key={i}
+                                      variant="outline" 
+                                      className="text-xs py-1"
+                                    >
+                                      {item}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          }
+                          
+                          // Handle string values (challenges, results, etc.)
+                          return (
+                            <div key={key} className="mt-3">
+                              <h5 className="text-sm font-medium mb-1 flex items-center" style={{ color }}>
+                                {getDetailIcon(key)}
+                                {key.charAt(0).toUpperCase() + key.slice(1)}:
+                              </h5>
+                              <p className="text-sm text-muted-foreground">{value}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    </div>
                 ))}
-              </ul>
+              </div>
             </div>
             
             <div className="flex flex-wrap gap-2 pt-2">
@@ -127,61 +533,16 @@ const ExperienceCard = ({ experience }) => {
   );
 };
 
+// Main Experience component
 const Experience = () => {
-  const sortedExperiences = [...experiences].sort((a, b) => {
-    const aYear = parseInt(a.dateRange.split(' ').pop());
-    const bYear = parseInt(b.dateRange.split(' ').pop());
-    return bYear - aYear;
-  });
-
   return (
-    <main className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div className="space-y-8 sm:space-y-12">
-          {/* Header */}
-          <section data-aos="fade-right" data-aos-duration="1000">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50 mb-4 sm:mb-8">
-              Experience
-            </h1>
-            <Card className="dark:bg-gradient-to-br dark:from-[#0D1117] dark:to-[#161B22] 
-                            bg-gray-50 dark:border-[#30363D] border">
-              <CardContent className="p-5 sm:p-8">
-                <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                  My professional journey and the roles where I've applied my technical skills and gained valuable experience.
-                </p>
-              </CardContent>
-            </Card>
-          </section>
-
-          {/* Experience Cards */}
-          <section className="space-y-6 sm:space-y-8 md:space-y-12">
-            {sortedExperiences.map((experience) => (
-              <ExperienceCard key={experience.id} experience={experience} />
-            ))}
-          </section>
-
-          {/* Education Section */}
-          <section data-aos="fade-up" data-aos-duration="1000">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-primary">Education</h2>
-            <Card className="w-full dark:bg-gradient-to-br dark:from-[#0D1117] dark:to-[#161B22] 
-                           bg-white border dark:border-[#30363D] hover:border-primary/50 transition-colors">
-              <CardContent className="p-6 sm:p-8 md:p-10 space-y-4">
-                <div className="flex justify-between items-start flex-wrap gap-4">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-semibold">University of Waterloo</h3>
-                    <p className="text-lg text-muted-foreground">BASc in Computer Engineering</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-base font-medium">Waterloo, ON</p>
-                    <p className="text-muted-foreground">Expected: May 2029</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
+    <div className="container mx-auto px-4 pt-20 pb-8 max-w-7xl">
+      <div className="space-y-8">
+        {experiences.map((experience) => (
+          <ExperienceCard key={experience.id} experience={experience} />
+        ))}
       </div>
-    </main>
+    </div>
   );
 };
 
