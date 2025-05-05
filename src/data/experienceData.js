@@ -33,6 +33,15 @@ export const experiences = [
           }
         },
         {
+          title: "Programmed interactive 3D model tours that display important critical to quality items and messages at each step of the machine process.",
+          details: {
+            description: "Using Three.js I detailed and sorted 3D wireframe models from Erema into parts that could be focused/unfocued on with different camera animations. The model tour allows users to toggle the translucency of materials to be able to see the parts inside each machine, revolutionizing existing training models for new plant workers.",
+            technologies: ["Three.js", "WebGL", "React Vite", "Blender", "Raspberry Pi 5"],
+            challenges: "3D object rendering performance optimizations through internet connection, cutomization of screen layout.",
+            results: "These continuously running model tours displaying through a Raspberry Pi 5 on TVs inside the plant constantly gave reminders to plant workers about safety requirements, job specifications, and what steps to take at different parts of the machine process."
+          }
+        },
+        {
           title: "*NOT SHOWN IN DEMO* Coded 12 different financial reports that visualize company-wide finance analytics, trends, and comparisons.",
           details: {
             description: "Each financial report included several animated charts and tables with numeric labels and well-formatted tooltips, along with options to export all data as CSV files. These reports were used by the CFO to quickly create date-based financial overviews to present in board meetings. Some reports also had a 'compare' feature, which allowed data from different plants to be compared side by side.",
@@ -64,9 +73,9 @@ export const experiences = [
         },
         {
           type: "externalVideo",
-          title: "Kal-Polymers Web App Demo",
-          description: "Live demonstration of production overviews and reports, security camera monitoring system with HLS streaming, excludes financial reports.",
-          embedUrl: "https://drive.google.com/file/d/1E0xkcVyBJ6FR83KWu5fF_D8XXkD89fYw/preview",
+          title: "3D Model Tour Interface",
+          description: "Interactive 3D models of manufacturing equipment with step-by-step process explanations.",
+          embedUrl: "https://drive.google.com/file/d/1YkcWm-sZNRnhUs2eKvAtaMQQ8jVjeHoN/preview",
           aspectRatio: "16/9"
         }
       ]
