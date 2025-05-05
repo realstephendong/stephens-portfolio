@@ -24,7 +24,7 @@ export const experiences = [
           }
         },
         {
-          title: "Engineered a production analytics dashboardto visualize real-time manufacturing metrics for 9 industrial machines.",
+          title: "Engineered a production analytics dashboard to visualize real-time manufacturing metrics for 9 industrial machines.",
           details: {
             description: "Designed and implemented an interactive dashboard with customized production reports that provides real-time visualization of production KPIs and machine status. Also coded an email notification system for any new maintenance requests detected in the server.",
             technologies: ["Recharts", "Tailwind CSS", "REST APIs", "Flask", "Microsoft SQL Server"],
@@ -55,6 +55,13 @@ export const experiences = [
       color: "#E94057",
       icon: "Monitor",
       media: [
+        {
+          type: "externalVideo",
+          title: "Kal-Polymers Web App Demo",
+          description: "Live demonstration of production overviews and reports, security camera monitoring system with HLS streaming, excludes financial reports.",
+          embedUrl: "https://drive.google.com/file/d/1E0xkcVyBJ6FR83KWu5fF_D8XXkD89fYw/preview",
+          aspectRatio: "16/9"
+        },
         {
           type: "externalVideo",
           title: "Kal-Polymers Web App Demo",
