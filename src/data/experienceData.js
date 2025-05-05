@@ -101,9 +101,9 @@ export const experiences = [
           }
         },
         {
-          title: "Reduced asset load time by 40%, reducing time from 63 ms to 43 ms by integrating the model with a Django-React app.",
+          title: "Reduced asset load time by integrating the model with a Django-React app.",
           details: {
-            description: "Optimized model inference pipeline and implemented efficient model-to-application integration with performance-focused architecture.",
+            description: "Optimized model inference pipeline reducing load times from 63 ms to 43 ms with performance-focused architecture.",
             technologies: ["Django", "React", "Docker"],
             challenges: "Minimizing model size without accuracy loss, optimizing inference for web deployment, and implementing efficient caching strategies.",
             results: "Reduced overall application response time by 30%, enabling real-time analysis of content for copyright protection."
