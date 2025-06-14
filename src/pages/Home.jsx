@@ -65,7 +65,7 @@ function Home() {
           data-aos="fade-right"
         >
           
-          <div className="space-y-6 sm:space-y-8 relative backdrop-blur-sm bg-background/30 p-4 sm:p-8 rounded-xl">
+          <div className="space-y-6 sm:space-y-8 relative  bg-background/30 p-4 sm:p-8 rounded-xl">
             <div className="space-y-2 sm:space-y-4">
               <TypewriterEffect />
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold">
