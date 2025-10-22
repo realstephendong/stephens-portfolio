@@ -9,8 +9,21 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import DomeGallery from '../components/DomeGallery';
 
-import selfie from "../images/aboutmeselfie.png"
+// Import your gallery images
+import IMG_3886 from '../images/gallery/IMG_3886.webp';
+import IMG_4572 from '../images/gallery/IMG_4572.webp';
+import IMG_5289 from '../images/gallery/IMG_5289.webp';
+import IMG_7085 from '../images/gallery/IMG_7085.webp';
+import IMG_7361 from '../images/gallery/IMG_7361.webp';
+import IMG_8999 from '../images/gallery/IMG_8999.webp';
+import IMG_9062 from '../images/gallery/IMG_9062.webp';
+import IMG_9070 from '../images/gallery/IMG_9070.webp';
+import IMG_9098 from '../images/gallery/IMG_9098.webp';
+import IMG_9206 from '../images/gallery/IMG_9206.webp';
+import IMG_9260 from '../images/gallery/IMG_9260.webp';
+
 
 const About = () => {
   const skills = {
@@ -23,42 +36,48 @@ const About = () => {
     <main className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="space-y-8 sm:space-y-12">
-          {/* Hero Section */}
-          <section data-aos="fade-right" data-aos-duration="1000">
-            <Card className="w-full dark:bg-gradient-to-br dark:from-[#0D1117] dark:to-[#161B22] 
-                           bg-white border dark:border-[#30363D]">
-              <CardContent className="p-6 sm:p-8 md:p-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                  <div className="space-y-4 sm:space-y-6 order-2 md:order-1">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2DB19B]">About Me</h1>
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                      My name is <span className="text-[#2DB19B] font-semibold">Stephen.</span> I am an 18-year-old from Canada, currently studying{' '}
-                      <span className="text-[#2DB19B] font-semibold">Computer Engineering</span> at the{' '}
-                      <span className="text-[#2DB19B] font-semibold">University of Waterloo.</span>
-                    </p>
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                      I'm all about <span className="text-[#2DB19B] font-semibold">exploring</span> new areas in tech,{' '}
-                      <span className="text-[#2DB19B] font-semibold">contributing</span> inspiring ideas, and{' '}
-                      <span className="text-[#2DB19B] font-semibold">making a change</span> wherever I end up.
-                    </p>
-                  </div>
-                  <div className="relative group order-1 md:order-2">
-                    <div 
-                      className="absolute -inset-1 bg-[#2DB19B] rounded-lg opacity-20 
-                                group-hover:opacity-30 transition-opacity duration-300"
-                    ></div>
-                    <div className="relative overflow-hidden rounded-lg">
-                      <img 
-                        src={selfie}
-                        alt="Profile" 
-                        className="w-full object-cover transition-transform duration-500 
-                                  group-hover:scale-105 group-hover:rotate-1 group-hover:brightness-90"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Full-Screen Dome Gallery - Breaks out of container */}
+          <section 
+            className="relative -mx-4 sm:-mx-6 md:-mx-8" 
+            style={{ 
+              marginLeft: 'calc(-50vw + 50%)',
+              marginRight: 'calc(-50vw + 50%)',
+              width: '100vw',
+              height: '80vh',
+              minHeight: '600px'
+            }}
+            data-aos="fade-up" 
+            data-aos-duration="1000"
+          >
+            <DomeGallery 
+              images={[
+                { src: IMG_3886, alt: "Stephen's photo 1" },
+                { src: IMG_4572, alt: "Stephen's photo 2" },
+                { src: IMG_5289, alt: "Stephen's photo 3" },
+                { src: IMG_7085, alt: "Stephen's photo 4" },
+                { src: IMG_7361, alt: "Stephen's photo 5" },
+                { src: IMG_8999, alt: "Stephen's photo 6" },
+                { src: IMG_9062, alt: "Stephen's photo 7" },
+                { src: IMG_9070, alt: "Stephen's photo 8" },
+                { src: IMG_9098, alt: "Stephen's photo 9" },
+                { src: IMG_9206, alt: "Stephen's photo 10" },
+                { src: IMG_9260, alt: "Stephen's photo 11" }
+              ]}
+              fit={1.0}
+              fitBasis="min"
+              minRadius={1000}
+              maxRadius={1500}
+              padFactor={0.02}
+              grayscale={false}
+              imageBorderRadius="20px"
+              openedImageBorderRadius="20px"
+              segments={30}
+              autoRotate={true}
+              autoRotateSpeed={0.04}
+              overlayBlurColor="hsl(222.2, 84%, 4.9%)"
+              openedImageWidth="600px"
+              openedImageHeight="600px"
+            />
           </section>
 
           {/* Skills Section */}

@@ -1,0 +1,172 @@
+.sphere-root {
+  --radius: 520px;
+  --viewer-pad: 72px;
+  --circ: calc(var(--radius) * 3.14);
+  --rot-y: calc((360deg / var(--segments-x)) / 2);
+  --rot-x: calc((360deg / var(--segments-y)) / 2);
+  --item-width: calc(var(--circ) / var(--segments-x));
+  --item-height: calc(var(--circ) / var(--segments-y));
+}
+
+.sphere-root * {
+  box-sizing: border-box;
+}
+
+.sphere, .sphere-item, .item__image {
+  transform-style: preserve-3d;
+}
+
+.stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  perspective: calc(var(--radius) * 2);
+  perspective-origin: 50% 50%;
+}
+
+.sphere {
+  transform: translateZ(calc(var(--radius) * -1));
+  will-change: transform;
+  position: absolute;
+}
+
+.sphere-item {
+  width: calc(var(--item-width) * var(--item-size-x));
+  height: calc(var(--item-height) * var(--item-size-y));
+  position: absolute;
+  top: -999px;
+  bottom: -999px;
+  left: -999px;
+  right: -999px;
+  margin: auto;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  transition: transform 300ms;
+  transform: rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta, 0deg))) 
+             rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta, 0deg))) 
+             translateZ(var(--radius));
+}
+
+.sphere-root[data-enlarging="true"] .scrim {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .viewer-frame {
+    height: auto !important;
+    width: 100% !important;
+  }
+}
+
+.item__image {
+  position: absolute;
+  inset: 10px;
+  border-radius: var(--tile-radius, 12px);
+  overflow: hidden;
+  cursor: pointer;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  pointer-events: auto;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item__image:hover {
+  animation: hoverEnter 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+             hoverPulse 2.5s ease-in-out infinite 400ms;
+}
+
+.item__image:hover img {
+  filter: brightness(1.1) contrast(1.05);
+}
+
+/* Add a subtle glow effect for better 3D appearance */
+.item__image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.item__image:hover::before {
+  opacity: 1;
+  transition: none;
+}
+
+/* Smooth hover enter animation */
+@keyframes hoverEnter {
+  0% { 
+    transform: translateZ(0) scale(1) rotateX(0deg) rotateY(0deg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  100% { 
+    transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.4), 
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 30px rgba(255, 255, 255, 0.1),
+      0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Smooth hover exit animation */
+@keyframes hoverExit {
+  0% { 
+    transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.4), 
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 30px rgba(255, 255, 255, 0.1),
+      0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+  100% { 
+    transform: translateZ(0) scale(1) rotateX(0deg) rotateY(0deg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Add a more noticeable pulsing animation for extra visual appeal */
+@keyframes hoverPulse {
+  0%, 100% { 
+    transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.4), 
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 30px rgba(255, 255, 255, 0.1),
+      0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+  50% { 
+    transform: translateZ(45px) scale(1.12) rotateX(8deg) rotateY(8deg);
+    box-shadow: 
+      0 35px 70px rgba(0, 0, 0, 0.5), 
+      0 0 0 1px rgba(255, 255, 255, 0.3),
+      0 0 50px rgba(255, 255, 255, 0.2),
+      0 30px 80px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Ensure smooth transition when leaving hover */
+.item__image:not(:hover) {
+  animation: hoverExit 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.item__image--reference {
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+}
+
