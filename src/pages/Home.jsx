@@ -1,12 +1,15 @@
-import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
   ChevronRight, 
   MousePointer2, 
-  ArrowRight
+  ArrowRight,
+  X,
+  Minus,
+  Maximize2
 } from 'lucide-react';
 import { blogPosts } from '../data/blogData';
 import experiences from '../data/experienceData';
@@ -48,7 +51,7 @@ const ExperienceTimeline = ({ experience, index }) => {
           </div>
           
           {/* Connecting line */}
-          <div className="hidden md:block flex-grow h-[2px] bg-primary/40 max-w-[200px]"></div>
+          <div className="hidden md:block flex-grow h-px bg-white/40 max-w-[200px]"></div>
           
           {/* Middle: Company & Role */}
           <div className="flex-1 min-w-0 space-y-2 md:ml-8">
@@ -124,6 +127,96 @@ const BlogCard = ({ title, date, excerpt, tags, slug }) => (
 
 function Home() {
   const scrollRef = useRef(null);
+  const terminalContentRef = useRef(null);
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+  const [terminalInput, setTerminalInput] = useState('');
+  const [terminalHistory, setTerminalHistory] = useState([]);
+  const [isTerminalClosed, setIsTerminalClosed] = useState(false);
+  const [isTerminalMinimized, setIsTerminalMinimized] = useState(false);
+  const [isTerminalFullscreen, setIsTerminalFullscreen] = useState(false);
+
+  // Memoize the FaultyTerminal component to prevent re-renders
+  const faultyTerminalComponent = useMemo(() => (
+    <FaultyTerminal
+      scale={1.7}
+      gridMul={[2, 1]}
+      digitSize={1.7}
+      timeScale={1.1}
+      scanlineIntensity={0.5}
+      glitchAmount={1}
+      flickerAmount={1}
+      noiseAmp={0.8}
+      chromaticAberration={0}
+      dither={0}
+      curvature={0.27}
+      tint="#a7ef9e"
+      mouseReact={true}
+      mouseStrength={1.1}
+      pageLoadAnimation={true}
+      brightness={0.6}
+    />
+  ), []); // Empty dependency array means this will only be created once
+
+  // Auto-scroll to bottom when terminal history changes
+  useEffect(() => {
+    if (terminalContentRef.current) {
+      terminalContentRef.current.scrollTop = terminalContentRef.current.scrollHeight;
+    }
+  }, [terminalHistory]);
+
+  // Focus input when clicking anywhere on the terminal
+  const handleTerminalClick = () => {
+    inputRef.current?.focus();
+  };
+
+  // Handle window controls
+  const handleClose = () => {
+    setIsTerminalClosed(true);
+  };
+
+  const handleMinimize = () => {
+    setIsTerminalMinimized(!isTerminalMinimized);
+  };
+
+  const handleFullscreen = () => {
+    setIsTerminalFullscreen(!isTerminalFullscreen);
+  };
+
+  // Handle terminal commands
+  const handleTerminalSubmit = (e) => {
+    e.preventDefault();
+    const command = terminalInput.trim().toLowerCase();
+    
+    // Add command to history
+    setTerminalHistory(prev => [...prev, { type: 'command', text: terminalInput }]);
+    
+    // Process commands
+    if (command === 'help') {
+      setTerminalHistory(prev => [...prev, { 
+        type: 'output', 
+        text: 'Available commands: help, clear, projects, about, linkedin, hello'
+      }]);
+    } else if (command === 'clear') {
+      setTerminalHistory([]);
+    } else if (command === 'projects') {
+      navigate('/projects');
+    } else if (command === 'about') {
+      navigate('/about');
+    } else if (command === 'linkedin') {
+      window.open('https://www.linkedin.com/in/stephen-dong/', '_blank');
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening LinkedIn...' }]);
+    } else if (command === 'hello' || command === 'hi') {
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Hello! Welcome to my portfolio 👋' }]);
+    } else if (command !== '') {
+      setTerminalHistory(prev => [...prev, { 
+        type: 'output', 
+        text: `Command not found: ${terminalInput}. Type 'help' for available commands.`
+      }]);
+    }
+    
+    setTerminalInput('');
+  };
 
   return (
     <main className="min-h-screen relative" ref={scrollRef}>
@@ -143,83 +236,188 @@ function Home() {
       >
         {/* Faulty Terminal background - only in hero section, full width */}
         <div className="absolute inset-0 z-0 bg-[hsl(0,0%,4%)]">
-          <FaultyTerminal
-            scale={1.7}
-            gridMul={[2, 1]}
-            digitSize={1.7}
-            timeScale={1.1}
-            scanlineIntensity={0.5}
-            glitchAmount={1}
-            flickerAmount={1}
-            noiseAmp={0.8}
-            chromaticAberration={0}
-            dither={0}
-            curvature={0.27}
-            tint="#a7ef9e"
-            mouseReact={true}
-            mouseStrength={1.1}
-            pageLoadAnimation={true}
-            brightness={0.6}
-          />
+          {faultyTerminalComponent}
           {/* Bottom fade overlay */}
           <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[hsl(0,0%,4%)] via-[hsl(0,0%,4%)]/80 via-30% to-transparent pointer-events-none"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 w-full relative z-[15]">
-          <div className="space-y-6 sm:space-y-8 bg-background/30 p-6 sm:p-10 rounded-xl backdrop-blur-sm">
-            <div className="space-y-2 sm:space-y-4">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold">
-                Hi, I am <span className="text-primary">Stephen.</span>
-              </h1>
-            </div>
-            <p className="text-lg sm:text-xl text-muted-foreground">
-              A software engineer passionate about building impactful solutions. Explore my work, experiences, and thoughts below.
-            </p>
-            
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-              <Link to="/projects" className="inline-block">
-                <Button 
-                  size="lg"
-                  className="group text-base sm:text-lg bg-primary hover:bg-primary/90 text-primary-foreground"
-                >
-                  Projects
-                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-              <div className="hidden sm:block h-12 w-px bg-border" />
-              <Link to="/about" className="inline-block">
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="group text-base sm:text-lg border-primary/20 hover:border-primary/40 hover:bg-primary/10"
-                >
-                  About Me
-                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-              <a 
-                href="https://www.linkedin.com/in/stephen-dong/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+          {/* Reopen Terminal Button - shows when terminal is closed */}
+          {isTerminalClosed && (
+            <div className="flex flex-col items-center justify-center min-h-[400px] space-y-6">
+              <Button 
+                onClick={() => setIsTerminalClosed(false)}
+                size="lg"
+                className="group text-base sm:text-lg bg-primary hover:bg-primary/90 text-primary-foreground font-mono shadow-lg shadow-primary/20"
               >
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="group text-base sm:text-lg border-primary/20 hover:border-primary/40 hover:bg-primary/10"
-                >
-                  LinkedIn
-                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </a>
+                <ChevronRight className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                Open Terminal
+                <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
-          </div>
-        </div>
-        
-        <div className="absolute left-1/2 bottom-12 z-[15]">
-          <div className="flex flex-col items-center text-muted-foreground p-2 rounded-full -translate-x-1/2 animate-bounce">
-            <MousePointer2 className="h-5 w-5 sm:h-6 sm:w-6" />
-            <span className="text-xs sm:text-sm">Scroll to explore</span>
-          </div>
+          )}
+
+          {/* Terminal Window Card */}
+          {!isTerminalClosed && (
+            <div className={`relative bg-black/70 backdrop-blur-md border-2 border-primary/40 rounded-lg overflow-hidden shadow-2xl shadow-primary/20 transition-all duration-300 ${
+              isTerminalMinimized ? 'h-12' : ''
+            } ${
+              isTerminalFullscreen ? 'max-w-3xl mx-auto' : ''
+            }`}>
+              {/* Terminal Title Bar */}
+              <div className="bg-black/50 border-b-2 border-primary/30 px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={handleClose}
+                      className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-pointer relative group flex items-center justify-center"
+                      title="Close terminal"
+                    >
+                      <X className="w-2 h-2 text-red-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
+                    </button>
+                    <button 
+                      onClick={handleMinimize}
+                      className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors cursor-pointer relative group flex items-center justify-center"
+                      title="Minimize terminal"
+                    >
+                      <Minus className="w-2 h-2 text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
+                    </button>
+                    <button 
+                      onClick={handleFullscreen}
+                      className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer relative group flex items-center justify-center"
+                      title="Toggle size"
+                    >
+                      <Maximize2 className="w-2 h-2 text-green-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
+                    </button>
+                  </div>
+                  <span className="text-xs text-foreground/60 font-mono">stephen@portfolio:~/intro</span>
+                </div>
+                <div className="text-xs text-foreground/40 font-mono hidden sm:block">bash</div>
+              </div>
+              
+              {/* Terminal Content */}
+              {!isTerminalMinimized && (
+                <div 
+                  ref={terminalContentRef}
+                  className="h-[500px] overflow-y-auto p-6 sm:p-10 font-mono scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent" 
+                  onClick={handleTerminalClick}
+                >
+              {/* Command Line 1 */}
+              <div className="flex items-start gap-2 text-primary text-sm sm:text-base mb-4">
+                <span className="text-primary/80 select-none">$</span>
+                <div className="flex-1">
+                  <span>cat welcome.txt</span>
+                </div>
+              </div>
+              
+              {/* Output */}
+              <div className="mb-6 sm:mb-8 pl-0 sm:pl-4 space-y-4 sm:space-y-6">
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-primary/60">
+                    <span className="select-none">#</span>
+                    <span>WELCOME_MESSAGE</span>
+                  </div>
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-sans">
+                    Hi, I am <span className="text-primary">Stephen.</span>
+                  </h1>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-primary/60">
+                    <span className="select-none">#</span>
+                    <span>DESCRIPTION</span>
+                  </div>
+                  <p className="text-base sm:text-lg md:text-xl text-foreground/80 font-sans">
+                    Beep boop. Let's build cool stuff together.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Command Line 2 */}
+              <div className="flex items-start gap-2 text-primary text-sm sm:text-base mb-3">
+                <span className="text-primary/80 select-none">$</span>
+                <div className="flex-1">
+                  <span>./navigate.sh --options</span>
+                </div>
+              </div>
+              
+              {/* Navigation Buttons as Terminal Output */}
+              <div className="pl-0 sm:pl-4 mb-6">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <Link to="/projects" className="inline-block">
+                    <Button 
+                      size="lg"
+                      className="group text-sm sm:text-base bg-primary hover:bg-primary/90 text-primary-foreground font-mono shadow-lg shadow-primary/20"
+                    >
+                      [1] Projects
+                      <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                  
+                  <Link to="/about" className="inline-block">
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      className="group text-sm sm:text-base border-2 border-primary/40 hover:border-primary/60 hover:bg-primary/15 text-foreground font-mono"
+                    >
+                      [2] About Me
+                      <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                  
+                  <a 
+                    href="https://www.linkedin.com/in/stephen-dong/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      className="group text-sm sm:text-base border-2 border-primary/40 hover:border-primary/60 hover:bg-primary/15 text-foreground font-mono"
+                    >
+                      [3] LinkedIn
+                      <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+
+              {/* Command History */}
+              {terminalHistory.length > 0 && (
+                <div className="mb-4 space-y-2">
+                  {terminalHistory.map((entry, index) => (
+                    <div key={index} className="text-sm sm:text-base">
+                      {entry.type === 'command' ? (
+                        <div className="flex items-start gap-2 text-primary">
+                          <span className="text-primary/80 select-none">$</span>
+                          <span>{entry.text}</span>
+                        </div>
+                      ) : (
+                        <div className="text-foreground/70 pl-4">{entry.text}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Interactive Input Line */}
+              <form onSubmit={handleTerminalSubmit} className="flex items-center gap-2 text-primary text-sm sm:text-base mt-4">
+                <span className="text-primary/80 select-none">$</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={terminalInput}
+                  onChange={(e) => setTerminalInput(e.target.value)}
+                  className="flex-1 bg-transparent border-none outline-none text-foreground font-mono caret-primary"
+                  placeholder="Type 'help' for commands..."
+                  autoComplete="off"
+                  spellCheck="false"
+                />
+              </form>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
@@ -232,9 +430,6 @@ function Home() {
         >
           <div className="space-y-4">
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary">Experience</h2>
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Places I've worked and projects I've contributed to throughout my career.
-            </p>
           </div>
           <div className="relative space-y-0">
             {/* Persistent timeline line - always visible, fading at bottom */}
