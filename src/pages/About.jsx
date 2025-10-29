@@ -19,24 +19,37 @@ import IMG_9260 from '../images/gallery/IMG_9260.webp';
 const About = () => {
   return (
     <main className="min-h-screen pt-0 pb-16">
-      <div className="space-y-8 sm:space-y-12">
+      <div className="space-y-4">
         {/* Lanyard + About Section */}
         <section 
           className="relative bg-background flex flex-col lg:flex-row" 
           style={{ 
             width: '100vw',
-            minHeight: '100vh',
+            minHeight: '80vh',
           }}
           data-aos="fade-up" 
           data-aos-duration="1000"
         >
           {/* Lanyard - Left Side */}
-          <div className="w-full lg:w-1/3 h-screen pl-8 sm:pl-12 md:pl-16 lg:pl-20">
+          <div 
+            className="w-full lg:w-1/3 pl-8 sm:pl-12 md:pl-16 lg:pl-20 relative" 
+            style={{ height: '80vh' }}
+          >
             <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} transparent={false} />
+            {/* Drag Indicator */}
+            <div className="absolute bottom-20 left-20 right-0 flex items-center justify-center gap-2 text-muted-foreground text-sm animate-pulse pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+              </svg>
+              <span>Drag me</span>
+            </div>
           </div>
 
           {/* About Description - Right Side */}
-          <div className="w-full lg:w-2/3 flex items-center justify-start pl-4 pr-8 py-8 sm:pl-6 sm:pr-12 sm:py-12 md:pl-8 md:pr-16 md:py-16 lg:pl-10 lg:pr-20 lg:py-20">
+          <div className="w-full lg:w-2/3 flex items-center justify-start pl-4 pr-8 pt-8 pb-2 sm:pl-6 sm:pr-12 sm:pt-12 sm:pb-3 md:pl-8 md:pr-16 md:pt-16 md:pb-4 lg:pl-10 lg:pr-20 lg:pt-20 lg:pb-5">
             <div className="max-w-2xl space-y-6">
               <div className="space-y-4">
                 <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold">
@@ -77,8 +90,6 @@ const About = () => {
             height: '80vh',
             minHeight: '600px'
           }}
-          data-aos="fade-up" 
-          data-aos-duration="1000"
         >
           <DomeGallery 
             images={[
