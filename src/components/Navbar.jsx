@@ -154,7 +154,7 @@ const MobileMenu = () => {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[80vw] sm:w-[350px] pt-12 bg-black/95 backdrop-blur-xl border-white/10">
+      <SheetContent side="right" className="w-[80vw] sm:w-[350px] pt-12 bg-black/95 backdrop-blur-md border-white/10">
         <SheetHeader className="mb-6">
           <SheetTitle className="text-center text-2xl font-bold text-primary">Menu</SheetTitle>
         </SheetHeader>

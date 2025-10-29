@@ -2,10 +2,60 @@
 import watai from "../images/companylogos/watai.jpeg"
 import kalpolymers from "../images/companylogos/kalpolymers.jpeg"
 import buroak from "../images/companylogos/buroak.jpg"
+import medme from "../images/companylogos/medme.jpeg" // Add Medme logo to this path
 
 export const experiences = [
     {
       id: 1,
+      role: "Software Engineering Intern",
+      company: "Medme Health (YC W2021)",
+      logo: medme,
+      location: "Toronto, ON",
+      dateRange: "Sep. 2025 – Dec. 2025",
+      description: "Developed calendar and appointment scheduling systems for hundreds of pharmacies across North America at YC W2021 health tech startup.",
+      githubLink: "",
+      responsibilities: [
+        {
+          title: "Developed calendar and appointment scheduling infrastructure for pharmacy network.",
+          details: {
+            description: "Built and optimized a scalable appointment scheduling system serving hundreds of pharmacies across North America, enabling seamless booking experiences for patients and efficient calendar management for pharmacy staff.",
+            technologies: ["React", "Node.js", "PostgreSQL", "Redis", "AWS", "TypeScript"],
+            challenges: "Handling timezone complexities across North America, managing concurrent bookings, ensuring system reliability at scale, and integrating with existing pharmacy management systems.",
+            results: "Successfully deployed scheduling system to hundreds of pharmacies, improving appointment booking efficiency and patient access to pharmacy services."
+          }
+        }
+      ],
+      skills: ["React", "Node.js", "PostgreSQL", "TypeScript", "AWS", "System Design", "Calendar Systems"],
+      color: "#00B4A6",
+      icon: "Calendar"
+    },
+    {
+      id: 2,
+      role: "Full Stack Developer",
+      company: "WAT.ai",
+      logo: watai,
+      location: "Waterloo, ON",
+      project: "OliverAI",
+      dateRange: "Apr. 2025 – Dec. 2025",
+      description: "Developed a full-stack educational chatbot platform to enhance student learning experiences.",
+      githubLink: "",
+      responsibilities: [
+        {
+          title: "Developed the complete educational chatbot application, both frontend and backend.",
+          details: {
+            description: "Built a comprehensive AI-powered educational platform from the ground up, handling the entire development lifecycle including architecture design, implementation, and deployment.",
+            technologies: ["React", "Node.js", "Express", "MongoDB", "OpenAI API", "WebSocket"],
+            challenges: "Integrating AI responses with educational content, ensuring real-time chat functionality, and creating an intuitive user interface for students.",
+            results: "Successfully launched a fully functional educational chatbot that helps students with learning queries and provides personalized assistance."
+          }
+        }
+      ],
+      skills: ["React", "Node.js", "Express", "MongoDB", "OpenAI API", "Full Stack Development"],
+      color: "#4B93D1",
+      icon: "MessageSquare"
+    },
+    {
+      id: 3,
       role: "Full Stack Developer",
       company: "Kal Polymers",
       logo: kalpolymers,
@@ -81,7 +131,7 @@ export const experiences = [
       ]
     },
     {
-      id: 2,
+      id: 4,
       role: "ML Researcher/Developer",
       company: "WAT.ai",
       logo: watai,
@@ -125,7 +175,7 @@ export const experiences = [
       // No media field for this experience
     },
     {
-      id: 3,
+      id: 5,
       role: "Engineering Club Pres.",
       company: "Bur Oak Secondary School",
       logo: buroak,

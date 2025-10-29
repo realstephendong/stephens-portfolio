@@ -45,9 +45,9 @@ const ExperienceTimeline = ({ experience, index }) => {
         {/* Horizontal Layout: Date/Location --- Line --- Company/Role --- Logo */}
         <div className="flex items-center gap-4 md:gap-6 flex-wrap md:flex-nowrap">
           {/* Left: Date & Location */}
-          <div className="flex flex-col gap-1 w-full md:w-36 flex-shrink-0">
-            <span className="text-sm font-semibold text-foreground/90">{dateRange}</span>
-            <span className="text-xs text-muted-foreground">{location}</span>
+          <div className="flex flex-col gap-1 w-full md:w-44 flex-shrink-0">
+            <span className="text-sm font-semibold text-foreground/90 whitespace-nowrap">{dateRange}</span>
+            <span className="text-xs text-muted-foreground whitespace-nowrap">{location}</span>
           </div>
           
           {/* Connecting line */}
@@ -135,6 +135,31 @@ function Home() {
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
   const [isTerminalMinimized, setIsTerminalMinimized] = useState(false);
   const [isTerminalFullscreen, setIsTerminalFullscreen] = useState(false);
+
+  // Sort experiences by date (most recent first)
+  const sortedExperiences = useMemo(() => {
+    return [...experiences].sort((a, b) => {
+      // Extract end dates from dateRange (format: "Month Year – Month Year")
+      const getEndDate = (dateRange) => {
+        const parts = dateRange.split('–');
+        const endDateStr = parts.length > 1 ? parts[1].trim() : parts[0].trim();
+        
+        // Parse month and year
+        const [month, year] = endDateStr.split(' ');
+        const monthMap = {
+          'Jan.': 0, 'Feb.': 1, 'Mar.': 2, 'Apr.': 3, 'May': 4, 'Jun.': 5,
+          'Jul.': 6, 'Aug.': 7, 'Sep.': 8, 'Oct.': 9, 'Nov.': 10, 'Dec.': 11
+        };
+        
+        return new Date(parseInt(year), monthMap[month] || 0);
+      };
+      
+      const dateA = getEndDate(a.dateRange);
+      const dateB = getEndDate(b.dateRange);
+      
+      return dateB - dateA; // Most recent first
+    });
+  }, []);
 
   // Memoize the FaultyTerminal component to prevent re-renders
   const faultyTerminalComponent = useMemo(() => (
@@ -259,7 +284,7 @@ function Home() {
 
           {/* Terminal Window Card */}
           {!isTerminalClosed && (
-            <div className={`relative bg-black/70 backdrop-blur-md border-2 border-primary/40 rounded-lg overflow-hidden shadow-2xl shadow-primary/20 transition-all duration-300 ${
+            <div className={`relative bg-black/80 border-2 border-primary/40 rounded-lg overflow-hidden shadow-2xl shadow-primary/20 transition-all duration-300 ${
               isTerminalMinimized ? 'h-12' : ''
             } ${
               isTerminalFullscreen ? 'max-w-3xl mx-auto' : ''
@@ -435,7 +460,7 @@ function Home() {
             {/* Persistent timeline line - always visible, fading at bottom */}
             <div className="absolute left-[5px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/60 via-primary/40 via-70% to-transparent hidden md:block"></div>
             
-            {experiences.map((experience, index) => (
+            {sortedExperiences.map((experience, index) => (
               <ExperienceTimeline key={experience.id} experience={experience} index={index} />
             ))}
           </div>

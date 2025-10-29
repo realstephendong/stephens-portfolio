@@ -86,7 +86,7 @@
   filter: brightness(1.1) contrast(1.05);
 }
 
-/* Add a subtle glow effect for better 3D appearance */
+/* Add a subtle glow effect for better 3D appearance with primary green tint */
 .item__image::before {
   content: '';
   position: absolute;
@@ -95,7 +95,7 @@
   right: 0;
   bottom: 0;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  background: linear-gradient(135deg, rgba(167, 239, 158, 0.15) 0%, transparent 50%);
   opacity: 0;
   transition: opacity 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
   pointer-events: none;
@@ -107,7 +107,7 @@
   transition: none;
 }
 
-/* Smooth hover enter animation */
+/* Smooth hover enter animation with green glow */
 @keyframes hoverEnter {
   0% { 
     transform: translateZ(0) scale(1) rotateX(0deg) rotateY(0deg);
@@ -117,20 +117,20 @@
     transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
     box-shadow: 
       0 25px 50px rgba(0, 0, 0, 0.4), 
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      0 0 30px rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(167, 239, 158, 0.3),
+      0 0 30px rgba(167, 239, 158, 0.2),
       0 20px 60px rgba(0, 0, 0, 0.4);
   }
 }
 
-/* Smooth hover exit animation */
+/* Smooth hover exit animation with green glow */
 @keyframes hoverExit {
   0% { 
     transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
     box-shadow: 
       0 25px 50px rgba(0, 0, 0, 0.4), 
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      0 0 30px rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(167, 239, 158, 0.3),
+      0 0 30px rgba(167, 239, 158, 0.2),
       0 20px 60px rgba(0, 0, 0, 0.4);
   }
   100% { 
@@ -139,22 +139,22 @@
   }
 }
 
-/* Add a more noticeable pulsing animation for extra visual appeal */
+/* Add a more noticeable pulsing animation with green glow */
 @keyframes hoverPulse {
   0%, 100% { 
     transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
     box-shadow: 
       0 25px 50px rgba(0, 0, 0, 0.4), 
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      0 0 30px rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(167, 239, 158, 0.3),
+      0 0 30px rgba(167, 239, 158, 0.2),
       0 20px 60px rgba(0, 0, 0, 0.4);
   }
   50% { 
     transform: translateZ(45px) scale(1.12) rotateX(8deg) rotateY(8deg);
     box-shadow: 
       0 35px 70px rgba(0, 0, 0, 0.5), 
-      0 0 0 1px rgba(255, 255, 255, 0.3),
-      0 0 50px rgba(255, 255, 255, 0.2),
+      0 0 0 1px rgba(167, 239, 158, 0.4),
+      0 0 50px rgba(167, 239, 158, 0.3),
       0 30px 80px rgba(0, 0, 0, 0.5);
   }
 }
