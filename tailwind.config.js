@@ -46,6 +46,12 @@ module.exports = {
       },
       lineHeight: {
         'tighter': '1.2',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
+      margin: {
+        'screen': '100vh',
       }
     },
   },

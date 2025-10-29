@@ -42,25 +42,21 @@ const NavLink = ({ to, children, onClick }) => {
   return (
     <Link
       to={to}
-      className={`relative px-3 py-2 transition-colors group ${
+      className={`relative px-4 py-2 rounded-full transition-all duration-300 ${
         isActive 
-          ? 'text-primary' 
-          : 'text-muted-foreground hover:text-foreground'
+          ? 'text-primary bg-primary/10 shadow-sm shadow-primary/20' 
+          : 'text-foreground/70 hover:text-foreground hover:bg-white/5'
       }`}
       onClick={onClick}
     >
-      <span className="relative z-10">{children}</span>
-      {isActive && (
-        <span className="absolute inset-0 bg-primary/10 rounded-md"></span>
-      )}
-      <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full"></span>
+      <span className="relative z-10 font-medium">{children}</span>
     </Link>
   );
 };
 
 const SocialIcons = ({ className = "" }) => {
   return (
-    <div className={`flex items-center space-x-1 sm:space-x-2 ${className}`}>
+    <div className={`flex items-center gap-1 ${className}`}>
       <a 
         href="https://github.com/realstephendong" 
         target="_blank" 
@@ -70,9 +66,9 @@ const SocialIcons = ({ className = "" }) => {
         <Button 
           variant="ghost" 
           size="icon"
-          className="hover:bg-primary/5"
+          className="hover:bg-white/10 rounded-full transition-all h-9 w-9"
         >
-          <GitHubIcon className="h-5 w-5 transition-colors group-hover:text-primary" />
+          <GitHubIcon className="h-4 w-4 transition-colors group-hover:text-primary" />
         </Button>
       </a>
       <a 
@@ -84,9 +80,9 @@ const SocialIcons = ({ className = "" }) => {
         <Button 
           variant="ghost" 
           size="icon"
-          className="hover:bg-primary/5"
+          className="hover:bg-white/10 rounded-full transition-all h-9 w-9"
         >
-          <LinkedInIcon className="h-5 w-5 transition-colors group-hover:text-primary" />
+          <LinkedInIcon className="h-4 w-4 transition-colors group-hover:text-primary" />
         </Button>
       </a>
       <a 
@@ -96,9 +92,9 @@ const SocialIcons = ({ className = "" }) => {
         <Button 
           variant="ghost" 
           size="icon"
-          className="hover:bg-primary/5"
+          className="hover:bg-white/10 rounded-full transition-all h-9 w-9"
         >
-          <Mail className="h-5 w-5 transition-colors group-hover:text-primary" />
+          <Mail className="h-4 w-4 transition-colors group-hover:text-primary" />
         </Button>
       </a>
     </div>
@@ -112,25 +108,25 @@ const ThemeSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="outline" 
+          variant="ghost" 
           size="icon"
-          className="border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+          className="hover:bg-white/10 rounded-full transition-all h-9 w-9 border border-white/10 hover:border-primary/30"
         >
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+      <DropdownMenuContent align="end" className="bg-black/90 backdrop-blur-xl border-white/10">
+        <DropdownMenuItem onClick={() => setTheme("light")} className="hover:bg-white/10 cursor-pointer">
           <Sun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => setTheme("dark")} className="hover:bg-white/10 cursor-pointer">
           <Moon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => setTheme("system")} className="hover:bg-white/10 cursor-pointer">
           <Laptop className="mr-2 h-4 w-4" />
           System
         </DropdownMenuItem>
@@ -152,28 +148,27 @@ const MobileMenu = () => {
         <Button 
           variant="ghost" 
           size="icon" 
-          className="md:hidden"
+          className="md:hidden hover:bg-white/10 rounded-full h-9 w-9"
         >
-          <Menu className="h-6 w-6" />
+          <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[80vw] sm:w-[350px] pt-12">
+      <SheetContent side="right" className="w-[80vw] sm:w-[350px] pt-12 bg-black/95 backdrop-blur-xl border-white/10">
         <SheetHeader className="mb-6">
-          <SheetTitle className="text-center text-2xl font-bold">Menu</SheetTitle>
+          <SheetTitle className="text-center text-2xl font-bold text-primary">Menu</SheetTitle>
         </SheetHeader>
-        <div className="flex flex-col items-start space-y-6 pt-4">
+        <div className="flex flex-col items-start space-y-4 pt-4">
           <NavLink to="/" onClick={handleLinkClick}>Home</NavLink>
           <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
           <NavLink to="/experience" onClick={handleLinkClick}>Experience</NavLink>
           <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
           <NavLink to="/blog" onClick={handleLinkClick}>Blog</NavLink>
           
-          <div className="h-px w-full bg-border my-2"></div>
+          <div className="h-px w-full bg-white/10 my-4"></div>
           
-          <div className="flex items-center justify-between w-full pt-4">
+          <div className="flex items-center justify-between w-full pt-2">
             <SocialIcons />
-            <ThemeSwitcher />
           </div>
         </div>
       </SheetContent>
@@ -183,49 +178,48 @@ const MobileMenu = () => {
 
 const Navbar = () => {
   return (
-    <header className="fixed top-0 left-0 right-0 w-full z-50 m-0 p-0">
-      {/* Gradient border */}
-      <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
-      
-      {/* Navbar content */}
-      <div className="bg-background/80 backdrop-blur-md">
-        <nav className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex items-center">
-            <Link 
-              to="/" 
-              className="relative group"
-            >
-              <div className="absolute -inset-2 bg-primary/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <img 
-                src={websiteLogo}
-                alt="Logo" 
-                className="h-7 sm:h-8 relative" 
-              />
-            </Link>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center ml-8 space-x-2">
-              <NavLink to="/about">About</NavLink>
-              <NavLink to="/experience">Experience</NavLink>
-              <NavLink to="/projects">Projects</NavLink>
-              <NavLink to="/blog">Blog</NavLink>
-            </div>
-          </div>
+    <header className="fixed top-0 left-0 right-0 w-full z-50 flex justify-center pt-4 px-4">
+      {/* Pill-style navbar with frosted glass effect */}
+      <nav className="flex justify-between items-center w-full max-w-6xl 
+                      bg-black/40 backdrop-blur-xl border border-white/10 
+                      rounded-full px-4 sm:px-6 py-3 shadow-2xl shadow-black/50
+                      hover:border-primary/20 transition-all duration-300">
+        <div className="flex items-center gap-8">
+          <Link 
+            to="/" 
+            className="relative group flex-shrink-0"
+          >
+            <div className="absolute -inset-2 bg-primary/10 rounded-full opacity-0 
+                          group-hover:opacity-100 transition-opacity blur-sm"></div>
+            <img 
+              src={websiteLogo}
+              alt="Logo" 
+              className="h-7 sm:h-8 relative" 
+            />
+          </Link>
           
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            <ThemeSwitcher />
-            <div className="h-5 w-px bg-border"></div>
-            <SocialIcons />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-1">
+            <NavLink to="/about">About</NavLink>
+            <NavLink to="/experience">Experience</NavLink>
+            <NavLink to="/projects">Projects</NavLink>
+            <NavLink to="/blog">Blog</NavLink>
           </div>
-          
-          {/* Mobile Actions */}
-          <div className="flex md:hidden items-center space-x-2">
-            <ThemeSwitcher />
-            <MobileMenu />
-          </div>
-        </nav>
-      </div>
+        </div>
+        
+        {/* Desktop Actions */}
+        <div className="hidden md:flex items-center gap-2">
+          <SocialIcons />
+          <div className="h-5 w-px bg-white/10 mx-1"></div>
+          <ThemeSwitcher />
+        </div>
+        
+        {/* Mobile Actions */}
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeSwitcher />
+          <MobileMenu />
+        </div>
+      </nav>
     </header>
   );
 };

@@ -1,79 +1,179 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import TypewriterEffect from '../components/TypewriterEffect';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, MousePointer2, ArrowRight, User, Briefcase } from 'lucide-react';
-import FeaturedProject from '../components/FeaturedProject';
-import projects from '../data/projects';
+import { Badge } from "@/components/ui/badge";
+import { 
+  ChevronRight, 
+  MousePointer2, 
+  ArrowRight
+} from 'lucide-react';
 import { blogPosts } from '../data/blogData';
-import ExperienceCarousel from '../components/ExperienceCarousel';
+import experiences from '../data/experienceData';
 
-// Import the optimized flow field animation
-import OptimizedFlowField from '../components/OptimizedFlowField';
+// Import the faulty terminal animation
+import FaultyTerminal from '../components/FaultyTerminal';
+
+// Experience Timeline Component
+const ExperienceTimeline = ({ experience, index }) => {
+  const { 
+    role, company, logo, location, project, dateRange, description, 
+    skills, githubLink
+  } = experience;
+
+  return (
+    <div 
+      className="relative group pb-20"
+      data-aos="fade-up" 
+      data-aos-duration="800"
+      data-aos-delay={index * 150}
+      data-aos-easing="ease-out"
+    >      
+      {/* Timeline dot */}
+      <div 
+        className="absolute left-0 top-6 w-3 h-3 rounded-full bg-primary shadow-lg shadow-primary/50 hidden md:block group-hover:scale-125 transition-transform"
+        data-aos="fade-up"
+        data-aos-duration="600"
+        data-aos-delay={index * 150}
+      ></div>
+      
+      {/* Content */}
+      <div className="md:pl-12">
+        {/* Horizontal Layout: Date/Location --- Line --- Company/Role --- Logo */}
+        <div className="flex items-center gap-4 md:gap-6 flex-wrap md:flex-nowrap">
+          {/* Left: Date & Location */}
+          <div className="flex flex-col gap-1 w-full md:w-36 flex-shrink-0">
+            <span className="text-sm font-semibold text-foreground/90">{dateRange}</span>
+            <span className="text-xs text-muted-foreground">{location}</span>
+          </div>
+          
+          {/* Connecting line */}
+          <div className="hidden md:block flex-grow h-[2px] bg-primary/40 max-w-[200px]"></div>
+          
+          {/* Middle: Company & Role */}
+          <div className="flex-1 min-w-0 space-y-2 md:ml-8">
+            <div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
+                {company}
+              </h3>
+              <p className="text-base font-medium text-muted-foreground">
+                {role} {project && <span className="text-muted-foreground/70">· {project}</span>}
+              </p>
+            </div>
+            
+            {/* Show 1-2 key skills */}
+            {skills && skills.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {skills.slice(0, 2).map((skill) => (
+                  <Badge 
+                    key={skill}
+                    className="text-xs bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary transition-colors"
+                  >
+                    {skill}
+                  </Badge>
+                ))}
+                {skills.length > 2 && (
+                  <span className="text-xs text-muted-foreground self-center">+{skills.length - 2} more</span>
+                )}
+              </div>
+            )}
+          </div>
+          
+          {/* Right: Logo */}
+          {logo && (
+            <div className="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 border-zinc-400 bg-black/40 backdrop-blur-sm group-hover:border-zinc-300 transition-all relative shadow-[inset_4px_4px_6px_rgba(255,255,255,0.4),inset_-4px_-4px_6px_rgba(255,255,255,0.4)]">
+              <img 
+                src={logo} 
+                alt={`${company} logo`} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Blog Card Component
+const BlogCard = ({ title, date, excerpt, tags, slug }) => (
+  <Card className="group hover:border-primary/50 transition-colors">
+    <CardHeader>
+      <div className="flex justify-between items-start">
+        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+        <span className="text-sm text-muted-foreground">{date}</span>
+      </div>
+      <div className="flex flex-wrap gap-2 mt-2">
+        {tags.map((tag) => (
+          <Badge key={tag} variant="secondary" className="bg-secondary">
+            {tag}
+          </Badge>
+        ))}
+      </div>
+    </CardHeader>
+    <CardContent>
+      <p className="text-muted-foreground mb-4">{excerpt}</p>
+      <Link to={`/blog/${slug}`}>
+        <Button variant="link" className="px-0 font-semibold group-hover:text-primary">
+          Read more <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </Button>
+      </Link>
+    </CardContent>
+  </Card>
+);
 
 function Home() {
   const scrollRef = useRef(null);
-  const featuredProject = [...projects].sort((a, b) => 
-    new Date(b.date) - new Date(a.date)
-  )[0];
-  
-  // Sort blog posts to get the most recent
-  const latestBlogPost = [...blogPosts].sort((a, b) => 
-    new Date(b.date) - new Date(a.date)
-  )[0];
-
-  useEffect(() => {
-    function updateMousePosition(e) {
-      if (!scrollRef.current) return;
-      const { clientX, clientY } = e;
-      const x = clientX / window.innerWidth;
-      const y = clientY / window.innerHeight;
-      scrollRef.current.style.setProperty('--mouse-x', x);
-      scrollRef.current.style.setProperty('--mouse-y', y);
-    }
-
-    function updateTouchPosition(e) {
-      if (!scrollRef.current || !e.touches[0]) return;
-      const { clientX, clientY } = e.touches[0];
-      const x = clientX / window.innerWidth;
-      const y = clientY / window.innerHeight;
-      scrollRef.current.style.setProperty('--mouse-x', x);
-      scrollRef.current.style.setProperty('--mouse-y', y);
-    }
-
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('touchmove', updateTouchPosition);
-    
-    return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('touchmove', updateTouchPosition);
-    };
-  }, []);
 
   return (
-    <main className="min-h-screen overflow-x-hidden" ref={scrollRef}>
-      {/* Animation background with theme support */}
-      <div className="fixed inset-0 z-0 opacity-75 transition-opacity duration-500">
-        <OptimizedFlowField />
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-        {/* Hero Section */}
-        <section 
-          className="min-h-screen flex flex-col justify-center relative px-3 sm:px-6"
-          data-aos="fade-right"
+    <main className="min-h-screen relative" ref={scrollRef}>
+      {/* Fixed background light ray */}
+      <div className="fixed top-0 left-0 h-screen w-full pointer-events-none z-[5]">
+        <div 
+          className="absolute top-0 left-[50px] h-[1200px] w-[500px] -translate-y-[300px] -rotate-45"
+          style={{ background: 'var(--gradient-spotlight)' }}
         >
-          
-          <div className="space-y-6 sm:space-y-8 relative  bg-background/30 p-4 sm:p-8 rounded-xl">
+        </div>
+      </div>
+
+      {/* Hero Section - Simplified */}
+      <section 
+        className="min-h-screen flex flex-col justify-center relative z-[1] overflow-x-hidden"
+        data-aos="fade-right"
+      >
+        {/* Faulty Terminal background - only in hero section, full width */}
+        <div className="absolute inset-0 z-0 bg-[hsl(0,0%,4%)]">
+          <FaultyTerminal
+            scale={1.7}
+            gridMul={[2, 1]}
+            digitSize={1.7}
+            timeScale={1.1}
+            scanlineIntensity={0.5}
+            glitchAmount={1}
+            flickerAmount={1}
+            noiseAmp={0.8}
+            chromaticAberration={0}
+            dither={0}
+            curvature={0.27}
+            tint="#a7ef9e"
+            mouseReact={true}
+            mouseStrength={1.1}
+            pageLoadAnimation={true}
+            brightness={0.6}
+          />
+          {/* Bottom fade overlay */}
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[hsl(0,0%,4%)] via-[hsl(0,0%,4%)]/80 via-30% to-transparent pointer-events-none"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 w-full relative z-[15]">
+          <div className="space-y-6 sm:space-y-8 bg-background/30 p-6 sm:p-10 rounded-xl backdrop-blur-sm">
             <div className="space-y-2 sm:space-y-4">
-              <TypewriterEffect />
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold">
-                I am <span className="text-primary">Stephen.</span>
+                Hi, I am <span className="text-primary">Stephen.</span>
               </h1>
             </div>
             <p className="text-lg sm:text-xl text-muted-foreground">
-              Come take a look at what I've been up to!
+              A software engineer passionate about building impactful solutions. Explore my work, experiences, and thoughts below.
             </p>
             
             <div className="flex flex-wrap items-center gap-4 sm:gap-6">
@@ -87,6 +187,16 @@ function Home() {
                 </Button>
               </Link>
               <div className="hidden sm:block h-12 w-px bg-border" />
+              <Link to="/about" className="inline-block">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="group text-base sm:text-lg border-primary/20 hover:border-primary/40 hover:bg-primary/10"
+                >
+                  About Me
+                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
               <a 
                 href="https://www.linkedin.com/in/stephen-dong/" 
                 target="_blank" 
@@ -103,136 +213,57 @@ function Home() {
               </a>
             </div>
           </div>
-          <div className="absolute left-1/2 bottom-12">
-            <div className="flex flex-col items-center text-muted-foreground p-2 rounded-full -translate-x-1/2 animate-bounce">
-              <MousePointer2 className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="text-xs sm:text-sm">Scroll to explore</span>
-            </div>
+        </div>
+        
+        <div className="absolute left-1/2 bottom-12 z-[15]">
+          <div className="flex flex-col items-center text-muted-foreground p-2 rounded-full -translate-x-1/2 animate-bounce">
+            <MousePointer2 className="h-5 w-5 sm:h-6 sm:w-6" />
+            <span className="text-xs sm:text-sm">Scroll to explore</span>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Latest Blog Section */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 relative z-10">
+        {/* Experience Section */}
         <section 
-          className="sm:py-16 flex items-center"
+          className="py-10 sm:py-16 space-y-8"
           data-aos="fade-up" 
           data-aos-duration="1000"
         >
-          <div className="w-full relative group">
-            <div className="absolute -inset-1 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 
-                            group-hover:shadow-2xl group-hover:shadow-primary/20"></div>
-            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
-              <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary">Latest Ideas</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
-                  <Link to={`/blog/${latestBlogPost.slug}`} className="block">
-                    <Card className="bg-background/50 backdrop-blur hover:bg-background/70 transition-colors">
-                      <CardContent className="p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4">
-                        <h3 className="text-xl sm:text-2xl font-semibold">{latestBlogPost.title}</h3>
-                        <p className="text-sm sm:text-base text-muted-foreground">
-                          {latestBlogPost.excerpt}
-                        </p>
-                        <div className="group/link inline-flex items-center text-primary">
-                          Read more
-                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-
-                  <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-4">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary">Experience</h2>
                     <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                      I write about technology, engineering, and my experiences as a student and developer.
-                    </p>
-                    <Link to="/blog" className="inline-block">
-                      <Button 
-                        variant="outline"
-                        size="lg"
-                        className="group text-base sm:text-lg border-primary/20 hover:border-primary hover:text-primary transition-colors"
-                      >
-                        View all posts
-                        <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              Places I've worked and projects I've contributed to throughout my career.
+            </p>
           </div>
-        </section>
-
-        {/* About Section */}
-        <section 
-          className="py-10 sm:py-16 flex items-center"
-          data-aos="fade-up" 
-          data-aos-duration="1000"
-        >
-          <div className="w-full relative group">
-            <div className="absolute -inset-1 bg-[#2DB19B]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                            group-hover:shadow-2xl group-hover:shadow-[#2DB19B]/20"></div>
-            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
-              <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-12">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2DB19B]">About Me</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                  <div className="space-y-4 sm:space-y-6">
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                      Learn more about my background, skills, and the journey that shapes my approach to technology and innovation.
-                    </p>
-                    <Link to="/about" className="inline-block">
-                      <Button 
-                        variant="outline"
-                        size="lg"
-                        className="group text-base sm:text-lg border-[#2DB19B]/20 hover:border-[#2DB19B] hover:text-[#2DB19B] transition-colors"
-                      >
-                        Get to know me
-                        <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Button>
-                    </Link>
-                  </div>
-                  <div className="flex justify-center order-first md:order-last">
-                    <User className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 text-[#2DB19B]/50" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="relative space-y-0">
+            {/* Persistent timeline line - always visible, fading at bottom */}
+            <div className="absolute left-[5px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/60 via-primary/40 via-70% to-transparent hidden md:block"></div>
+            
+            {experiences.map((experience, index) => (
+              <ExperienceTimeline key={experience.id} experience={experience} index={index} />
+            ))}
           </div>
         </section>
         
-        {/* Experience Section */}
+        {/* Blog Section */}
         <section 
-          className="py-10 sm:py-16 flex items-center"
+          className="py-10 sm:py-16 space-y-8 mb-10"
           data-aos="fade-up" 
           data-aos-duration="1000"
         >
-          <div className="w-full relative group">
-            <div className="absolute -inset-1 bg-[#4B93D1]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                            group-hover:shadow-2xl group-hover:shadow-[#4B93D1]/20"></div>
-            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
-              <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#4B93D1]">Experience</h2>
+          <div className="space-y-4">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary">Latest Ideas</h2>
                 <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                  Places I've worked and projects I've contributed to throughout my career.
+              Thoughts, ideas, and experiences from my journey in technology and engineering.
                 </p>
-                <ExperienceCarousel />
-              </CardContent>
-            </Card>
           </div>
-        </section>
-
-        {/* Projects Section */}
-        <section 
-          className="py-10 sm:py-16 flex items-center mb-10"
-          data-aos="fade-up" 
-          data-aos-duration="1000"
-        >
-          <div className="w-full relative group">
-            <div className="absolute -inset-1 bg-[lightcoral]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                            group-hover:shadow-2xl group-hover:shadow-[lightcoral]/20"></div>
-            <Card className="w-full relative z-10 backdrop-blur-md bg-background/70">
-              <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-12">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[lightcoral]">Projects</h2>
-                <FeaturedProject project={featuredProject} />
-              </CardContent>
-            </Card>
+          <div className="space-y-8">
+            {blogPosts.map((post, index) => (
+              <div key={post.slug} data-aos="fade-up" data-aos-delay={index * 100}>
+                <BlogCard {...post} />
+              </div>
+            ))}
           </div>
         </section>
       </div>

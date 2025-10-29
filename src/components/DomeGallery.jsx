@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useCallback } from 'react';
+import { useEffect, useMemo, useRef, useCallback, useState } from 'react';
 import { useGesture } from '@use-gesture/react';
 import './DomeGallery.css';
 
@@ -171,6 +171,35 @@ export default function DomeGallery({
     inertiaRAF: useRef(null),
     autoRotateRAF: useRef(null)
   };
+
+  // Theme detection state
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const root = window.document.documentElement;
+      return root.classList.contains('dark');
+    }
+    return true; // default to dark mode
+  });
+
+  // Watch for theme changes
+  useEffect(() => {
+    const root = window.document.documentElement;
+    
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(root.classList.contains('dark'));
+    });
+    
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Compute the fade color based on theme
+  const fadeColor = isDarkMode ? overlayBlurColor : '#ffffff';
+
   const lockScroll = useCallback(() => {
     if (interaction.scrollLocked.current) return;
     interaction.scrollLocked.current = true;
@@ -847,15 +876,15 @@ export default function DomeGallery({
           <div
             className="absolute inset-0 m-auto z-[3] pointer-events-none"
             style={{
-              backgroundImage: `radial-gradient(rgba(235, 235, 235, 0) 40%, var(--overlay-blur-color, ${overlayBlurColor}) 100%)`
+              backgroundImage: `radial-gradient(rgba(235, 235, 235, 0) 40%, ${fadeColor} 100%)`
             }}
           />
 
           <div
             className="absolute inset-0 m-auto z-[3] pointer-events-none"
             style={{
-              WebkitMaskImage: `radial-gradient(rgba(235, 235, 235, 0) 40%, var(--overlay-blur-color, ${overlayBlurColor}) 80%)`,
-              maskImage: `radial-gradient(rgba(235, 235, 235, 0) 40%, var(--overlay-blur-color, ${overlayBlurColor}) 80%)`,
+              WebkitMaskImage: `radial-gradient(rgba(235, 235, 235, 0) 40%, ${fadeColor} 80%)`,
+              maskImage: `radial-gradient(rgba(235, 235, 235, 0) 40%, ${fadeColor} 80%)`,
               backdropFilter: 'blur(3px)'
             }}
           />
@@ -863,13 +892,13 @@ export default function DomeGallery({
           <div
             className="absolute left-0 right-0 top-0 h-[200px] z-[5] pointer-events-none rotate-180"
             style={{
-              background: `linear-gradient(to bottom, transparent, var(--overlay-blur-color, ${overlayBlurColor}))`
+              background: `linear-gradient(to bottom, transparent, ${fadeColor})`
             }}
           />
           <div
             className="absolute left-0 right-0 bottom-0 h-[200px] z-[5] pointer-events-none"
             style={{
-              background: `linear-gradient(to bottom, transparent, var(--overlay-blur-color, ${overlayBlurColor}))`
+              background: `linear-gradient(to bottom, transparent, ${fadeColor})`
             }}
           />
 
