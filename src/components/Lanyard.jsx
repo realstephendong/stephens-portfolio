@@ -112,6 +112,12 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
       vec.add(dir.multiplyScalar(state.camera.position.length()));
       [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
       card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
+    } else if (card.current) {
+      // add subtle swinging motion when not being dragged
+      const time = state.clock.getElapsedTime();
+      const swingForceX = Math.sin(time * 0.8) * 0.007;
+      const swingForceZ = Math.cos(time * 1.2) * 0.005;
+      card.current.applyImpulse({ x: swingForceX, y: 0, z: swingForceZ }, true);
     }
     if (fixed.current) {
       [j1, j2].forEach(ref => {
