@@ -1,6 +1,12 @@
-import React from 'react';
+// src/pages/About.js
+
+import React, { useState } from 'react';
 import DomeGallery from '../components/DomeGallery';
 import Lanyard from '../components/Lanyard';
+
+// Import the Terminal components
+import Terminal from '../components/Terminal';
+import TerminalAbout from '../components/TerminalAbout'; // Import your new custom content
 
 // Import your gallery images
 import IMG_3886 from '../images/gallery/IMG_3886.webp';
@@ -17,8 +23,12 @@ import IMG_9260 from '../images/gallery/IMG_9260.webp';
 
 
 const About = () => {
+  // This state is required by the <Terminal> component
+  const [isTerminalClosed, setIsTerminalClosed] = useState(false);
+
   return (
     <main className="min-h-screen pt-0 pb-16">
+      
       <div className="space-y-4">
         {/* Lanyard + About Section */}
         <section 
@@ -48,37 +58,21 @@ const About = () => {
             </div>
           </div>
 
-          {/* About Description - Right Side */}
+          {/* About Description - Right Side (REPLACED) */}
           <div className="w-full lg:w-2/3 flex items-center justify-start pl-4 pr-8 pt-8 pb-2 sm:pl-6 sm:pr-12 sm:pt-12 sm:pb-3 md:pl-8 md:pr-16 md:pt-16 md:pb-4 lg:pl-10 lg:pr-20 lg:pt-20 lg:pb-5">
-            <div className="max-w-2xl space-y-6">
-              <div className="space-y-4">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold">
-                  Hi, I'm <span className="text-primary">Stephen</span>
-                </h1>
-                <div className="h-1 w-20 bg-primary"></div>
-              </div>
-              
-              <div className="space-y-4 text-lg sm:text-xl text-muted-foreground leading-relaxed">
-                <p>
-                  I'm a software engineer passionate about building innovative solutions and creating meaningful digital experiences.
-                </p>
-                <p>
-                  With expertise in full-stack development, machine learning, and UI/UX design, I love turning complex problems into elegant, user-friendly applications.
-                </p>
-                <p>
-                  When I'm not coding, you'll find me exploring new technologies, hitting the gym, or experimenting in the kitchen.
-                </p>
-              </div>
-
-              <div className="pt-4">
-                <a 
-                  href="mailto:realstephendong@gmail.com"
-                  className="inline-block px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-all hover:scale-105 shadow-lg shadow-primary/20"
-                >
-                  Get in Touch
-                </a>
-              </div>
+            
+            {/* This wrapper keeps the terminal constrained, similar to your old text box */}
+            <div className="w-full max-w-3xl">
+              <Terminal 
+                currentPage="about"
+                isClosed={isTerminalClosed}
+                onSetIsClosed={setIsTerminalClosed}
+                maxTerminalHeight="350px"
+              >
+                <TerminalAbout />
+              </Terminal>
             </div>
+
           </div>
         </section>
 
@@ -121,6 +115,15 @@ const About = () => {
             openedImageHeight="600px"
           />
         </section>
+      </div>
+      
+      {/* Fixed background light ray */}
+      <div className="fixed top-0 left-0 h-screen w-full pointer-events-none z-[5]">
+        <div 
+          className="absolute top-0 left-[50px] h-[1200px] w-[500px] -translate-y-[300px] -rotate-45"
+          style={{ background: 'var(--gradient-spotlight)' }}
+        >
+        </div>
       </div>
     </main>
   );
