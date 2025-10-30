@@ -210,6 +210,7 @@ function Home() {
             currentPage="home"
             isClosed={isTerminalClosed}
             onSetIsClosed={setIsTerminalClosed}
+            shrunkSizeClass="w-4/5 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 mx-auto"
           >
             <TerminalIntro currentPage="home" />
           </Terminal>

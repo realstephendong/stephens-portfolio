@@ -58,20 +58,18 @@ const About = () => {
             </div>
           </div>
 
-          {/* About Description - Right Side (REPLACED) */}
-          <div className="w-full lg:w-2/3 flex items-center justify-start pl-4 pr-8 pt-8 pb-2 sm:pl-6 sm:pr-12 sm:pt-12 sm:pb-3 md:pl-8 md:pr-16 md:pt-16 md:pb-4 lg:pl-10 lg:pr-20 lg:pt-20 lg:pb-5">
+          {/* About Description */}
+          <div className="w-full lg:w-2/3 flex items-center justify-start pt-8 pb-2 sm:px-16 sm:pt-12 sm:pb-3 md:px-12 md:pt-16 md:pb-4 lg:pl-10 lg:pr-28 lg:pt-20 lg:pb-5">
             
-            {/* This wrapper keeps the terminal constrained, similar to your old text box */}
-            <div className="w-full max-w-3xl">
-              <Terminal 
-                currentPage="about"
-                isClosed={isTerminalClosed}
-                onSetIsClosed={setIsTerminalClosed}
-                maxTerminalHeight="350px"
-              >
-                <TerminalAbout />
-              </Terminal>
-            </div>
+            <Terminal 
+              currentPage="about"
+              isClosed={isTerminalClosed}
+              onSetIsClosed={setIsTerminalClosed}
+              maxTerminalHeight="350px"
+              shrunkSizeClass="max-w-sm mx-auto" 
+            >
+              <TerminalAbout />
+            </Terminal>
 
           </div>
         </section>

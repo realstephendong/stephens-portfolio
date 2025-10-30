@@ -1,21 +1,23 @@
-// src/components/Terminal.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Minus, Maximize2 } from 'lucide-react';
+import { X, Minus, Maximize2 } from 'lucide-react'; // Assuming you use lucide-react
 
+// 1. Accepts 'shrinkSizeClass' prop with a default value
 const Terminal = ({ 
   children, 
   currentPage, 
   isClosed, 
   onSetIsClosed, 
-  maxTerminalHeight = '500px' 
+  maxTerminalHeight = '500px',
+  shrinkSizeClass = 'max-w-3xl mx-auto' 
 }) => {
   // State
   const [terminalHistory, setTerminalHistory] = useState([]);
   const [terminalInput, setTerminalInput] = useState('');
   const [isTerminalMinimized, setIsTerminalMinimized] = useState(false);
-  const [isTerminalFullscreen, setIsTerminalFullscreen] = useState(false);
+  
+  // 2. State is renamed to 'isShrunk'
+  const [isShrunk, setIsShrunk] = useState(false);
 
   // Refs
   const terminalContentRef = useRef(null);
@@ -24,16 +26,19 @@ const Terminal = ({
   // Hooks
   const navigate = useNavigate();
 
+  // Auto-scroll to bottom when terminal history changes
   useEffect(() => {
     if (terminalContentRef.current) {
       terminalContentRef.current.scrollTop = terminalContentRef.current.scrollHeight;
     }
   }, [terminalHistory]);
 
+  // Focus input when clicking anywhere on the terminal
   const handleTerminalClick = () => {
     inputRef.current?.focus();
   };
 
+  // Handle window controls
   const handleClose = () => {
     onSetIsClosed(true); 
   };
@@ -42,14 +47,17 @@ const Terminal = ({
     setIsTerminalMinimized(!isTerminalMinimized);
   };
 
-  const handleFullscreen = () => {
-    setIsTerminalFullscreen(!isTerminalFullscreen);
+  // 3. Handler is renamed and updates 'isShrunk' state
+  const handleToggleSize = () => {
+    setIsShrunk(!isShrunk);
   };
 
+  // Handle terminal commands
   const handleTerminalSubmit = (e) => {
     e.preventDefault();
     const command = terminalInput.trim().toLowerCase();
     
+    // Add command to history
     setTerminalHistory(prev => [...prev, { type: 'command', text: terminalInput }]);
     
     // Process commands
@@ -91,14 +99,15 @@ const Terminal = ({
   };
 
   if (isClosed) {
-    return null;
+    return null; // Don't render anything if closed
   }
 
   return (
+    // 4. Main div's className logic uses 'isShrunk' and 'shrinkSizeClass'
     <div className={`relative bg-black/80 border-2 border-primary/40 rounded-lg overflow-hidden shadow-2xl shadow-primary/20 transition-all duration-300 ${
       isTerminalMinimized ? 'h-12' : ''
     } ${
-      isTerminalFullscreen ? 'max-w-3xl mx-auto' : ''
+      isShrunk ? shrinkSizeClass : ''
     }`}>
       {/* Terminal Title Bar */}
       <div className="bg-black/50 border-b-2 border-primary/30 px-4 py-3 flex items-center justify-between">
@@ -118,8 +127,9 @@ const Terminal = ({
             >
               <Minus className="w-2 h-2 text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
             </button>
+            {/* 5. Button's onClick is updated to 'handleToggleSize' */}
             <button 
-              onClick={handleFullscreen}
+              onClick={handleToggleSize}
               className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer relative group flex items-center justify-center"
               title="Toggle size"
             >
