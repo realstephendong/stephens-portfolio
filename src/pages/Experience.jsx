@@ -32,7 +32,6 @@ import {
 } from 'lucide-react';
 
 import experiences from '../data/experienceData';
-import MediaShowcase from './MediaShowcase';
 
 const iconMap = {
   "Brain": Brain,
@@ -210,11 +209,6 @@ const ExperienceCard = ({ experience }) => {
             <p className="text-base sm:text-lg text-muted-foreground">
               {description}
             </p>
-            
-            {/* Media Showcase (conditionally rendered) */}
-            {showMedia && hasMedia && (
-              <MediaShowcase media={media} color={color} />
-            )}
             
             {/* Projects showcase (conditionally rendered) */}
             {showProjects && projects.length > 0 && (

@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Minus, Maximize2 } from 'lucide-react'; // Assuming you use lucide-react
+import { X, Minus, Maximize2 } from 'lucide-react';
 
-// 1. Accept 'maxTerminalHeight' prop with a default value
 const Terminal = ({ 
   children, 
   currentPage, 
@@ -25,19 +24,16 @@ const Terminal = ({
   // Hooks
   const navigate = useNavigate();
 
-  // Auto-scroll to bottom when terminal history changes
   useEffect(() => {
     if (terminalContentRef.current) {
       terminalContentRef.current.scrollTop = terminalContentRef.current.scrollHeight;
     }
   }, [terminalHistory]);
 
-  // Focus input when clicking anywhere on the terminal
   const handleTerminalClick = () => {
     inputRef.current?.focus();
   };
 
-  // Handle window controls
   const handleClose = () => {
     onSetIsClosed(true); 
   };
@@ -50,12 +46,10 @@ const Terminal = ({
     setIsTerminalFullscreen(!isTerminalFullscreen);
   };
 
-  // Handle terminal commands
   const handleTerminalSubmit = (e) => {
     e.preventDefault();
     const command = terminalInput.trim().toLowerCase();
     
-    // Add command to history
     setTerminalHistory(prev => [...prev, { type: 'command', text: terminalInput }]);
     
     // Process commands
@@ -97,7 +91,7 @@ const Terminal = ({
   };
 
   if (isClosed) {
-    return null; // Don't render anything if closed
+    return null;
   }
 
   return (
@@ -143,7 +137,6 @@ const Terminal = ({
       {!isTerminalMinimized && (
         <div 
           ref={terminalContentRef}
-          // 2. Remove 'h-[500px]' and add the style attribute
           className="overflow-y-auto p-6 sm:p-10 font-mono scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent" 
           style={{ maxHeight: maxTerminalHeight }}
           onClick={handleTerminalClick}
