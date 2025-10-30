@@ -25,7 +25,7 @@ export const experiences = [
           }
         }
       ],
-      skills: ["React", "Node.js", "PostgreSQL", "TypeScript", "AWS", "System Design", "Calendar Systems"],
+      jobfocus: ["🗓️\u00A0\u00A0\u00A0Appointments\u00A0\u00A0Calendar"],
       color: "#00B4A6",
       icon: "Calendar"
     },
@@ -50,14 +50,14 @@ export const experiences = [
           }
         }
       ],
-      skills: ["React", "Node.js", "Express", "MongoDB", "OpenAI API", "Full Stack Development"],
+      jobfocus: ["🤖\u00A0\u00A0\u00A0Chatbot Design System"],
       color: "#4B93D1",
       icon: "MessageSquare"
     },
     {
       id: 3,
-      role: "Full Stack Developer",
-      company: "Kal Polymers",
+      role: "Software Engineering Intern",
+      company: "Kal Pol ymers",
       logo: kalpolymers,
       location: "Mississauga, ON",
       dateRange: "Jan. 2025 – Apr. 2025",
@@ -110,7 +110,7 @@ export const experiences = [
           }
         }
       ],
-      skills: ["React", "Flask", "HLS Streaming", "Recharts", "Tailwind CSS", "REST APIs", "JWT Authentication"],
+      jobfocus: ["📈\u00A0\u00A0\u00A0Manufacturing Analytics"],
       color: "#E94057",
       icon: "Monitor",
       media: [
@@ -169,10 +169,9 @@ export const experiences = [
           }
         }
       ],
-      skills: ["Machine Learning", "BERT", "Django", "React", "REST API", "Python"],
+      jobfocus: ["🧠\u00A0\u00A0\u00A0NLP Techniques"],
       color: "#4B93D1",
       icon: "Brain"
-      // No media field for this experience
     },
     {
       id: 5,
@@ -203,7 +202,7 @@ export const experiences = [
           }
         }
       ],
-      skills: ["Leadership", "Event Planning", "Project Management", "Team Building"],
+      jobfocus: ["🎪\u00A0\u00A0\u00A0Event Planning"],
       color: "#F08080",
       icon: "Award"
       // No media field for this experience

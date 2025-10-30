@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    /* Terminal Green Theme - Dark Mode (Default) */
+    /* Terminal Green Theme - Dark Mode */
     --background: 0 0% 4%;
     --foreground: 0 0% 95%;
     
@@ -125,7 +125,6 @@ h1, h2, h3, h4, h5, h6 {
     @apply opacity-100 translate-y-0;
   }
 
-  /* Glass morphism effect */
   .glass-nav {
     background: linear-gradient(
       135deg,

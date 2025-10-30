@@ -22,8 +22,7 @@ import TerminalIntro from '../components/TerminalIntro';
 // Experience Timeline Component
 const ExperienceTimeline = ({ experience, index }) => {
   const { 
-    role, company, logo, location, project, dateRange, description, 
-    skills, githubLink
+    role, company, logo, location, project, dateRange, jobfocus
   } = experience;
 
   return (
@@ -66,20 +65,14 @@ const ExperienceTimeline = ({ experience, index }) => {
               </p>
             </div>
             
-            {/* Show 1-2 key skills */}
-            {skills && skills.length > 0 && (
+            {jobfocus && (
               <div className="flex flex-wrap gap-2">
-                {skills.slice(0, 2).map((skill) => (
                   <Badge 
-                    key={skill}
+                    key={jobfocus}
                     className="text-md bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary transition-colors"
                   >
-                    {skill}
+                    {jobfocus}
                   </Badge>
-                ))}
-                {skills.length > 2 && (
-                  <span className="text-xs text-muted-foreground self-center">+{skills.length - 2} more</span>
-                )}
               </div>
             )}
           </div>
