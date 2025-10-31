@@ -26,6 +26,13 @@ const Terminal = ({
   // Hooks
   const navigate = useNavigate();
 
+  // auto-scroll to bottom when terminal history changes
+  useEffect(() => {
+    if (terminalContentRef.current) {
+      terminalContentRef.current.scrollTop = terminalContentRef.current.scrollHeight;
+    }
+  }, [terminalHistory]);
+
   // auto-scroll to top when page changes
   useEffect(() => {
     if (terminalContentRef.current) {
