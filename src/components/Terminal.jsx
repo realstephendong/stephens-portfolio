@@ -26,12 +26,12 @@ const Terminal = ({
   // Hooks
   const navigate = useNavigate();
 
-  // Auto-scroll to bottom when terminal history changes
+  // auto-scroll to top when page changes
   useEffect(() => {
     if (terminalContentRef.current) {
-      terminalContentRef.current.scrollTop = terminalContentRef.current.scrollHeight;
+      terminalContentRef.current.scrollTop = 0;
     }
-  }, [terminalHistory]);
+  }, [currentPage]);
 
   // Focus input when clicking anywhere on the terminal
   const handleTerminalClick = () => {
@@ -103,7 +103,6 @@ const Terminal = ({
   }
 
   return (
-    // 4. Main div's className logic uses 'isShrunk' and 'shrinkSizeClass'
     <div className={`relative bg-black/80 border-2 border-primary/40 rounded-lg overflow-hidden shadow-2xl shadow-primary/20 transition-all duration-300 ${
       isTerminalMinimized ? 'h-12' : ''
     } ${
