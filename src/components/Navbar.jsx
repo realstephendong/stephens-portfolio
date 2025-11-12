@@ -159,8 +159,6 @@ const MobileMenu = () => {
         <div className="flex flex-col items-start space-y-4 pt-4">
           <NavLink to="/" onClick={handleLinkClick}>Home</NavLink>
           <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
-          <NavLink to="/experience" onClick={handleLinkClick}>Experience</NavLink>
-          <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
           <NavLink to="/blog" onClick={handleLinkClick}>Blog</NavLink>
           
           <div className="h-px w-full bg-white/10 my-4"></div>
@@ -198,8 +196,6 @@ const Navbar = () => {
           
           <div className="hidden md:flex items-center gap-1">
             <NavLink to="/about">About</NavLink>
-            <NavLink to="/experience">Experience</NavLink>
-            <NavLink to="/projects">Projects</NavLink>
             <NavLink to="/blog">Blog</NavLink>
           </div>
         </div>

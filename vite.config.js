@@ -10,4 +10,15 @@ export default defineConfig({
     },
   },
   assetsInclude: ['**/*.glb'],
+  optimizeDeps: {
+    include: ['@react-three/rapier', '@react-three/fiber', '@react-three/drei']
+  },
+  build: {
+    rollupOptions: {
+      external: (id) => {
+        // Externalize problematic modules that might cause issues
+        return false;
+      }
+    }
+  }
 })

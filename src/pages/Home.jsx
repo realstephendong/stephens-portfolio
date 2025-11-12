@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { blogPosts } from '../data/blogData';
 import experiences from '../data/experienceData';
+import { projects } from '../data/projects';
 
 // Import the faulty terminal animation
 import FaultyTerminal from '../components/FaultyTerminal';
@@ -21,53 +22,43 @@ import TerminalIntro from '../components/TerminalIntro';
 
 // Experience Timeline Component
 const ExperienceTimeline = ({ experience, index }) => {
-  const { 
+  const {
     role, company, logo, location, project, dateRange, jobfocus
   } = experience;
 
   return (
-    <div 
-      className="relative group pb-28"
-      data-aos="fade-up" 
+    <div
+      className="group"
+      data-aos="fade-up"
       data-aos-duration="800"
       data-aos-delay={index * 150}
       data-aos-easing="ease-out"
-    >      
-      {/* Timeline dot */}
-      <div 
-        className="absolute left-0 top-10 w-3 h-3 rounded-full bg-primary shadow-lg shadow-primary/50 hidden md:block group-hover:scale-125 transition-transform"
-        data-aos="fade-up"
-        data-aos-duration="600"
-        data-aos-delay={index * 150}
-      ></div>
-      
+    >
       {/* Content */}
-      <div className="md:pl-16">
-        {/* Horizontal Layout: Date/Location --- Line --- Company/Role --- Logo */}
-        <div className="flex items-center gap-4 md:gap-6 flex-wrap md:flex-nowrap">
-          {/* Left: Date & Location */}
-          <div className="flex flex-col gap-1 w-full md:w-44 flex-shrink-0">
-            <span className="text-sm font-semibold text-foreground/90 whitespace-nowHrap">{dateRange}</span>
-            <span className="text-xs text-muted-foreground whitespace-nowrap">{location}</span>
-          </div>
-          
-          {/* Connecting line */}
-          <div className="hidden md:block flex-grow h-px bg-white/40 max-w-[200px]"></div>
-          
-          {/* Middle: Company & Role */}
-          <div className="flex-1 min-w-0 space-y-2 md:ml-8">
+      <div className="flex items-center space-y-8 gap-12 md:gap-14 flex-wrap md:flex-nowrap">
+        {/* Left: Date & Location */}
+        <div className="flex flex-col gap-1 w-full md:w-56 flex-shrink-0">
+          <span className="text-lg font-semibold text-foreground/90 whitespace-nowrap">{dateRange}</span>
+          <span className="text-md text-muted-foreground whitespace-nowrap">{location}</span>
+        </div>
+
+        {/* Connecting line */}
+        <div className="hidden md:block flex-grow h-px bg-white/40 max-w-[200px]"></div>
+
+        {/* Company & Role */}
+        <div className="flex-1 min-w-0 space-y-4">
             <div>
               <h3 className="text-2xl sm:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
                 {company}
               </h3>
-              <p className="text-base font-medium text-muted-foreground">
+              <p className="text-lg font-medium text-muted-foreground">
                 {role} {project && <span className="text-muted-foreground/70">· {project}</span>}
               </p>
             </div>
-            
+
             {jobfocus && (
               <div className="flex flex-wrap gap-2">
-                  <Badge 
+                  <Badge
                     key={jobfocus}
                     className="text-md bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary transition-colors"
                   >
@@ -75,19 +66,18 @@ const ExperienceTimeline = ({ experience, index }) => {
                   </Badge>
               </div>
             )}
-          </div>
-          
-          {/* Right: Logo */}
-          {logo && (
-            <div className="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 border-zinc-400 bg-black/40 backdrop-blur-sm group-hover:border-zinc-300 transition-all relative shadow-[inset_4px_4px_6px_rgba(255,255,255,0.4),inset_-4px_-4px_6px_rgba(255,255,255,0.4)]">
-              <img 
-                src={logo} 
-                alt={`${company} logo`} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
         </div>
+
+        {/* Right: Logo */}
+        {logo && (
+          <div className="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 border-zinc-400 bg-black/40 backdrop-blur-sm group-hover:border-zinc-300 transition-all relative shadow-[inset_4px_4px_6px_rgba(255,255,255,0.4),inset_-4px_-4px_6px_rgba(255,255,255,0.4)]">
+            <img
+              src={logo}
+              alt={`${company} logo`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -120,12 +110,66 @@ const BlogCard = ({ title, date, excerpt, tags, slug }) => (
   </Card>
 );
 
+// Project Card Component
+const ProjectCard = ({ title, backgroundImage, image, tags, link }) => {
+  const cardContent = (
+    <Card className={`hover:border-primary/50 transition-colors overflow-hidden relative ${link ? 'cursor-pointer' : ''}`}>
+    <CardContent className="p-0">
+      <div className="relative aspect-[1079/740] overflow-hidden">
+        {/* Background gradient */}
+        <img
+          src={backgroundImage}
+          alt={`${title} background`}
+          className="w-full h-full object-cover absolute inset-0"
+        />
+
+        {/* Project image overlay */}
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-contain transition-transform duration-500 hover:scale-105 relative z-10"
+        />
+
+        {/* Overlay with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent opacity-100 flex flex-col justify-between p-4 z-20 pointer-events-none">
+          {/* Description label in top right */}
+          <div className="self-end">
+            <span className="bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium">
+              {tags[0]}
+            </span>
+          </div>
+          {/* Project name at bottom */}
+          <div className="self-start">
+            <h3 className="text-2xl md:text-3xl lg:text-4xl pl-3 font-bold bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">
+              {title}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+  );
+
+  return link ? (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block"
+    >
+      {cardContent}
+    </a>
+  ) : (
+    cardContent
+  );
+};
+
 function Home() {
   const scrollRef = useRef(null);
   
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
 
-  // Sort experiences by date 
+  // Sort experiences by date
   const sortedExperiences = useMemo(() => {
     return [...experiences].sort((a, b) => {
       const getEndDate = (dateRange) => {
@@ -137,15 +181,20 @@ function Home() {
           'Jan.': 0, 'Feb.': 1, 'Mar.': 2, 'Apr.': 3, 'May': 4, 'Jun.': 5,
           'Jul.': 6, 'Aug.': 7, 'Sep.': 8, 'Oct.': 9, 'Nov.': 10, 'Dec.': 11
         };
-        
+
         return new Date(parseInt(year), monthMap[month] || 0);
       };
-      
+
       const dateA = getEndDate(a.dateRange);
       const dateB = getEndDate(b.dateRange);
-      
+
       return dateB - dateA;
     });
+  }, []);
+
+  // Sort projects by date, most recent first
+  const sortedProjects = useMemo(() => {
+    return [...projects].sort((a, b) => new Date(b.date) - new Date(a.date));
   }, []);
 
   const faultyTerminalComponent = useMemo(() => (
@@ -183,7 +232,7 @@ function Home() {
       {/* Hero Section*/}
       <section 
         className="min-h-screen flex flex-col justify-center relative z-[1] overflow-x-hidden"
-        data-aos="fade-right"
+        data-aos="fade-in"
       >
         <div className="absolute inset-0 z-0 bg-[hsl(0,0%,4%)]">
           {faultyTerminalComponent}
@@ -222,19 +271,53 @@ function Home() {
         {/* Experience Section */}
         <section 
           className="py-10 sm:py-16 space-y-16"
-          data-aos="fade-up" 
+          data-aos="fade-up"
           data-aos-duration="1000"
         >
           <div className="space-y-4">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary">Experience</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Experience</h2>
           </div>
-          <div className="relative space-y-0">
-            {/* Timeline*/}
-            <div className="absolute left-[5px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/60 via-primary/40 via-70% to-transparent hidden md:block"></div>
-            
-            {sortedExperiences.map((experience, index) => (
-              <ExperienceTimeline key={experience.id} experience={experience} index={index} />
-            ))}
+            <div className="space-y-16">
+              {sortedExperiences.map((experience, index) => (
+                <ExperienceTimeline key={experience.id} experience={experience} index={index} />
+              ))}
+            </div>
+
+          {/* Projects Section */}
+          <div className="space-y-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Projects</h2>
+            <div className="relative">
+              {/* Staggered 2-column layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
+                {/* Left Column - Projects 1 & 3 */}
+                <div className="space-y-12">
+                  {sortedProjects.filter((_, index) => index % 2 === 0).map((project, index) => (
+                    <div
+                      key={project.id}
+                      data-aos="fade-up"
+                      data-aos-delay={index * 150}
+                      className={index === 0 ? "" : "md:mt-20"}
+                    >
+                      <ProjectCard {...project} />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right Column - Projects 2 & 4 (offset down) */}
+                <div className="space-y-12 md:mt-16">
+                  {sortedProjects.filter((_, index) => index % 2 === 1).map((project, index) => (
+                    <div
+                      key={project.id}
+                      data-aos="fade-up"
+                      data-aos-delay={(index + 1) * 150}
+                      className={index === 0 ? "md:mt-12" : "md:mt-20"}
+                    >
+                      <ProjectCard {...project} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
         
@@ -245,9 +328,9 @@ function Home() {
           data-aos-duration="1000"
         >
           <div className="space-y-4">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary">Latest Ideas</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Blog</h2>
                 <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Thoughts, ideas, and experiences from my journey in technology and engineering.
+              Stuff I like to talk about.
                 </p>
           </div>
           <div className="space-y-8">
