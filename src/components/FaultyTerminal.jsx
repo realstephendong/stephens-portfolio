@@ -2,6 +2,7 @@ import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import vertexShader from '../shaders/faultyTerminal/vertex.glsl?raw';
 import fragmentShader from '../shaders/faultyTerminal/fragment.glsl?raw';
+import { useTheme } from './theme-provider';
 
  
 
@@ -31,7 +32,7 @@ export default function FaultyTerminal({
   chromaticAberration = 0,
   dither = 0,
   curvature = 0.2,
-  tint = '#ffffff',
+  tint,
   mouseReact = true,
   mouseStrength = 0.2,
   dpr = Math.min(window.devicePixelRatio || 1, 2),
@@ -41,6 +42,10 @@ export default function FaultyTerminal({
   style,
   ...rest
 }) {
+  const { theme } = useTheme();
+
+  // Set theme-aware tint color
+  const themeTint = tint || (theme === 'light' ? '#0f172a' : '#ffffff');
   const containerRef = useRef(null);
   const programRef = useRef(null);
   const rendererRef = useRef(null);

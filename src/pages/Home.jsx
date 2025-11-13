@@ -27,55 +27,45 @@ const ExperienceTimeline = ({ experience, index }) => {
   } = experience;
 
   return (
-    <div
-      className="group"
-      data-aos="fade-up"
-      data-aos-duration="800"
-      data-aos-delay={index * 150}
-      data-aos-easing="ease-out"
-    >
-      {/* Content */}
-      <div className="flex items-center space-y-8 gap-12 md:gap-14 flex-wrap md:flex-nowrap">
-        {/* Left: Date & Location */}
-        <div className="flex flex-col gap-1 w-full md:w-56 flex-shrink-0">
-          <span className="text-lg font-semibold text-foreground/90 whitespace-nowrap">{dateRange}</span>
-          <span className="text-md text-muted-foreground whitespace-nowrap">{location}</span>
-        </div>
+    <div className="flex items-start gap-7">
+      {/* Left: Date & Location */}
+      <div className="hidden w-52 md:block">
+        <p className="text-lg leading-9 font-semibold">{dateRange}</p>
+        <p className="text-foreground/80 text-base font-medium">{location}</p>
+      </div>
 
-        {/* Connecting line */}
-        <div className="hidden md:block flex-grow h-px bg-white/40 max-w-[200px]"></div>
+      {/* Connecting line */}
+      <hr className="border-t-foreground/30 hidden md:my-4 md:block md:flex-grow max-w-[200px]" />
 
-        {/* Company & Role */}
-        <div className="flex-1 min-w-0 space-y-4">
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
-                {company}
-              </h3>
-              <p className="text-lg font-medium text-muted-foreground">
-                {role} {project && <span className="text-muted-foreground/70">· {project}</span>}
-              </p>
+      {/* Company & Role */}
+      <div className="flex grow flex-col gap-5 md:w-64">
+        <div className="flex items-start justify-between">
+          <div className="flex flex-col gap-2.5">
+            <h3 className="text-2xl md:text-3xl font-semibold">{company}</h3>
+            <p className="text-base text-muted-foreground md:text-lg font-medium">
+              {role} {project && <span className="text-muted-foreground/70">· {project}</span>}
+            </p>
+          </div>
+
+          {/* Logo */}
+          {logo && (
+            <div className="p-px rounded-lg border-2 border-border">
+              <img
+                alt={company}
+                loading="lazy"
+                width="84"
+                height="84"
+                decoding="async"
+                className="w-9 h-9 rounded-md"
+                src={logo}
+              />
             </div>
-
-            {jobfocus && (
-              <div className="flex flex-wrap gap-2">
-                  <Badge
-                    key={jobfocus}
-                    className="text-md bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary transition-colors"
-                  >
-                    {jobfocus}
-                  </Badge>
-              </div>
-            )}
+          )}
         </div>
 
-        {/* Right: Logo */}
-        {logo && (
-          <div className="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 border-zinc-400 bg-black/40 backdrop-blur-sm group-hover:border-zinc-300 transition-all relative shadow-[inset_4px_4px_6px_rgba(255,255,255,0.4),inset_-4px_-4px_6px_rgba(255,255,255,0.4)]">
-            <img
-              src={logo}
-              alt={`${company} logo`}
-              className="w-full h-full object-cover"
-            />
+        {jobfocus && jobfocus.length > 0 && (
+          <div className="inline-flex items-center rounded-full font-medium text-foreground border h-9 gap-1.5 self-start px-3">
+            <span className="text-sm">{jobfocus[0]}</span>
           </div>
         )}
       </div>
@@ -269,15 +259,16 @@ function Home() {
 
       <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 relative z-10">
         {/* Experience Section */}
-        <section 
-          className="py-10 sm:py-16 space-y-16"
+        <section
+          id="experience"
+          className="py-10 sm:py-16 space-y-8"
           data-aos="fade-up"
           data-aos-duration="1000"
         >
           <div className="space-y-4">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Experience</h2>
+            <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/30 bg-clip-text text-transparent">Experience</h2>
           </div>
-            <div className="space-y-16">
+            <div className="grid gap-y-16 md:gap-y-18">
               {sortedExperiences.map((experience, index) => (
                 <ExperienceTimeline key={experience.id} experience={experience} index={index} />
               ))}
@@ -285,7 +276,7 @@ function Home() {
 
           {/* Projects Section */}
           <div className="space-y-8">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Projects</h2>
+            <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/30 bg-clip-text text-transparent">Projects</h2>
             <div className="relative">
               {/* Staggered 2-column layout */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
@@ -328,7 +319,7 @@ function Home() {
           data-aos-duration="1000"
         >
           <div className="space-y-4">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Blog</h2>
+            <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/30 bg-clip-text text-transparent">Blog</h2>
                 <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
               Stuff I like to talk about.
                 </p>

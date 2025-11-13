@@ -35,6 +35,14 @@ const BlogCard = ({ title, date, excerpt, tags, slug }) => (
 const Blog = () => {
   return (
     <main className="min-h-screen pt-32 pb-16">
+      {/* Fixed background light ray */}
+      <div className="fixed top-0 left-0 h-screen w-full pointer-events-none z-[5]">
+        <div 
+          className="absolute top-0 left-[50px] h-[1200px] w-[500px] -translate-y-[300px] -rotate-45"
+          style={{ background: 'var(--gradient-spotlight)' }}
+        >
+        </div>
+      </div>
       <div className="max-w-4xl mx-auto px-8">
         <div className="space-y-12">
           <section data-aos="fade-down" data-aos-duration="1000">

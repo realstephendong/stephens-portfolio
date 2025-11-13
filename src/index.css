@@ -33,9 +33,9 @@
     --border: 105 20% 20%;
     --input: 105 20% 15%;
     --ring: 105 70% 75%;
- 
+
     --radius: 0.5rem;
-    
+
     /* Spotlight gradient */
     --gradient-spotlight: radial-gradient(
       68.54% 68.72% at 55.02% 31.46%,
@@ -43,6 +43,12 @@
       #8c8c8c05 50%,
       #73737300 80%
     );
+
+    /* Foreground gradient */
+    --gradient-foreground: linear-gradient(90deg, hsl(var(--foreground)) 0%, hsla(var(--foreground), 0.3) 100%);
+
+    /* Hero background - very dark for terminal effect */
+    --hero-bg: hsl(0, 0%, 4%);
   }
  
   .light {
@@ -74,6 +80,12 @@
     --border: 105 30% 85%;
     --input: 105 30% 85%;
     --ring: 105 70% 35%;
+
+    /* Foreground gradient */
+    --gradient-foreground: linear-gradient(90deg, hsl(var(--foreground)) 0%, hsla(var(--foreground), 0.3) 100%);
+
+    /* Hero background - light for light mode */
+    --hero-bg: hsl(105, 30%, 98%);
   }
 }
  

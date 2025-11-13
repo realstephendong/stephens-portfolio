@@ -1,6 +1,6 @@
 // src/pages/About.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DomeGallery from '../components/DomeGallery';
 import Lanyard from '../components/Lanyard';
 
@@ -25,6 +25,11 @@ import IMG_9260 from '../images/gallery/IMG_9260.webp';
 const About = () => {
   // This state is required by the <Terminal> component
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <main className="min-h-screen pt-0 pb-16">
@@ -108,7 +113,7 @@ const About = () => {
             segments={30}
             autoRotate={true}
             autoRotateSpeed={0.04}
-            overlayBlurColor="hsl(0, 0%, 4%)"
+            overlayBlurColor="hsl(var(--hero-bg))"
             openedImageWidth="600px"
             openedImageHeight="600px"
           />

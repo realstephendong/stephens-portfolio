@@ -33,16 +33,54 @@ const LinkedInIcon = ({ className }) => (
   </svg>
 );
 
-const NavLink = ({ to, children, onClick }) => {
+const NavLink = ({ to, children, onClick, sectionId }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
-  
+
+  const handleClick = (e) => {
+    if (sectionId && location.pathname === '/') {
+      // If we're on home page and have a sectionId, scroll to section
+      e.preventDefault();
+      const element = document.getElementById(sectionId);
+      if (element) {
+        // Get navbar height to offset scroll position
+        const navbar = document.querySelector('header');
+        const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 80; // fallback to 80px
+
+        // Calculate scroll position with navbar offset
+        const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+        const scrollToPosition = elementTop - navbarHeight - 20; // extra 20px padding
+
+        window.scrollTo({
+          top: scrollToPosition,
+          behavior: 'smooth'
+        });
+      }
+    } else if (onClick) {
+      onClick(e);
+    }
+  };
+
+  if (sectionId && location.pathname === '/') {
+    // Render as button for scrolling on home page
+    return (
+      <button
+        className={`relative px-4 py-2 rounded-full transition-all duration-300 ${
+          'text-foreground/70 hover:text-foreground hover:bg-white/5'
+        }`}
+        onClick={handleClick}
+      >
+        <span className="relative z-10 font-medium">{children}</span>
+      </button>
+    );
+  }
+
   return (
     <Link
       to={to}
       className={`relative px-4 py-2 rounded-full transition-all duration-300 ${
-        isActive 
-          ? 'text-primary bg-primary/10 shadow-sm shadow-primary/20' 
+        isActive
+          ? 'text-primary bg-primary/10 shadow-sm shadow-primary/20'
           : 'text-foreground/70 hover:text-foreground hover:bg-white/5'
       }`}
       onClick={onClick}
@@ -135,11 +173,7 @@ const ThemeSwitcher = () => {
 
 const MobileMenu = () => {
   const [open, setOpen] = useState(false);
-  
-  const handleLinkClick = () => {
-    setOpen(false);
-  };
-  
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -157,9 +191,19 @@ const MobileMenu = () => {
           <SheetTitle className="text-center text-2xl font-bold text-primary">Menu</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col items-start space-y-4 pt-4">
-          <NavLink to="/" onClick={handleLinkClick}>Home</NavLink>
-          <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
-          <NavLink to="/blog" onClick={handleLinkClick}>Blog</NavLink>
+          <NavLink to="/" sectionId="top">Home</NavLink>
+          <NavLink to="/" sectionId="experience">Experience</NavLink>
+          <NavLink to="/" sectionId="projects">Projects</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/blog">Blog</NavLink>
+          <a
+            href="https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
+          >
+            <span className="relative z-10 font-medium">Resume</span>
+          </a>
           
           <div className="h-px w-full bg-white/10 my-4"></div>
           
@@ -183,6 +227,7 @@ const Navbar = () => {
         <div className="flex items-center gap-8">
           <Link 
             to="/" 
+            sectionId="top"
             className="relative group flex-shrink-0"
           >
             <div className="absolute -inset-2 bg-primary/10 rounded-full opacity-0 
@@ -195,8 +240,18 @@ const Navbar = () => {
           </Link>
           
           <div className="hidden md:flex items-center gap-1">
+            <NavLink to="/" sectionId="experience">Experience</NavLink>
+            <NavLink to="/" sectionId="projects">Projects</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/blog">Blog</NavLink>
+            <a
+              href="https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
+            >
+              <span className="relative z-10 font-medium">Resume</span>
+            </a>
           </div>
         </div>
         
