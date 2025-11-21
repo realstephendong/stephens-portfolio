@@ -71,8 +71,11 @@ const Terminal = ({
     if (command === 'help') {
       setTerminalHistory(prev => [...prev, { 
         type: 'output', 
-        text: 'Available commands: help, clear, projects, about, linkedin, contact, hello'
+        text: 'Available commands: help, clear, projects, about, linkedin, github, contact, hello, resume'
       }]);
+    } else if (command === 'resume') {
+      window.open('https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view', '_blank');
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening resume...' }]);
     } else if (command === 'clear') {
       setTerminalHistory([]);
     } else if (command === 'projects') {
@@ -90,6 +93,9 @@ const Terminal = ({
     } else if (command === 'linkedin') {
       window.open('https://www.linkedin.com/in/stephen-dong/', '_blank');
       setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening LinkedIn...' }]);
+    } else if (command === 'github') {
+      window.open('https://github.com/realstephendong', '_blank');
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening GitHub...' }]);
     } else if (command === 'contact' || command === 'email') {
       window.location.href = 'mailto:realstephendong@gmail.com';
       setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening email client...' }]);
@@ -99,9 +105,8 @@ const Terminal = ({
       setTerminalHistory(prev => [...prev, { 
         type: 'output', 
         text: `Command not found: ${terminalInput}. Type 'help' for available commands.`
-      }]);
+      }]);  
     }
-    
     setTerminalInput('');
   };
 

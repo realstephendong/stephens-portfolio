@@ -3,12 +3,9 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../components/theme-provider';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  ChevronRight, 
-  ArrowRight,
+import {
+  ChevronRight,
 } from 'lucide-react';
 import { blogPosts } from '../data/blogData';
 import experiences from '../data/experienceData';
@@ -21,147 +18,11 @@ import FaultyTerminal from '../components/FaultyTerminal';
 import Terminal from '../components/Terminal';
 import TerminalIntro from '../components/TerminalIntro';
 
-// Experience Timeline Component
-const ExperienceTimeline = ({ experience, index }) => {
-  const {
-    role, company, logo, website, location, project, dateRange, jobfocus
-  } = experience;
+// Import the extracted components
+import ExperienceTimeline from '../components/ExperienceTimeline';
+import BlogCard from '../components/BlogCard';
+import ProjectCard from '../components/ProjectCard';
 
-  return (
-    <div className="flex items-start gap-7">
-      {/* Left: Date & Location */}
-      <div className="hidden w-52 md:block">
-        <p className="text-lg leading-9 font-semibold">{dateRange}</p>
-        <p className="text-foreground/80 text-base font-medium">{location}</p>
-      </div>
-
-      {/* Connecting line */}
-      <hr className="border-t-foreground/30 hidden md:my-4 md:block md:flex-grow max-w-[200px]" />
-
-      {/* Company & Role */}
-      <div className="flex grow flex-col gap-5 md:w-64">
-        <div className="flex items-start justify-between">
-          <div className="flex flex-col gap-2.5">
-            <h3 className="text-2xl md:text-3xl font-semibold">{company}</h3>
-            <p className="text-base text-muted-foreground md:text-lg font-medium">
-              {role} {project && <span className="text-muted-foreground/70">· {project}</span>}
-            </p>
-          </div>
-
-          {/* Logo */}
-          {logo && (
-            <div className="p-px rounded-lg border-2 border-border">
-              <a
-                href={website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-              >
-                <img
-                  alt={company}
-                  loading="lazy"
-                  width="84"
-                  height="84"
-                  decoding="async"
-                  className="w-9 h-9 rounded-md"
-                  src={logo}
-                />
-              </a>
-              
-            </div>
-          )}
-        </div>
-
-        {jobfocus && jobfocus.length > 0 && (
-          <div className="inline-flex items-center rounded-full font-medium text-foreground border h-9 gap-1.5 self-start px-3">
-            <span className="text-sm">{jobfocus[0]}</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Blog Card Component
-const BlogCard = ({ title, date, excerpt, tags, slug }) => (
-  <Card className="group hover:border-primary/50 transition-colors">
-    <CardHeader>
-      <div className="flex justify-between items-start">
-        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
-        <span className="text-sm text-muted-foreground">{date}</span>
-      </div>
-      <div className="flex flex-wrap gap-2 mt-2">
-        {tags.map((tag) => (
-          <Badge key={tag} variant="secondary" className="bg-secondary">
-            {tag}
-          </Badge>
-        ))}
-      </div>
-    </CardHeader>
-    <CardContent>
-      <p className="text-muted-foreground mb-4">{excerpt}</p>
-      <Link to={`/blog/${slug}`}>
-        <Button variant="link" className="px-0 font-semibold group-hover:text-primary">
-          Read more <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Button>
-      </Link>
-    </CardContent>
-  </Card>
-);
-
-// Project Card Component
-const ProjectCard = ({ title, backgroundImage, image, tags, link }) => {
-  const cardContent = (
-    <Card className={`hover:border-primary/50 transition-colors overflow-hidden relative ${link ? 'cursor-pointer' : ''}`}>
-    <CardContent className="p-0">
-      <div className="relative aspect-[1079/740] overflow-hidden">
-        {/* Background gradient */}
-        <img
-          src={backgroundImage}
-          alt={`${title} background`}
-          className="w-full h-full object-cover absolute inset-0"
-        />
-
-        {/* Project image overlay */}
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-contain transition-transform duration-500 hover:scale-105 relative z-10"
-        />
-
-        {/* Overlay with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent opacity-100 flex flex-col justify-between p-4 z-20 pointer-events-none">
-          {/* Description label in top right */}
-          <div className="self-end">
-            <span className="bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium">
-              {tags[0]}
-            </span>
-          </div>
-          {/* Project name at bottom */}
-          <div className="self-start">
-            <h3 className="text-2xl md:text-3xl lg:text-4xl pl-3 font-bold bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">
-              {title}
-            </h3>
-          </div>
-        </div>
-      </div>
-    </CardContent>
-  </Card>
-  );
-
-  return link ? (
-    <a
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block"
-    >
-      {cardContent}
-    </a>
-  ) : (
-    cardContent
-  );
-};
 
 function Home() {
   const scrollRef = useRef(null);
@@ -276,24 +137,34 @@ function Home() {
         <section
           id="experience"
           className="py-10 sm:py-16 space-y-8"
-          data-aos="fade-up"
-          data-aos-duration="1000"
         >
           <div className="space-y-4">
             <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/30 bg-clip-text text-transparent">Experience</h2>
           </div>
             <div className="grid gap-y-16 md:gap-y-18">
               {sortedExperiences.map((experience, index) => (
-                <ExperienceTimeline key={experience.id} experience={experience} index={index} />
+                <div key={experience.id} data-aos="fade-up" data-aos-delay={index * 150}>
+                  <ExperienceTimeline experience={experience} index={index} />
+                </div>
               ))}
             </div>
 
           {/* Projects Section */}
-          <div className="space-y-8">
-            <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/30 bg-clip-text text-transparent">Projects</h2>
+          <div id="projects" className="space-y-8">
+            <div className="space-y-4" data-aos="fade-up">
+              <h2 className="
+                inline-block
+                text-3xl sm:text-4xl md:text-5xl
+                font-bold
+                bg-gradient-to-r from-foreground to-foreground/30
+                bg-clip-text text-transparent
+              ">
+                Projects
+              </h2>
+            </div>
             <div className="relative">
               {/* Staggered 2-column layout */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12">
                 {/* Left Column - Projects 1 & 3 */}
                 <div className="space-y-12">
                   {sortedProjects.filter((_, index) => index % 2 === 0).map((project, index) => (

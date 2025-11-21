@@ -46,12 +46,9 @@ const Blog = () => {
       <div className="max-w-4xl mx-auto px-8">
         <div className="space-y-12">
           <section data-aos="fade-down" data-aos-duration="1000">
-            <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/50 mb-4">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-foreground to-foreground/10 bg-clip-text text-transparent">
               Blog
             </h1>
-            <p className="text-xl text-muted-foreground">
-              Thoughts, ideas, and experiences from my journey in technology and engineering.
-            </p>
           </section>
 
           <section className="space-y-8">

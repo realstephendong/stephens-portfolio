@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ChevronRightCircle } from 'lucide-react';
-import { experiences } from '../data/experienceData';
+import { experiences } from '../../data/experienceData';
 
 const ExperienceCarousel = () => {
   const scrollRef = useRef(null);

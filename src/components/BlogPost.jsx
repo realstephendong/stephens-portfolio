@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Copy, Check, Lightbulb } from 'lucide-react';
 import { getBlogPostBySlug } from '../data/blogData';
-import NotFound from './NotFound';
+import NotFound from './legacy/NotFound';
 
 const CodeBlock = ({ code, language, description }) => {
   const [copied, setCopied] = React.useState(false);

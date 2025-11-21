@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import DomeGallery from '../components/DomeGallery';
 import Lanyard from '../components/Lanyard';
-
-// Import the Terminal components
+import { Button } from '../components/ui/button';
+import { ChevronRight } from 'lucide-react';
 import Terminal from '../components/Terminal';
-import TerminalAbout from '../components/TerminalAbout'; // Import your new custom content
+import TerminalAbout from '../components/TerminalAbout';
 
-// Import your gallery images
 import IMG_3886 from '../images/gallery/IMG_3886.webp';
 import IMG_4572 from '../images/gallery/IMG_4572.webp';
 import IMG_5289 from '../images/gallery/IMG_5289.webp';
@@ -23,7 +22,6 @@ import IMG_9260 from '../images/gallery/IMG_9260.webp';
 
 
 const About = () => {
-  // This state is required by the <Terminal> component
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
 
   // Scroll to top when component mounts
@@ -35,7 +33,6 @@ const About = () => {
     <main className="min-h-screen pt-0 pb-16">
       
       <div className="space-y-4">
-        {/* Lanyard + About Section */}
         <section 
           className="relative bg-background flex flex-col lg:flex-row" 
           style={{ 
@@ -45,7 +42,6 @@ const About = () => {
           data-aos="fade-up" 
           data-aos-duration="1000"
         >
-          {/* Lanyard - Left Side */}
           <div 
             className="w-full lg:w-1/3 pl-8 sm:pl-12 md:pl-16 lg:pl-20 relative" 
             style={{ height: '80vh' }}
@@ -75,7 +71,20 @@ const About = () => {
             >
               <TerminalAbout />
             </Terminal>
-
+            
+            {isTerminalClosed && (
+            <div className="flex flex-col items-center justify-center min-h-[400px] space-y-6">
+              <Button 
+                onClick={() => setIsTerminalClosed(false)}
+                size="lg"
+                className="group text-base sm:text-lg bg-primary hover:bg-primary/90 text-primary-foreground font-mono shadow-lg shadow-primary/20"
+              >
+                <ChevronRight className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                Open Terminal
+                <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
+          )}
           </div>
         </section>
 
@@ -119,7 +128,7 @@ const About = () => {
         </section>
       </div>
       
-      {/* Fixed background light ray */}
+      {/* light ray */}
       <div className="fixed top-0 left-0 h-screen w-full pointer-events-none z-[5]">
         <div 
           className="absolute top-0 left-[50px] h-[1200px] w-[500px] -translate-y-[300px] -rotate-45"
