@@ -7,6 +7,7 @@ import { Button } from '../components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import Terminal from '../components/Terminal';
 import TerminalAbout from '../components/TerminalAbout';
+import { useTheme } from '../components/theme-provider';
 
 import IMG_3886 from '../images/gallery/IMG_3886.webp';
 import IMG_4572 from '../images/gallery/IMG_4572.webp';
@@ -23,6 +24,7 @@ import IMG_9260 from '../images/gallery/IMG_9260.webp';
 
 const About = () => {
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
+  const { theme } = useTheme();
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -60,7 +62,7 @@ const About = () => {
           </div>
 
           {/* About Description */}
-          <div className="w-full lg:w-2/3 flex items-center justify-start pt-8 pb-2 sm:px-16 sm:pt-12 sm:pb-3 md:px-12 md:pt-16 md:pb-4 lg:pl-10 lg:pr-28 lg:pt-20 lg:pb-5">
+          <div className="w-full lg:w-2/3 flex items-center justify-center pt-8 pb-2 sm:px-16 sm:pt-12 sm:pb-3 md:px-12 md:pt-16 md:pb-4 lg:pl-10 lg:pr-28 lg:pt-20 lg:pb-5">
             
             <Terminal 
               currentPage="about"
@@ -88,7 +90,6 @@ const About = () => {
           </div>
         </section>
 
-        {/* Full-Screen Dome Gallery - Below lanyard */}
         <section 
           className="relative" 
           style={{ 
@@ -130,9 +131,13 @@ const About = () => {
       
       {/* light ray */}
       <div className="fixed top-0 left-0 h-screen w-full pointer-events-none z-[5]">
-        <div 
+        <div
           className="absolute top-0 left-[50px] h-[1200px] w-[500px] -translate-y-[300px] -rotate-45"
-          style={{ background: 'var(--gradient-spotlight)' }}
+          style={{
+            background: theme === 'dark'
+              ? 'var(--gradient-spotlight-dark)'
+              : 'var(--gradient-spotlight-light)'
+          }}
         >
         </div>
       </div>
