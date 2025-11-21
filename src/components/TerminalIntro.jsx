@@ -24,7 +24,7 @@ const TerminalIntro = ({ currentPage }) => {
             <span>WELCOME_MESSAGE</span>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-sans text-white">
-          Hi, I am <span className="bg-gradient-to-r from-foreground to-foreground/30 bg-clip-text text-transparent">Stephen.</span>
+          Hi, I am <span className="bg-gradient-to-r from-white to-white/30 bg-clip-text text-transparent">Stephen.</span>
           </h1>
         </div>
         
