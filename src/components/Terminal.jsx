@@ -110,7 +110,7 @@ const Terminal = ({
   }
 
   return (
-    <div className={`relative bg-black/80 border-2 border-primary/40 rounded-lg overflow-hidden shadow-2xl shadow-primary/20 transition-all duration-300 ${
+    <div className={`relative bg-black/80 border-2 border-primary/40 rounded-lg overflow-hidden ${currentPage !== 'about' ? 'shadow-2xl shadow-primary/20' : ''} transition-all duration-300 ${
       isTerminalMinimized ? 'h-12' : ''
     } ${
       isShrunk ? shrinkSizeClass : ''

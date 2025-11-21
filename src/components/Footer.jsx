@@ -69,8 +69,6 @@ const Footer = () => {
       data-aos="fade-up" 
       data-aos-duration="500"
     >
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-16 relative">
         <Card className="bg-background/50 backdrop-blur-sm border-primary/10">

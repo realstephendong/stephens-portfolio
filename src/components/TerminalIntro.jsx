@@ -19,17 +19,17 @@ const TerminalIntro = ({ currentPage }) => {
       {/* Output */}
       <div className="mb-6 sm:mb-8 pl-0 sm:pl-4 space-y-4 sm:space-y-6">
         <div className="space-y-2 sm:space-y-3">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary/60">
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary">
             <span className="select-none">#</span>
             <span>WELCOME_MESSAGE</span>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-sans text-white">
-            Hi, I am <span className="text-green-400">Stephen.</span>
+            Hi, I am <span className="text-[hsl(105,70%,75%)]">Stephen.</span>
           </h1>
         </div>
         
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary/60">
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary">
             <span className="select-none">#</span>
             <span>DESCRIPTION</span>
           </div>
@@ -78,7 +78,7 @@ const TerminalIntro = ({ currentPage }) => {
               variant="outline"
               size="lg"
               disabled
-              className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] text-green-400 font-mono opacity-60 cursor-not-allowed"
+              className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] text-[hsl(105,70%,75%)] font-mono opacity-60 cursor-not-allowed"
             >
               [2] About Me (Current)
             </Button>
@@ -87,7 +87,7 @@ const TerminalIntro = ({ currentPage }) => {
               <Button
                 variant="outline"
                 size="lg"
-                className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] hover:border-[hsl(105,70%,65%)] text-green-400 font-mono"
+                className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] hover:border-[hsl(105,70%,65%)] text-[hsl(105,70%,75%)] font-mono"
               >
                 [2] About Me
                 <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -104,7 +104,7 @@ const TerminalIntro = ({ currentPage }) => {
             <Button
               variant="outline"
               size="lg"
-              className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] hover:border-[hsl(105,70%,65%)] text-green-400 font-mono"
+              className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] hover:border-[hsl(105,70%,65%)] text-[hsl(105,70%,75%)] font-mono"
             >
               [3] LinkedIn
               <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

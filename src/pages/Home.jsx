@@ -210,13 +210,13 @@ function Home() {
       chromaticAberration={0}
       dither={0}
       curvature={0.3}
-      tint="#a7ef9e"
+      tint={theme === 'light' ? '#0099FF' : '#a7ef9e'}
       mouseReact={true}
       mouseStrength={0.4}
       pageLoadAnimation={true}
       brightness={0.6}
     />
-  ), []);
+  ), [theme]);
 
   return (
     <main className="min-h-screen relative" ref={scrollRef}>

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect} from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
@@ -44,21 +44,18 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], fov = 20, transparent = false }) {
   const { theme } = useTheme();
 
-  // Calculate theme-aware background color for Three.js
-  const themeBgColor = useMemo(() => {
-    if (theme === 'light') {
-      return hslToRgb(105, 30, 95); // hsl(105, 30%, 95%)
-    } else {
-      return hslToRgb(0, 0, 4); // hsl(0, 0%, 4%)
-    }
-  }, [theme]);
+  // Use CSS custom properties for consistent theming
+  const backgroundColor = 'hsl(var(--background))';
 
   return (
-    <div className="relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center bg-background">
+    <div
+      className="relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center"
+      style={{ backgroundColor }}
+    >
       <Canvas
         camera={{ position: position, fov: fov }}
-        gl={{ alpha: transparent }}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(themeBgColor[0], themeBgColor[1], themeBgColor[2]), transparent ? 0 : 1)}
+        gl={{ alpha: true }}
+        style={{ background: 'transparent' }}
       >
         <ambientLight intensity={Math.PI} />
         <Physics gravity={gravity} timeStep={1 / 60}>

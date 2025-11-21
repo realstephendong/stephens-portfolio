@@ -197,8 +197,8 @@ export default function DomeGallery({
     return () => observer.disconnect();
   }, []);
 
-  // Compute the fade color based on theme
-  const fadeColor = isDarkMode ? overlayBlurColor : '#ffffff';
+  // Compute the fade color based on theme background colors
+  const fadeColor = isDarkMode ? 'hsl(0, 0%, 4%)' : 'hsl(105, 30%, 95%)';
 
   const lockScroll = useCallback(() => {
     if (interaction.scrollLocked.current) return;
@@ -802,10 +802,11 @@ export default function DomeGallery({
       >
         <main
           ref={refs.main}
-          className="absolute inset-0 grid place-items-center overflow-hidden select-none bg-transparent"
+          className="absolute inset-0 grid place-items-center overflow-hidden select-none"
           style={{
             touchAction: 'none',
-            WebkitUserSelect: 'none'
+            WebkitUserSelect: 'none',
+            backgroundColor: fadeColor
           }}
         >
           <div className="stage">
@@ -911,7 +912,7 @@ export default function DomeGallery({
               ref={refs.scrim}
               className="scrim absolute inset-0 z-10 pointer-events-none opacity-0 transition-opacity duration-500"
               style={{
-                background: 'rgba(0, 0, 0, 0.4)',
+                background: isDarkMode ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.2)',
                 backdropFilter: 'blur(3px)'
               }}
             />

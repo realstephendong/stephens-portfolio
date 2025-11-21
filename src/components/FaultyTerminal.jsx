@@ -73,7 +73,7 @@ export default function FaultyTerminal({
   const { theme } = useTheme();
 
   // Set theme-aware tint color
-  const themeTint = tint || (theme === 'light' ? '#0f172a' : '#ffffff');
+  const themeTint = tint || (theme === 'light' ? '#0099FF' : '#ffffff');
 
   // Set theme-aware background color
   const themeBackgroundColor = useMemo(() => {
