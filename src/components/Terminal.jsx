@@ -142,11 +142,11 @@ const Terminal = ({
               <Maximize2 className="w-2 h-2 text-green-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
             </button>
           </div>
-          <span className="text-xs text-foreground/60 font-mono">
+          <span className="text-xs text-white/80 font-mono">
             {`stephen@portfolio:~/${currentPage}`}
           </span>
         </div>
-        <div className="text-xs text-foreground/40 font-mono hidden sm:block">bash</div>
+        <div className="text-xs text-white/60 font-mono hidden sm:block">bash</div>
       </div>
       
       {/* Terminal Content */}
@@ -171,7 +171,7 @@ const Terminal = ({
                       <span>{entry.text}</span>
                     </div>
                   ) : (
-                    <div className="text-foreground/70 pl-4">{entry.text}</div>
+                    <div className="text-white/80 pl-4">{entry.text}</div>
                   )}
                 </div>
               ))}
@@ -186,7 +186,7 @@ const Terminal = ({
               type="text"
               value={terminalInput}
               onChange={(e) => setTerminalInput(e.target.value)}
-              className="flex-1 bg-transparent border-none outline-none text-foreground font-mono caret-primary"
+              className="flex-1 bg-transparent border-none outline-none text-white font-mono caret-primary placeholder:text-white/50"
               placeholder="Type 'help' for commands..."
               autoComplete="off"
               spellCheck="false"

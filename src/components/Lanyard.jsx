@@ -1,23 +1,64 @@
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
+import { useTheme } from './theme-provider';
 
 import cardGLB from '../images/lanyard/card.glb';
 import lanyard from '../images/lanyard/lanyard.png';
 
+// Helper function to convert HSL to RGB
+function hslToRgb(h, s, l) {
+  h = h / 360;
+  s = s / 100;
+  l = l / 100;
+
+  const hue2rgb = (p, q, t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+
+  let r, g, b;
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+
+  return [r, g, b];
+}
+
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], fov = 20, transparent = false }) {
+  const { theme } = useTheme();
+
+  // Calculate theme-aware background color for Three.js
+  const themeBgColor = useMemo(() => {
+    if (theme === 'light') {
+      return hslToRgb(105, 30, 95); // hsl(105, 30%, 95%)
+    } else {
+      return hslToRgb(0, 0, 4); // hsl(0, 0%, 4%)
+    }
+  }, [theme]);
+
   return (
     <div className="relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center bg-background">
       <Canvas
         camera={{ position: position, fov: fov }}
         gl={{ alpha: transparent }}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color('#0a0a0a'), transparent ? 0 : 1)}
+        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(themeBgColor[0], themeBgColor[1], themeBgColor[2]), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
         <Physics gravity={gravity} timeStep={1 / 60}>

@@ -113,7 +113,6 @@ const About = () => {
             segments={30}
             autoRotate={true}
             autoRotateSpeed={0.04}
-            overlayBlurColor="hsl(var(--hero-bg))"
             openedImageWidth="600px"
             openedImageHeight="600px"
           />

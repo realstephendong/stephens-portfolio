@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTheme } from '../components/theme-provider';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +24,7 @@ import TerminalIntro from '../components/TerminalIntro';
 // Experience Timeline Component
 const ExperienceTimeline = ({ experience, index }) => {
   const {
-    role, company, logo, location, project, dateRange, jobfocus
+    role, company, logo, website, location, project, dateRange, jobfocus
   } = experience;
 
   return (
@@ -50,15 +51,23 @@ const ExperienceTimeline = ({ experience, index }) => {
           {/* Logo */}
           {logo && (
             <div className="p-px rounded-lg border-2 border-border">
-              <img
-                alt={company}
-                loading="lazy"
-                width="84"
-                height="84"
-                decoding="async"
-                className="w-9 h-9 rounded-md"
-                src={logo}
-              />
+              <a
+                href={website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <img
+                  alt={company}
+                  loading="lazy"
+                  width="84"
+                  height="84"
+                  decoding="async"
+                  className="w-9 h-9 rounded-md"
+                  src={logo}
+                />
+              </a>
+              
             </div>
           )}
         </div>
@@ -156,7 +165,8 @@ const ProjectCard = ({ title, backgroundImage, image, tags, link }) => {
 
 function Home() {
   const scrollRef = useRef(null);
-  
+  const { theme } = useTheme();
+
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
 
   // Sort experiences by date
@@ -212,9 +222,13 @@ function Home() {
     <main className="min-h-screen relative" ref={scrollRef}>
       {/* Fixed background light ray */}
       <div className="fixed top-0 left-0 h-screen w-full pointer-events-none z-[5]">
-        <div 
+        <div
           className="absolute top-0 left-[50px] h-[1200px] w-[500px] -translate-y-[300px] -rotate-45"
-          style={{ background: 'var(--gradient-spotlight)' }}
+          style={{
+            background: theme === 'dark'
+              ? 'var(--gradient-spotlight-dark)'
+              : 'var(--gradient-spotlight-light)'
+          }}
         >
         </div>
       </div>
@@ -224,9 +238,9 @@ function Home() {
         className="min-h-screen flex flex-col justify-center relative z-[1] overflow-x-hidden"
         data-aos="fade-in"
       >
-        <div className="absolute inset-0 z-0 bg-[hsl(0,0%,4%)]">
+        <div className="absolute inset-0 z-0 bg-background">
           {faultyTerminalComponent}
-          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[hsl(0,0%,4%)] via-[hsl(0,0%,4%)]/80 via-30% to-transparent pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/80 via-30% to-transparent pointer-events-none"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 w-full relative z-[15]">

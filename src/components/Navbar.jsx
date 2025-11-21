@@ -153,7 +153,7 @@ const ThemeSwitcher = () => {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-black/90 backdrop-blur-xl border-white/10">
+      <DropdownMenuContent align="end" className="bg-background/90 backdrop-blur-xl border-white/10">
         <DropdownMenuItem onClick={() => setTheme("light")} className="hover:bg-white/10 cursor-pointer">
           <Sun className="mr-2 h-4 w-4" />
           Light
@@ -220,9 +220,9 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 w-full z-50 flex justify-center pt-4 px-4">
       {/* Pill-style navbar with frosted glass effect */}
-      <nav className="flex justify-between items-center w-full max-w-6xl 
-                      bg-black/40 backdrop-blur-lg border border-white/10 
-                      rounded-full px-4 sm:px-6 py-3 shadow-2xl shadow-black/50
+      <nav className="flex justify-between items-center w-full max-w-6xl
+                      bg-background/40 backdrop-blur-lg border border-white/10
+                      rounded-full px-4 sm:px-6 py-3 shadow-2xl shadow-foreground/10
                       hover:border-primary/20 transition-all duration-300">
         <div className="flex items-center gap-8">
           <Link 

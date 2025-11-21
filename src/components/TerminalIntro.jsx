@@ -23,8 +23,8 @@ const TerminalIntro = ({ currentPage }) => {
             <span className="select-none">#</span>
             <span>WELCOME_MESSAGE</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-sans">
-            Hi, I am <span className="text-primary">Stephen.</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-sans text-white">
+            Hi, I am <span className="text-green-400">Stephen.</span>
           </h1>
         </div>
         
@@ -33,7 +33,7 @@ const TerminalIntro = ({ currentPage }) => {
             <span className="select-none">#</span>
             <span>DESCRIPTION</span>
           </div>
-          <p className="text-base sm:text-lg md:text-xl text-foreground/80 font-sans">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 font-sans">
             Beep boop. Let's build cool stuff together.
           </p>
         </div>
@@ -53,18 +53,18 @@ const TerminalIntro = ({ currentPage }) => {
           
           {/* Projects Button */}
           {currentPage === 'projects' ? (
-            <Button 
+            <Button
               size="lg"
               disabled
-              className="group text-sm sm:text-base bg-primary text-primary-foreground font-mono opacity-60 cursor-not-allowed"
+              className="group text-sm sm:text-base bg-[hsl(105,70%,75%)] text-[hsl(0,0%,5%)] font-mono opacity-60 cursor-not-allowed"
             >
               [1] Projects (Current)
             </Button>
           ) : (
             <Link to="/projects" className="inline-block">
-              <Button 
+              <Button
                 size="lg"
-                className="group text-sm sm:text-base bg-primary hover:bg-primary/90 text-primary-foreground font-mono shadow-lg shadow-primary/20"
+                className="group text-sm sm:text-base bg-[hsl(105,70%,75%)] hover:bg-[hsl(105,70%,70%)] text-[hsl(0,0%,5%)] font-mono shadow-lg shadow-[hsl(105,70%,75%)]/20"
               >
                 [1] Projects
                 <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -74,20 +74,20 @@ const TerminalIntro = ({ currentPage }) => {
           
           {/* About Me Button */}
           {currentPage === 'about' ? (
-            <Button 
+            <Button
               variant="outline"
               size="lg"
               disabled
-              className="group text-sm sm:text-base border-2 border-primary/40 text-foreground font-mono opacity-60 cursor-not-allowed"
+              className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] text-green-400 font-mono opacity-60 cursor-not-allowed"
             >
               [2] About Me (Current)
             </Button>
           ) : (
             <Link to="/about" className="inline-block">
-              <Button 
+              <Button
                 variant="outline"
                 size="lg"
-                className="group text-sm sm:text-base border-2 border-primary/40 hover:border-primary/60 hover:bg-primary/15 text-foreground font-mono"
+                className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] hover:border-[hsl(105,70%,65%)] text-green-400 font-mono"
               >
                 [2] About Me
                 <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -101,10 +101,10 @@ const TerminalIntro = ({ currentPage }) => {
             target="_blank" 
             rel="noopener noreferrer"
           >
-            <Button 
+            <Button
               variant="outline"
               size="lg"
-              className="group text-sm sm:text-base border-2 border-primary/40 hover:border-primary/60 hover:bg-primary/15 text-foreground font-mono"
+              className="group text-sm sm:text-base bg-black/50 border-2 border-[hsl(105,70%,75%)] hover:border-[hsl(105,70%,65%)] text-green-400 font-mono"
             >
               [3] LinkedIn
               <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

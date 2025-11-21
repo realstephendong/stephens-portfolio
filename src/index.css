@@ -37,11 +37,18 @@
     --radius: 0.5rem;
 
     /* Spotlight gradient */
-    --gradient-spotlight: radial-gradient(
+    --gradient-spotlight-dark: radial-gradient(
       68.54% 68.72% at 55.02% 31.46%,
       #d9d9d914 0,
       #8c8c8c05 50%,
       #73737300 80%
+    );
+
+    --gradient-spotlight-light: radial-gradient(
+      68.54% 68.72% at 55.02% 31.46%,
+      #0000000a 0,
+      #00000004 50%,
+      #00000001 80%
     );
 
     /* Foreground gradient */

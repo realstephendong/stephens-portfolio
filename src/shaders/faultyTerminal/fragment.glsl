@@ -22,6 +22,7 @@ uniform float uUseMouse;
 uniform float uPageLoadProgress;
 uniform float uUsePageLoadAnimation;
 uniform float uBrightness;
+uniform vec3 uBackgroundColor;
 
 float time;
 
@@ -339,9 +340,9 @@ void main() {
       col += (rnd - 0.5) * (uDither * 0.003922);
     }
 
-    // Add base background color to match page background (hsl(0, 0%, 4%))
+    // Add base background color to match page background (theme-aware)
     // Only replace pure black areas, keep the green patterns bright
-    vec3 backgroundColor = vec3(0.04, 0.04, 0.04);
+    vec3 backgroundColor = uBackgroundColor;
     float luminance = dot(col, vec3(0.299, 0.587, 0.114));
     col = mix(backgroundColor, col, smoothstep(0.0, 0.02, luminance));
 
