@@ -40,7 +40,7 @@ const TerminalAbout = () => {
             For me, building software is like building anything meaningful. 
             You measure twice, cut once, and learn that craftmanship lies 
             in knowing when to take it apart again and do it better. A good program 
-            isn’t flawless... it’s one that’s refined through every rebuild.
+            will never be flawless... instead it's something that's refined through every iteration.
           </p>
         </div>
 

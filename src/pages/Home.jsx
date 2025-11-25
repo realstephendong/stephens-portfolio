@@ -165,7 +165,6 @@ function Home() {
             <div className="relative">
               {/* Staggered 2-column layout */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12">
-                {/* Left Column - Projects 1 & 3 */}
                 <div className="space-y-12">
                   {sortedProjects.filter((_, index) => index % 2 === 0).map((project, index) => (
                     <div
@@ -179,7 +178,6 @@ function Home() {
                   ))}
                 </div>
 
-                {/* Right Column - Projects 2 & 4 (offset down) */}
                 <div className="space-y-12 md:mt-16">
                   {sortedProjects.filter((_, index) => index % 2 === 1).map((project, index) => (
                     <div

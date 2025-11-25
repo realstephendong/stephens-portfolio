@@ -59,30 +59,53 @@ const Terminal = ({
     setIsShrunk(!isShrunk);
   };
 
+  // Helper function for scrolling to sections
+  const scrollToSection = (sectionId) => {
+    const navbar = document.querySelector('header');
+    const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 80;
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+      const scrollToPosition = elementTop - navbarHeight - 20;
+
+      window.scrollTo({
+        top: scrollToPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   // Handle terminal commands
   const handleTerminalSubmit = (e) => {
     e.preventDefault();
     const command = terminalInput.trim().toLowerCase();
-    
+
     // Add command to history
     setTerminalHistory(prev => [...prev, { type: 'command', text: terminalInput }]);
-    
+
     // Process commands
     if (command === 'help') {
-      setTerminalHistory(prev => [...prev, { 
-        type: 'output', 
-        text: 'Available commands: help, clear, projects, about, linkedin, github, contact, hello, resume'
+      setTerminalHistory(prev => [...prev, {
+        type: 'output',
+        text: 'Available commands: help, clear, projects, experience, about, linkedin, github, contact, hello, resume'
       }]);
     } else if (command === 'resume') {
       window.open('https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view', '_blank');
       setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening resume...' }]);
     } else if (command === 'clear') {
       setTerminalHistory([]);
-    } else if (command === 'projects') {
-      if (currentPage === 'projects') {
-        setTerminalHistory(prev => [...prev, { type: 'output', text: 'You are already on the projects page.' }]);
+    } else if (command === 'projects' || command === 'experience') {
+      const sectionId = command === 'projects' ? 'projects' : 'experience';
+      const message = `Navigating to ${command}...`;
+
+      if (currentPage === 'home') {
+        scrollToSection(sectionId);
+        setTerminalHistory(prev => [...prev, { type: 'output', text: message }]);
       } else {
-        navigate('/projects');
+        navigate('/');
+        setTerminalHistory(prev => [...prev, { type: 'output', text: 'Navigating to home...' }]);
+        setTimeout(() => scrollToSection(sectionId), 100);
       }
     } else if (command === 'about') {
       if (currentPage === 'about') {

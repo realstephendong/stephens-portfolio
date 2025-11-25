@@ -23,13 +23,11 @@ const ProjectCard = ({ title, backgroundImage, image, tags, link }) => {
 
         {/* Overlay with gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent opacity-100 flex flex-col justify-between p-4 z-20 pointer-events-none">
-          {/* Description label in top right */}
           <div className="self-end">
             <span className="bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium">
               {tags[0]}
             </span>
           </div>
-          {/* Project name at bottom */}
           <div className="self-start">
             <h3 className="text-2xl md:text-3xl lg:text-4xl pl-3 font-bold bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">
               {title}
