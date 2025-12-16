@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, Sun, Moon, Laptop, Menu, X } from 'lucide-react';
+import { Mail, Sun, Moon, Laptop, Menu, X, MessageSquare } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import {
@@ -16,6 +16,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import websiteLogo from "../images/websitelogo.png"
 
@@ -196,14 +202,24 @@ const MobileMenu = () => {
           <NavLink to="/" sectionId="projects">Projects</NavLink>
           <NavLink to="/about">About</NavLink>
           <NavLink to="/blog">Blog</NavLink>
-          <a
-            href="https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
-          >
-            <span className="relative z-10 font-medium">Resume</span>
-          </a>
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <button
+                  className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
+                >
+                  <span className="relative z-10 font-medium">Resume</span>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="border-border shadow-lg">
+                <div className="flex items-center gap-2 text-sm">
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                  <span className="font-medium">Please inquire via email</span>
+                  <Mail className="h-3 w-3 text-primary/70" />
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           
           <div className="h-px w-full bg-white/10 my-4"></div>
           
@@ -244,14 +260,24 @@ const Navbar = () => {
             <NavLink to="/" sectionId="projects">Projects</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/blog">Blog</NavLink>
-            <a
-              href="https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
-            >
-              <span className="relative z-10 font-medium">Resume</span>
-            </a>
+            <TooltipProvider>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <button
+                    className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
+                  >
+                    <span className="relative z-10 font-medium">Resume</span>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="border-border shadow-lg">
+                  <div className="flex items-center gap-2 text-sm">
+                    <MessageSquare className="h-4 w-4 text-primary" />
+                    <span className="font-medium">Please inquire via email</span>
+                    <Mail className="h-3 w-3 text-primary/70" />
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         

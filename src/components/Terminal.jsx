@@ -88,11 +88,8 @@ const Terminal = ({
     if (command === 'help') {
       setTerminalHistory(prev => [...prev, {
         type: 'output',
-        text: 'Available commands: help, clear, projects, experience, about, linkedin, github, contact, hello, resume'
+        text: 'Available commands: help, clear, projects, experience, about, linkedin, github, contact, hello'
       }]);
-    } else if (command === 'resume') {
-      window.open('https://drive.google.com/file/d/17teqSstWLJZent8auHZKrpu1Oy_7rzu7/view', '_blank');
-      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening resume...' }]);
     } else if (command === 'clear') {
       setTerminalHistory([]);
     } else if (command === 'projects' || command === 'experience') {
