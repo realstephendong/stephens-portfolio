@@ -1,11 +1,27 @@
 // src/components/TerminalIntro.js
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button'; // Make sure this path is correct
 import { ChevronRight } from 'lucide-react'; // Make sure this path is correct
 
 const TerminalIntro = ({ currentPage }) => {
+  const location = useLocation();
+
+  const handleScrollToProjects = (e) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const element = document.getElementById('projects');
+      if (element) {
+        const navbar = document.querySelector('header');
+        const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 80;
+        const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+        const scrollToPosition = elementTop - navbarHeight - 20;
+        window.scrollTo({ top: scrollToPosition, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <>
       {/* Command Line 1 */}
@@ -61,7 +77,7 @@ const TerminalIntro = ({ currentPage }) => {
               [1] Projects (Current)
             </Button>
           ) : (
-            <Link to="/projects" className="inline-block">
+            <Link to="/" onClick={handleScrollToProjects} className="inline-block">
               <Button
                 size="lg"
                 className="group text-sm sm:text-base bg-[hsl(105,70%,75%)] hover:bg-[hsl(105,70%,70%)] text-[hsl(0,0%,5%)] font-mono shadow-lg shadow-[hsl(105,70%,75%)]/20"
