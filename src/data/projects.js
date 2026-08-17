@@ -7,18 +7,18 @@ import gradient3 from "../images/gradient3.jpg"
 import gradient4 from "../images/gradient4.jpg"
 
 // image imports - project images
-import archie from "../images/archie.png"
+import sblame from "../images/sblame.svg"
 import kora from "../images/kora.png"
 import oncoalert from "../images/oncoalert.png"
 import styleit from "../images/styleit.png"
 
 export const projects = [
     {
-        "title": "Archie",
+        "title": "sblame",
         backgroundImage: gradient1,
-        image: archie,
-        tags: ["Coming Soon"],
-        date: "2025-01-15",
+        image: sblame,
+        tags: ["Semantic Git Blame"],
+        date: "2026-06-29",
         link: ""
     },
     {

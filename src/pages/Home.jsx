@@ -168,7 +168,7 @@ function Home() {
                 <div className="space-y-12">
                   {sortedProjects.filter((_, index) => index % 2 === 0).map((project, index) => (
                     <div
-                      key={project.id}
+                      key={project.title}
                       data-aos="fade-up"
                       data-aos-delay={index * 150}
                       className={index === 0 ? "" : "md:mt-20"}
@@ -181,7 +181,7 @@ function Home() {
                 <div className="space-y-12 md:mt-16">
                   {sortedProjects.filter((_, index) => index % 2 === 1).map((project, index) => (
                     <div
-                      key={project.id}
+                      key={project.title}
                       data-aos="fade-up"
                       data-aos-delay={(index + 1) * 150}
                       className={index === 0 ? "md:mt-12" : "md:mt-20"}

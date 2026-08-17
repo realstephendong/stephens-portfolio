@@ -2,62 +2,198 @@
 import watai from "../images/companylogos/watai.jpeg"
 import kalpolymers from "../images/companylogos/kalpolymers.jpeg"
 import buroak from "../images/companylogos/buroak.jpg"
-import medme from "../images/companylogos/medme.jpeg" // Add Medme logo to this path
+import medme from "../images/companylogos/medme.jpeg"
+import shopify from "../images/companylogos/shopifylogo.jpg"
+// cropped to the wordmark so it stays legible at 36px; full logo is sirrllablogo.jpg
+import sirrl from "../images/companylogos/sirrllablogo-mark.jpg"
 
 export const experiences = [
     {
       id: 1,
+      role: "Software Engineering Intern",
+      company: "Shopify",
+      logo: shopify,
+      website: "https://www.shopify.com/",
+      location: "Toronto, ON",
+      project: "Flexible Collections",
+      dateRange: "May 2026 – Aug. 2026",
+      description: "Shipped product exclusions for Flexible Collections end-to-end, from a new database schema out to the public Admin GraphQL API, on the engine that decides collection membership for every Shopify store.",
+      githubLink: "",
+      responsibilities: [
+        {
+          title: "Shipped product exclusions for Flexible Collections end-to-end, from new schema to the public Admin GraphQL API.",
+          details: {
+            description: "Took product exclusions from an empty schema on a 131M-row conditions table all the way out to the public Admin GraphQL API, owning the 2 mutation write paths that merchants and apps reach it through, together serving 700K+ calls/day.",
+            technologies: ["Ruby", "Ruby on Rails", "GraphQL", "MySQL", "RSpec"],
+            challenges: "Changing the schema of a 131M-row table without downtime, keeping two independent write paths consistent with each other, and designing a public API surface that had to stay backwards compatible for every collection that already existed.",
+            results: "Merchants can exclude specific products from an automated collection directly, instead of contorting the collection's conditions to work around them."
+          }
+        },
+        {
+          title: "Extended the core engine deciding collection membership for every Shopify store to evaluate and subtract exclusions.",
+          details: {
+            description: "The membership engine feeds a 24.7B-row (2.2 TB) pipeline, so exclusions had to be evaluated and subtracted inside the query that was already running rather than bolted on afterwards, adding no new round-trip.",
+            technologies: ["Ruby on Rails", "MySQL", "SQL Query Optimization"],
+            challenges: "Folding a subtraction step into a single-query path that runs for every store, without a second round-trip or a latency regression on a pipeline of that size.",
+            results: "Exclusions resolve on the same single-query path as the rest of collection membership, keeping the feature invisible in the engine's cost profile."
+          }
+        },
+        {
+          title: "Root-caused 3 error classes hitting 190 stores — 34% of the service's error volume — and cut the largest by 92%.",
+          details: {
+            description: "Worked backwards from a noisy production error stream to three distinct root causes affecting 190 stores, then fixed the largest contributor.",
+            technologies: ["Ruby on Rails", "MySQL", "Production Debugging"],
+            challenges: "Separating three overlapping failure modes inside one error stream, and reproducing merchant-specific failures locally from limited production signal.",
+            results: "Accounted for 34% of the service's total error volume, with the largest class dropping 92% after the fix."
+          }
+        },
+        {
+          title: "Traced a P0 where saved collections dropped merchant-added products; the fix resolved 4 other P0s blocking launch.",
+          details: {
+            description: "Root-caused a launch-blocking P0 in which saving a collection silently discarded products the merchant had added by hand. The underlying cause turned out to sit beneath four other P0s on the launch checklist.",
+            technologies: ["Ruby on Rails", "GraphQL", "RSpec"],
+            challenges: "Reproducing a silent data-loss bug that only appeared on particular save paths, then proving one fix genuinely resolved the related P0s rather than hiding their symptoms.",
+            results: "Cleared 5 P0s in total and unblocked the launch."
+          }
+        },
+        {
+          title: "Made search indexing and Storefront APIs variant-aware across 10M+ membership rows, clearing a launch blocker.",
+          details: {
+            description: "Extended search indexing and the Storefront APIs to reason at the variant level rather than treating a product as indivisible, across 10M+ collection membership rows.",
+            technologies: ["Ruby on Rails", "GraphQL", "Search Indexing"],
+            challenges: "Reindexing membership data at that scale while keeping storefront reads correct throughout the migration.",
+            results: "Removed the last blocker standing between exclusions and launch on storefronts."
+          }
+        }
+      ],
+      jobfocus: ["🛒\u00A0\u00A0\u00A0Collections\u00A0\u00A0Engine"],
+      color: "#5E8E3E",
+      icon: "ShoppingBag"
+    },
+    {
+      id: 2,
+      role: "Undergraduate Research Assistant",
+      company: "UWaterloo SIRRL",
+      logo: sirrl,
+      website: "https://uwaterloo.ca/social-intelligent-robotics-lab/",
+      location: "Waterloo, ON",
+      project: "Furhat Social Robots",
+      dateRange: "Jan. 2026 – Apr. 2026",
+      description: "Built the speech-to-text backend for Furhat social robots used in adolescent mental health research at Waterloo's Social and Intelligent Robotics Lab.",
+      githubLink: "",
+      responsibilities: [
+        {
+          title: "Built a Python/Flask Whisper transcription service for Furhat social robots in adolescent mental health research.",
+          details: {
+            description: "The robot's React interaction GUI captures microphone audio through the MediaRecorder API and POSTs it to a Flask service, which transcribes it with OpenAI Whisper and hands the text back to Furhat as a VirtualUserSpeech event. It replaced an earlier approach built on the browser's Web Speech API.",
+            technologies: ["Python", "Flask", "OpenAI Whisper", "Kotlin", "React", "Furhat SDK"],
+            challenges: "Handling WebM audio blobs coming out of the browser, transcribing reliably without depending on a speech API over the network, and fitting the service into the robot skill's existing Kotlin event loop.",
+            results: "Gave the study a transcription path that runs locally and predictably in-lab, rather than one that varied with the browser and the network."
+          }
+        },
+        {
+          title: "Benchmarked Whisper model sizes for the accuracy/latency tradeoff, landing on the tiny model at ~50 ms.",
+          details: {
+            description: "Compared Whisper model sizes on transcription accuracy against round-trip latency through the Furhat skill's REST API, since a robot holding a conversation cannot pause for seconds before replying.",
+            technologies: ["OpenAI Whisper", "Python", "REST APIs"],
+            challenges: "Conversational turn-taking leaves a very small latency budget, so accuracy gains from larger models had to be weighed against a robot that visibly hesitates.",
+            results: "Settled on the tiny model at roughly 50 ms, fast enough to keep back-and-forth with participants feeling natural."
+          }
+        }
+      ],
+      jobfocus: ["🎙️\u00A0\u00A0\u00A0Speech-to-Text"],
+      color: "#FDBF57",
+      icon: "Mic"
+    },
+    {
+      id: 3,
       role: "Software Engineering Intern",
       company: "MedMe Health (YC W21)",
       logo: medme,
       website: "https://www.medmehealth.com/about",
       location: "Toronto, ON",
       dateRange: "Sep. 2025 – Dec. 2025",
-      description: "Developed calendar and appointment scheduling systems for hundreds of pharmacies across North America at YC W2021 health tech startup.",
+      description: "Rebuilt pharmacist scheduling flows and shipped microservices for white-label pharmacy chains at a YC W21 health tech startup serving hundreds of pharmacies across North America.",
       githubLink: "",
       responsibilities: [
         {
-          title: "Developed calendar and appointment scheduling infrastructure for pharmacy network.",
+          title: "Refactored the Pharmacist Scheduling modals in React/TypeScript with GraphQL, streamlining booking and rescheduling.",
           details: {
-            description: "Built and optimized a scalable appointment scheduling system serving hundreds of pharmacies across North America, enabling seamless booking experiences for patients and efficient calendar management for pharmacy staff.",
-            technologies: ["React", "Node.js", "PostgreSQL", "Redis", "AWS", "TypeScript"],
-            challenges: "Handling timezone complexities across North America, managing concurrent bookings, ensuring system reliability at scale, and integrating with existing pharmacy management systems.",
-            results: "Successfully deployed scheduling system to hundreds of pharmacies, improving appointment booking efficiency and patient access to pharmacy services."
+            description: "Rebuilt the modals pharmacists use to book, move, and cancel appointments, working in React and TypeScript against a GraphQL API — flows that pharmacy staff run dozens of times a day.",
+            technologies: ["React", "TypeScript", "GraphQL"],
+            challenges: "Untangling booking and rescheduling logic that had drifted apart over time, while keeping behaviour identical for hundreds of live pharmacies.",
+            results: "Booking and rescheduling now run through one consistent set of modals instead of parallel near-duplicates."
+          }
+        },
+        {
+          title: "Authored a Jest unit-test suite for core booking logic, raising test coverage from 45% to 95%.",
+          details: {
+            description: "Covered the code path that decides whether an appointment can be created, moved, or cancelled — the logic every booking in the product passes through.",
+            technologies: ["Jest", "TypeScript"],
+            challenges: "Pinning down time-sensitive booking rules and their edge cases (double bookings, cancellations, reschedules across timezones) that had previously only been checked by hand.",
+            results: "Raised coverage on core booking logic from 45% to 95%, so scheduling changes ship with a regression net underneath them."
+          }
+        },
+        {
+          title: "Shipped Java/TypeScript microservices for white-label pharmacy chain expansion, cutting onboarding time by 30%.",
+          details: {
+            description: "Built services supporting white-label deployments, so a new pharmacy chain can launch under its own branding without a bespoke integration each time.",
+            technologies: ["Java", "TypeScript", "Microservices", "GraphQL"],
+            challenges: "Pulling chain-specific assumptions out of the codebase and into configuration, turning each new chain from an engineering project into a setup step.",
+            results: "Cut onboarding time for new pharmacy chains by 30%."
+          }
+        },
+        {
+          title: "Built an end-to-end multilingual NLP chatbot for symptom triage with emergency-escalation logic.",
+          details: {
+            description: "Built a chatbot that triages patient symptoms across multiple languages and escalates to emergency guidance when the conversation calls for it, rather than attempting to answer.",
+            technologies: ["React", "TypeScript", "NLP"],
+            challenges: "Reading intent behind a symptom description across languages, and drawing a conservative line for when to escalate — the failure mode that actually matters in healthcare.",
+            results: "Demoed end-to-end to the engineering team."
           }
         }
       ],
-      jobfocus: ["🗓️\u00A0\u00A0\u00A0Appointments\u00A0\u00A0Calendar"],
+      jobfocus: ["🗓️\u00A0\u00A0\u00A0Pharmacy\u00A0\u00A0Scheduling"],
       color: "#00B4A6",
       icon: "Calendar"
     },
     {
-      id: 2,
+      id: 4,
       role: "Full Stack Developer",
       company: "WAT.ai",
       logo: watai,
       website: "https://watai.ca/",
       location: "Waterloo, ON",
-      project: "OliverAI",
+      project: "Oliver AI",
       dateRange: "Apr. 2025 – Dec. 2025",
-      description: "Developed a full-stack educational chatbot platform to enhance student learning experiences.",
+      description: "Shipped document-engine features and Waterloo SSO for Oliver, WAT.ai's RAG course assistant for students and instructors.",
       githubLink: "",
       responsibilities: [
         {
-          title: "Developed the complete educational chatbot application, both frontend and backend.",
+          title: "Shipped Oliver AI document-engine features, including drag-and-drop course material uploads.",
           details: {
-            description: "Built a comprehensive AI-powered educational platform from the ground up, handling the entire development lifecycle including architecture design, implementation, and deployment.",
-            technologies: ["React", "Node.js", "Express", "MongoDB", "OpenAI API", "WebSocket"],
-            challenges: "Integrating AI responses with educational content, ensuring real-time chat functionality, and creating an intuitive user interface for students.",
-            results: "Successfully launched a fully functional educational chatbot that helps students with learning queries and provides personalized assistance."
+            description: "Oliver lets instructors upload course content and answers student questions from it through a RAG pipeline. I built the upload experience — drag-and-drop ingestion in React with shadcn/ui — that feeds everything the assistant is able to answer.",
+            technologies: ["React", "Vite", "Tailwind CSS", "shadcn/ui", "FastAPI", "Python"],
+            challenges: "Handling large course files and multiple concurrent upload states in the UI, and keeping the frontend in step with the backend's document processing pipeline.",
+            results: "Instructors can drop course material straight into Oliver rather than handing files to a developer to load."
+          }
+        },
+        {
+          title: "Implemented Waterloo OAuth2 / JWT single sign-on for the platform.",
+          details: {
+            description: "Wired Waterloo account sign-in through OAuth2 with JWT-backed sessions, so students and instructors reach Oliver with their university identity instead of yet another account.",
+            technologies: ["OAuth2", "JWT", "FastAPI", "React"],
+            challenges: "Carrying the OAuth2 redirect flow cleanly across a React frontend and FastAPI backend, and keeping tokens secure while sessions persist.",
+            results: "Put the platform behind Waterloo accounts — a prerequisite for deploying it in an actual course."
           }
         }
       ],
-      jobfocus: ["🤖\u00A0\u00A0\u00A0Chatbot Design System"],
+      jobfocus: ["🤖\u00A0\u00A0\u00A0RAG\u00A0\u00A0Course\u00A0\u00A0Assistant"],
       color: "#4B93D1",
       icon: "MessageSquare"
     },
     {
-      id: 3,
+      id: 5,
       role: "Software Engineering Intern",
       company: "Kal Polymers",
       logo: kalpolymers,
@@ -65,7 +201,7 @@ export const experiences = [
       location: "Mississauga, ON",
       dateRange: "Jan. 2025 – Apr. 2025",
       description: "Developed a full-stack web application for manufacturing analytics, financial reports, and security monitoring.",
-      githubLink: "", 
+      githubLink: "",
       responsibilities: [
         {
           title: "Developed a camera management system that converts RTSP IP camera streams into HLS web page streams.",
@@ -134,7 +270,7 @@ export const experiences = [
       ]
     },
     {
-      id: 4,
+      id: 6,
       role: "ML Researcher/Developer",
       company: "WAT.ai",
       logo: watai,
@@ -143,7 +279,7 @@ export const experiences = [
       project: "Copyright Detection in LLMs",
       dateRange: "Sep. 2024 – Apr. 2025",
       description: "Researched and developed machine learning solutions for detecting copyrighted content in LLM training data.",
-      githubLink: "https://github.com/realstephendong/RoBERTaSentenceExtraction", 
+      githubLink: "https://github.com/realstephendong/RoBERTaSentenceExtraction",
       responsibilities: [
         {
           title: "Researched multiple keyword extraction methods, selecting the BERT model for its scalability and contextual awareness.",
@@ -178,7 +314,7 @@ export const experiences = [
       icon: "Brain"
     },
     {
-      id: 5,
+      id: 7,
       role: "Engineering Club Pres.",
       company: "Bur Oak Secondary School",
       logo: buroak,
@@ -212,5 +348,5 @@ export const experiences = [
       // No media field for this experience
     }
   ];
-  
+
   export default experiences;

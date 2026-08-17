@@ -22,12 +22,13 @@ const TerminalAbout = () => {
             <span>WHO</span>
           </div>
           <p className="text-base sm:text-lg text-[hsl(105,30%,95%)]">
-            Hi! I'm <span className="text-primary font-semibold">Stephen</span>, a Computer Engineering 
-            student at <span className="text-primary font-semibold">UWaterloo</span> and 
-            <span className="text-primary font-semibold"> Software Engineer Intern </span> 
-            at MedMe Health (YC W2021).<br/><br/>At MedMe, I worked on their design system, appointment 
-            scheduling calendar, and a centralized Taskmaster system
-            for hundreds of pharmacies across North America.
+            Hi! I'm <span className="text-primary font-semibold">Stephen</span>, a Computer Engineering
+            student at <span className="text-primary font-semibold">UWaterloo</span>, most recently a
+            <span className="text-primary font-semibold"> Software Engineering Intern </span>
+            at Shopify.<br/><br/>At Shopify I worked on Flexible Collections, shipping product exclusions
+            from a new database schema out to the public Admin GraphQL API. Before that I built pharmacy
+            scheduling software at MedMe Health (YC W2021) and speech-to-text for social robots at the
+            Waterloo robotics lab.
           </p>
         </div>
 
