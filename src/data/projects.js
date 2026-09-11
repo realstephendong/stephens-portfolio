@@ -17,31 +17,31 @@ export const projects = [
         "title": "sblame",
         backgroundImage: gradient1,
         image: sblame,
-        tags: ["Semantic Git Blame"],
+        tags: ["semantic git blame"],
         date: "2026-06-29",
         link: ""
     },
     {
-        "title": "Kora",
+        "title": "kora",
         backgroundImage: gradient2,
         image: kora,
-        tags: ["AI Itinerary Planner"],
+        tags: ["ai itinerary planner"],
         date: "2024-12-01",
         link: "https://github.com/realstephendong/KORA"
     },
     {
-        "title": "OncoAlert",
+        "title": "oncoalert",
         backgroundImage: gradient3,
         image: oncoalert,
-        tags: ["AI Cancer Detection"],
+        tags: ["ai cancer detection"],
         date: "2024-01-15",
         link: "https://github.com/realstephendong/OncoAlert"
     },
     {
-        "title": "StyleIT",
+        "title": "styleit",
         backgroundImage: gradient4,
         image: styleit,
-        tags: ["Virtual Wardrobe"],
+        tags: ["virtual wardrobe"],
         date: "2024-06-01",
         link: "https://github.com/realstephendong/StyleIT"
     }

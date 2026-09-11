@@ -76,7 +76,7 @@ const NavLink = ({ to, children, onClick, sectionId }) => {
         }`}
         onClick={handleClick}
       >
-        <span className="relative z-10 font-medium">{children}</span>
+        <span className="relative z-10 font-mono text-sm">{children}</span>
       </button>
     );
   }
@@ -91,7 +91,7 @@ const NavLink = ({ to, children, onClick, sectionId }) => {
       }`}
       onClick={onClick}
     >
-      <span className="relative z-10 font-medium">{children}</span>
+      <span className="relative z-10 font-mono text-sm">{children}</span>
     </Link>
   );
 };
@@ -194,27 +194,27 @@ const MobileMenu = () => {
       </SheetTrigger>
       <SheetContent side="right" className="w-[80vw] sm:w-[350px] pt-12 bg-black/95 backdrop-blur-md border-white/10">
         <SheetHeader className="mb-6">
-          <SheetTitle className="text-center text-2xl font-bold text-primary">Menu</SheetTitle>
+          <SheetTitle className="text-center font-mono text-2xl text-primary">menu</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col items-start space-y-4 pt-4">
-          <NavLink to="/" sectionId="top">Home</NavLink>
-          <NavLink to="/" sectionId="experience">Experience</NavLink>
-          <NavLink to="/" sectionId="projects">Projects</NavLink>
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/blog">Blog</NavLink>
+          <NavLink to="/" sectionId="top">home</NavLink>
+          <NavLink to="/" sectionId="experience">experience</NavLink>
+          <NavLink to="/" sectionId="projects">projects</NavLink>
+          <NavLink to="/about">about</NavLink>
+          <NavLink to="/blog">blog</NavLink>
           <TooltipProvider>
             <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <button
                   className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
                 >
-                  <span className="relative z-10 font-medium">Resume</span>
+                  <span className="relative z-10 font-mono text-sm">resume</span>
                 </button>
               </TooltipTrigger>
               <TooltipContent className="border-border shadow-lg">
                 <div className="flex items-center gap-2 text-sm">
                   <MessageSquare className="h-4 w-4 text-primary" />
-                  <span className="font-medium">Please inquire via email</span>
+                  <span className="font-mono">please inquire via email</span>
                   <Mail className="h-3 w-3 text-primary/70" />
                 </div>
               </TooltipContent>
@@ -256,23 +256,23 @@ const Navbar = () => {
           </Link>
           
           <div className="hidden md:flex items-center gap-1">
-            <NavLink to="/" sectionId="experience">Experience</NavLink>
-            <NavLink to="/" sectionId="projects">Projects</NavLink>
-            <NavLink to="/about">About</NavLink>
-            <NavLink to="/blog">Blog</NavLink>
+            <NavLink to="/" sectionId="experience">experience</NavLink>
+            <NavLink to="/" sectionId="projects">projects</NavLink>
+            <NavLink to="/about">about</NavLink>
+            <NavLink to="/blog">blog</NavLink>
             <TooltipProvider>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
                   <button
                     className="relative px-4 py-2 rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-white/5"
                   >
-                    <span className="relative z-10 font-medium">Resume</span>
+                    <span className="relative z-10 font-mono text-sm">resume</span>
                   </button>
                 </TooltipTrigger>
                 <TooltipContent className="border-border shadow-lg">
                   <div className="flex items-center gap-2 text-sm">
                     <MessageSquare className="h-4 w-4 text-primary" />
-                    <span className="font-medium">Please inquire via email</span>
+                    <span className="font-mono">please inquire via email</span>
                     <Mail className="h-3 w-3 text-primary/70" />
                   </div>
                 </TooltipContent>

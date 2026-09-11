@@ -68,7 +68,7 @@ const TutorialSection = ({ section }) => (
 const StandardBlogPost = ({ post }) => (
   <Card className="mt-6 sm:mt-8">
     <CardContent className="p-4 sm:p-6 md:p-8 prose dark:prose-invert prose-sm sm:prose-base md:prose-lg max-w-none">
-      <p className="font-semibold text-base sm:text-lg">Abstract</p>
+      <p className="font-semibold text-base sm:text-lg">abstract</p>
       <p className="text-sm sm:text-base">{post.content.abstract}</p>
 
       {post.content.sections?.map((section, index) => (
@@ -80,7 +80,7 @@ const StandardBlogPost = ({ post }) => (
         </React.Fragment>
       ))}
 
-      <h2 className="text-xl sm:text-2xl mt-6 sm:mt-8">Conclusion</h2>
+      <h2 className="text-xl sm:text-2xl mt-6 sm:mt-8">conclusion</h2>
       <p className="text-sm sm:text-base">{post.content.conclusion}</p>
 
       <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t space-y-3 sm:space-y-4">
@@ -126,7 +126,7 @@ const TutorialBlogPost = ({ post }) => (
         <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-amber-500/10 rounded-lg">
           <div className="flex items-center gap-2 space-y-1 sm:space-y-2 pb-2">
             <Lightbulb className="h-5 w-5 sm:h-7 sm:w-7 text-amber-500" />
-            <h3 className="text-base sm:text-lg m-0 font-semibold text-amber-500">Pro Tips</h3>
+            <h3 className="text-base sm:text-lg m-0 font-semibold text-amber-500">pro tips</h3>
           </div>
           <ul className="list-disc list-inside space-y-1 sm:space-y-2">
             {post.content.tips.map((tip, index) => (

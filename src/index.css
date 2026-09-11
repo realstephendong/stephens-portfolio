@@ -56,6 +56,11 @@
 
     /* Hero background - very dark for terminal effect */
     --hero-bg: hsl(0, 0%, 4%);
+
+    /* Hero measuring field. Light ink on dark carries further than dark ink
+       on light, so the two themes need different weights. */
+    --lattice: hsl(var(--foreground) / 0.045);
+    --lattice-lit: hsl(var(--foreground) / 0.14);
   }
  
   .light {
@@ -93,6 +98,9 @@
 
     /* Hero background - light for light mode */
     --hero-bg: hsl(105, 30%, 98%);
+
+    --lattice: hsl(var(--foreground) / 0.022);
+    --lattice-lit: hsl(var(--foreground) / 0.07);
   }
 }
  

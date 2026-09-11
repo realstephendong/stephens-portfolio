@@ -88,43 +88,43 @@ const Terminal = ({
     if (command === 'help') {
       setTerminalHistory(prev => [...prev, {
         type: 'output',
-        text: 'Available commands: help, clear, projects, experience, about, linkedin, github, contact, hello'
+        text: 'available commands: help, clear, projects, experience, about, linkedin, github, contact, hello'
       }]);
     } else if (command === 'clear') {
       setTerminalHistory([]);
     } else if (command === 'projects' || command === 'experience') {
       const sectionId = command === 'projects' ? 'projects' : 'experience';
-      const message = `Navigating to ${command}...`;
+      const message = `navigating to ${command}...`;
 
       if (currentPage === 'home') {
         scrollToSection(sectionId);
         setTerminalHistory(prev => [...prev, { type: 'output', text: message }]);
       } else {
         navigate('/');
-        setTerminalHistory(prev => [...prev, { type: 'output', text: 'Navigating to home...' }]);
+        setTerminalHistory(prev => [...prev, { type: 'output', text: 'navigating to home...' }]);
         setTimeout(() => scrollToSection(sectionId), 100);
       }
     } else if (command === 'about') {
       if (currentPage === 'about') {
-        setTerminalHistory(prev => [...prev, { type: 'output', text: "You are already on the 'about' page." }]);
+        setTerminalHistory(prev => [...prev, { type: 'output', text: "you are already on the 'about' page." }]);
       } else {
         navigate('/about');
       }
     } else if (command === 'linkedin') {
       window.open('https://www.linkedin.com/in/stephen-dong/', '_blank');
-      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening LinkedIn...' }]);
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'opening linkedin...' }]);
     } else if (command === 'github') {
       window.open('https://github.com/realstephendong', '_blank');
-      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening GitHub...' }]);
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'opening github...' }]);
     } else if (command === 'contact' || command === 'email') {
       window.location.href = 'mailto:realstephendong@gmail.com';
-      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Opening email client...' }]);
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'opening email client...' }]);
     } else if (command === 'hello' || command === 'hi') {
-      setTerminalHistory(prev => [...prev, { type: 'output', text: 'Hello! Welcome to my portfolio 👋' }]);
+      setTerminalHistory(prev => [...prev, { type: 'output', text: 'hello! welcome to my portfolio 👋' }]);
     } else if (command !== '') {
       setTerminalHistory(prev => [...prev, { 
         type: 'output', 
-        text: `Command not found: ${terminalInput}. Type 'help' for available commands.`
+        text: `command not found: ${terminalInput}. type 'help' for available commands.`
       }]);  
     }
     setTerminalInput('');
@@ -135,43 +135,43 @@ const Terminal = ({
   }
 
   return (
-    <div className={`relative bg-black/80 border-2 border-primary/40 rounded-lg overflow-hidden ${currentPage !== 'about' ? 'shadow-2xl shadow-primary/20' : ''} transition-all duration-300 ${
+    <div className={`relative overflow-hidden rounded-md border border-foreground/12 bg-foreground/[0.02] transition-all duration-300 ${
       isTerminalMinimized ? 'h-12' : ''
     } ${
       isShrunk ? shrinkSizeClass : ''
     }`}>
       {/* Terminal Title Bar */}
-      <div className="bg-black/50 border-b-2 border-primary/30 px-4 py-3 flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-foreground/10 px-4 py-2.5">
         <div className="flex items-center gap-3">
           <div className="flex gap-2">
             <button 
               onClick={handleClose}
-              className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-pointer relative group flex items-center justify-center"
-              title="Close terminal"
+              className="group relative flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full bg-foreground/25 transition-colors hover:bg-red-500"
+              title="close terminal"
             >
-              <X className="w-2 h-2 text-red-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
+              <X className="absolute h-1.5 w-1.5 text-background opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={4} />
             </button>
             <button 
               onClick={handleMinimize}
-              className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors cursor-pointer relative group flex items-center justify-center"
-              title="Minimize terminal"
+              className="group relative flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full bg-foreground/25 transition-colors hover:bg-yellow-500"
+              title="minimize terminal"
             >
-              <Minus className="w-2 h-2 text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
+              <Minus className="absolute h-1.5 w-1.5 text-background opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={4} />
             </button>
             {/* 5. Button's onClick is updated to 'handleToggleSize' */}
             <button 
               onClick={handleToggleSize}
-              className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer relative group flex items-center justify-center"
-              title="Toggle size"
+              className="group relative flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full bg-foreground/25 transition-colors hover:bg-primary"
+              title="toggle size"
             >
-              <Maximize2 className="w-2 h-2 text-green-900 opacity-0 group-hover:opacity-100 transition-opacity absolute" strokeWidth={3} />
+              <Maximize2 className="absolute h-1.5 w-1.5 text-background opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={4} />
             </button>
           </div>
-          <span className="text-xs text-white/80 font-mono">
+          <span className="font-mono text-xs text-muted-foreground">
             {`stephen@portfolio:~/${currentPage}`}
           </span>
         </div>
-        <div className="text-xs text-white/60 font-mono hidden sm:block">bash</div>
+        <div className="hidden font-mono text-xs text-muted-foreground/60 sm:block">bash</div>
       </div>
       
       {/* Terminal Content */}
@@ -196,7 +196,7 @@ const Terminal = ({
                       <span>{entry.text}</span>
                     </div>
                   ) : (
-                    <div className="text-white/80 pl-4">{entry.text}</div>
+                    <div className="pl-4 text-foreground/80">{entry.text}</div>
                   )}
                 </div>
               ))}
@@ -211,8 +211,8 @@ const Terminal = ({
               type="text"
               value={terminalInput}
               onChange={(e) => setTerminalInput(e.target.value)}
-              className="flex-1 bg-transparent border-none outline-none text-white font-mono caret-primary placeholder:text-white/50"
-              placeholder="Type 'help' for commands..."
+              className="flex-1 border-none bg-transparent font-mono text-foreground caret-primary outline-none placeholder:text-muted-foreground/60"
+              placeholder="type 'help' for commands..."
               autoComplete="off"
               spellCheck="false"
             />

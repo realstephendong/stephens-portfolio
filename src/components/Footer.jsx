@@ -75,11 +75,11 @@ const Footer = () => {
           <CardContent className="p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
             {/* Main content */}
             <div className="space-y-3 sm:space-y-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold bg-gradient-to-r from-primary to-primary/60 text-transparent bg-clip-text animate-glow">
-                Let's get in touch.
+              <h2 className="font-mono text-3xl sm:text-4xl md:text-5xl text-primary">
+                let's get in touch.
               </h2>
-              <p className="text-base sm:text-lg text-muted-foreground">
-                Now that you know me, let me get to know you!
+              <p className="font-mono text-sm sm:text-base text-muted-foreground">
+                now that you know me, let me get to know you.
               </p>
             </div>
 
@@ -88,19 +88,19 @@ const Footer = () => {
               <SocialLink 
                 href="https://github.com/realstephendong"
                 icon={GitHubIcon}
-                label="Check out my GitHub"
+                label="check out my github"
                 isCustomIcon={false}
               />
               <SocialLink 
                 href="https://www.linkedin.com/in/stephen-dong/"
                 icon={LinkedInIcon}
-                label="Connect on LinkedIn"
+                label="connect on linkedin"
                 isCustomIcon={false}
               />
               <SocialLink 
                 href="mailto:realstephendong@gmail.com"
                 icon={Mail}
-                label="Send me an email"
+                label="send me an email"
                 isCustomIcon={true}
               />
             </div>
@@ -109,17 +109,17 @@ const Footer = () => {
             <div className="h-px bg-border w-full opacity-50" />
 
             {/* Footer credits */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 font-mono text-xs text-muted-foreground">
               <div className="flex items-center gap-1 sm:gap-2">
                 <Code2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>Coded and designed by Stephen Dong</span>
+                <span>coded and designed by stephen dong</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2">
-                <span>Built with</span>
+                <span>built with</span>
                 <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500" />
-                <span>using React Vite & Tailwind</span>
+                <span>using react, vite &amp; tailwind</span>
               </div>
-              <div className="text-xs sm:text-sm">© {currentYear} Stephen Dong</div>
+              <div className="text-xs">© {currentYear} stephen dong</div>
             </div>
           </CardContent>
         </Card>

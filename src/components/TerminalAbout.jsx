@@ -14,54 +14,50 @@ const TerminalAbout = () => {
       </div>
       
       {/* Output */}
-      <div className="mb-6 sm:mb-8 pl-0 sm:pl-4 space-y-4 sm:space-y-6 font-sans">
+      <div className="mb-6 sm:mb-8 pl-0 sm:pl-4 space-y-5 sm:space-y-7">
         
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary font-mono">
+          <div className="flex items-center gap-2 font-mono text-xs text-primary/80">
             <span className="select-none">#</span>
-            <span>WHO</span>
+            <span>who</span>
           </div>
-          <p className="text-base sm:text-lg text-[hsl(105,30%,95%)]">
-            Hi! I'm <span className="text-primary font-semibold">Stephen</span>, a Computer Engineering
-            student at <span className="text-primary font-semibold">UWaterloo</span>, most recently a
-            <span className="text-primary font-semibold"> Software Engineering Intern </span>
-            at Shopify.<br/><br/>At Shopify I worked on Flexible Collections, shipping product exclusions
-            from a new database schema out to the public Admin GraphQL API. Before that I built pharmacy
-            scheduling software at MedMe Health (YC W2021) and speech-to-text for social robots at the
-            Waterloo robotics lab.
+          <p className="font-mono text-sm sm:text-[0.9375rem] leading-relaxed text-foreground/85">
+            computer engineering at waterloo, most recently a software engineering
+            intern at <span className="text-primary">shopify</span> on the collections engine.
+            before that: pharmacy scheduling at medme health, speech-to-text for
+            social robots at the waterloo robotics lab.
           </p>
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary font-mono">
+          <div className="flex items-center gap-2 font-mono text-xs text-primary/80">
             <span className="select-none">#</span>
-            <span>PHILOSOPHY</span>
+            <span>philosophy</span>
           </div>
-          <p className="text-base sm:text-lg text-[hsl(105,30%,95%)]">
-            For me, building software is like building anything meaningful. 
-            You measure twice, cut once, and learn that craftmanship lies 
-            in knowing when to take it apart again and do it better. A good program 
-            will never be flawless... instead it's something that's refined through every iteration.
+          <p className="font-mono text-sm sm:text-[0.9375rem] leading-relaxed text-foreground/85">
+            measure twice, cut once, then learn that the craft is knowing when to
+            take it apart and do it better. no program is ever finished, only
+            refined.
           </p>
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary font-mono">
+          <div className="flex items-center gap-2 font-mono text-xs text-primary/80">
             <span className="select-none">#</span>
-            <span>OFF_THE_CLOCK</span>
+            <span>off_the_clock</span>
           </div>
-          <p className="text-base sm:text-lg text-[hsl(105,30%,95%)]">
-            My current hobbies include going to the gym, cooking, and playing basketball.
+          <p className="font-mono text-sm sm:text-[0.9375rem] leading-relaxed text-foreground/85">
+            gym, cooking, basketball.
           </p>
         </div>
 
         <div className="space-y-2 pt-4">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary font-mono">
+          <div className="flex items-center gap-2 font-mono text-xs text-primary/80">
             <span className="select-none">#</span>
-            <span>GET_IN_TOUCH</span>
+            <span>get_in_touch</span>
           </div>
-          <p className="text-base sm:text-lg text-[hsl(105,30%,95%)]">
-            Type '<span className="text-primary font-semibold">contact</span>' to open my email, or '<span className="text-primary font-semibold">help</span>' for all commands.
+          <p className="font-mono text-sm sm:text-[0.9375rem] leading-relaxed text-foreground/85">
+            type '<span className="text-primary">contact</span>' to open my email, or '<span className="text-primary">help</span>' for all commands.
           </p>
         </div>
 

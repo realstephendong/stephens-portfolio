@@ -10,14 +10,14 @@ import sirrl from "../images/companylogos/sirrllablogo-mark.jpg"
 export const experiences = [
     {
       id: 1,
-      role: "Software Engineering Intern",
-      company: "Shopify",
+      role: "software engineering intern",
+      company: "shopify",
       logo: shopify,
       website: "https://www.shopify.com/",
-      location: "Toronto, ON",
-      project: "Flexible Collections",
-      dateRange: "May 2026 – Aug. 2026",
-      description: "Shipped product exclusions for Flexible Collections end-to-end, from a new database schema out to the public Admin GraphQL API, on the engine that decides collection membership for every Shopify store.",
+      location: "toronto",
+      project: "flexible collections",
+      dateRange: "may 2026 — aug 2026",
+      description: "shipped product exclusions end-to-end, serving 700k calls/day",
       githubLink: "",
       responsibilities: [
         {
@@ -66,20 +66,20 @@ export const experiences = [
           }
         }
       ],
-      jobfocus: ["🛒\u00A0\u00A0\u00A0Collections\u00A0\u00A0Engine"],
+      jobfocus: ["collections engine"],
       color: "#5E8E3E",
       icon: "ShoppingBag"
     },
     {
       id: 2,
-      role: "Undergraduate Research Assistant",
-      company: "UWaterloo SIRRL",
+      role: "undergraduate research assistant",
+      company: "uwaterloo sirrl",
       logo: sirrl,
       website: "https://uwaterloo.ca/social-intelligent-robotics-lab/",
-      location: "Waterloo, ON",
-      project: "Furhat Social Robots",
-      dateRange: "Jan. 2026 – Apr. 2026",
-      description: "Built the speech-to-text backend for Furhat social robots used in adolescent mental health research at Waterloo's Social and Intelligent Robotics Lab.",
+      location: "waterloo",
+      project: "furhat social robots",
+      dateRange: "jan 2026 — apr 2026",
+      description: "whisper speech to text for furhat social robots",
       githubLink: "",
       responsibilities: [
         {
@@ -101,19 +101,20 @@ export const experiences = [
           }
         }
       ],
-      jobfocus: ["🎙️\u00A0\u00A0\u00A0Speech-to-Text"],
+      jobfocus: ["speech-to-text"],
       color: "#FDBF57",
       icon: "Mic"
     },
     {
       id: 3,
-      role: "Software Engineering Intern",
-      company: "MedMe Health (YC W21)",
+      role: "software engineering intern",
+      company: "medme health",
       logo: medme,
       website: "https://www.medmehealth.com/about",
-      location: "Toronto, ON",
-      dateRange: "Sep. 2025 – Dec. 2025",
-      description: "Rebuilt pharmacist scheduling flows and shipped microservices for white-label pharmacy chains at a YC W21 health tech startup serving hundreds of pharmacies across North America.",
+      location: "toronto",
+      project: "yc w21",
+      dateRange: "sep 2025 — dec 2025",
+      description: "frontend design system, led appointment scheduling ui refactor",
       githubLink: "",
       responsibilities: [
         {
@@ -153,20 +154,20 @@ export const experiences = [
           }
         }
       ],
-      jobfocus: ["🗓️\u00A0\u00A0\u00A0Pharmacy\u00A0\u00A0Scheduling"],
+      jobfocus: ["pharmacy scheduling"],
       color: "#00B4A6",
       icon: "Calendar"
     },
     {
       id: 4,
-      role: "Full Stack Developer",
-      company: "WAT.ai",
+      role: "full stack developer",
+      company: "wat.ai",
       logo: watai,
       website: "https://watai.ca/",
-      location: "Waterloo, ON",
-      project: "Oliver AI",
-      dateRange: "Apr. 2025 – Dec. 2025",
-      description: "Shipped document-engine features and Waterloo SSO for Oliver, WAT.ai's RAG course assistant for students and instructors.",
+      location: "waterloo",
+      project: "oliver ai",
+      dateRange: "apr 2025 — dec 2025",
+      description: "rag ai teaching assistant with waterloo oauth2 sso",
       githubLink: "",
       responsibilities: [
         {
@@ -188,19 +189,19 @@ export const experiences = [
           }
         }
       ],
-      jobfocus: ["🤖\u00A0\u00A0\u00A0RAG\u00A0\u00A0Course\u00A0\u00A0Assistant"],
+      jobfocus: ["rag course assistant"],
       color: "#4B93D1",
       icon: "MessageSquare"
     },
     {
       id: 5,
-      role: "Software Engineering Intern",
-      company: "Kal Polymers",
+      role: "software engineering intern",
+      company: "kal polymers",
       logo: kalpolymers,
       website: "https://kalpolymers.com",
-      location: "Mississauga, ON",
-      dateRange: "Jan. 2025 – Apr. 2025",
-      description: "Developed a full-stack web application for manufacturing analytics, financial reports, and security monitoring.",
+      location: "mississauga",
+      dateRange: "jan 2025 — apr 2025",
+      description: "created beautiful production and financial web-based reports",
       githubLink: "",
       responsibilities: [
         {
@@ -249,7 +250,7 @@ export const experiences = [
           }
         }
       ],
-      jobfocus: ["📈\u00A0\u00A0\u00A0Manufacturing Analytics"],
+      jobfocus: ["manufacturing analytics"],
       color: "#E94057",
       icon: "Monitor",
       media: [
@@ -271,14 +272,14 @@ export const experiences = [
     },
     {
       id: 6,
-      role: "ML Researcher/Developer",
-      company: "WAT.ai",
+      role: "ml researcher / developer",
+      company: "wat.ai",
       logo: watai,
       website: "https://watai.ca/",
-      location: "Waterloo, ON",
-      project: "Copyright Detection in LLMs",
-      dateRange: "Sep. 2024 – Apr. 2025",
-      description: "Researched and developed machine learning solutions for detecting copyrighted content in LLM training data.",
+      location: "waterloo",
+      project: "copyright detection in llms",
+      dateRange: "sep 2024 — apr 2025",
+      description: "contributed to de-cop copyright detection in llm training data",
       githubLink: "https://github.com/realstephendong/RoBERTaSentenceExtraction",
       responsibilities: [
         {
@@ -309,44 +310,10 @@ export const experiences = [
           }
         }
       ],
-      jobfocus: ["🧠\u00A0\u00A0\u00A0NLP Techniques"],
+      jobfocus: ["nlp"],
       color: "#4B93D1",
       icon: "Brain"
     },
-    {
-      id: 7,
-      role: "Engineering Club Pres.",
-      company: "Bur Oak Secondary School",
-      logo: buroak,
-      location: "Markham, ON",
-      dateRange: "Sep. 2023 – Apr. 2024",
-      description: "Led and organized engineering-focused activities and competitions for high school students.",
-      githubLink: "",
-      responsibilities: [
-        {
-          title: "Hosted school-wide hands-on contests.",
-          details: {
-            description: "Planned and executed a series of engaging engineering challenges designed to teach fundamental principles while fostering teamwork and creativity.",
-            activities: ["Paper Airplane Contest", "Bridge Building Competition", "Hydraulic Arm Design", "Paper Parachute Challenge", "Rube Goldberg Machine Contest"],
-            challenges: "Working with limited budget, accommodating diverse skill levels, and creating engaging projects that could be completed within club meeting timeframes.",
-            results: "Increased club membership from 28 to 42 students, with consistent attendance throughout the year."
-          }
-        },
-        {
-          title: "Managed event logistics and oversaw club marketing on all social media platforms.",
-          details: {
-            description: "Coordinated all aspects of club management including budget planning, materials procurement, schedule management, and promotion.",
-            responsibilities: ["Event Planning", "Budget Management", "Materials Sourcing", "Team Building", "Marketing"],
-            challenges: "Balancing academic rigor with accessibility, ensuring equitable participation, and measuring learning outcomes effectively.",
-            results: "Successfully organized 12 monthly events with zero cancellations, staying within budget while providing high-quality materials for all activities."
-          }
-        }
-      ],
-      jobfocus: ["🎪\u00A0\u00A0\u00A0Event Planning"],
-      color: "#F08080",
-      icon: "Award"
-      // No media field for this experience
-    }
   ];
 
   export default experiences;

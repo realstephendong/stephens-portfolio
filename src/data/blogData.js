@@ -1,21 +1,21 @@
 export const blogPosts = [
   {
     slug: "install-react-vite-tailwind",
-    title: "Quick Setup Guide: React + Vite + Tailwind CSS",
-    date: "February 21, 2025",
-    author: "Stephen Dong",
-    excerpt: "A quick reference guide for setting up a modern React development environment with Vite and Tailwind CSS. No more searching through different documentation!",
-    tags: ["React", "Vite", "Tailwind CSS", "Setup Guide"],
+    title: "quick setup guide: react + vite + tailwind css",
+    date: "february 21, 2025",
+    author: "stephen dong",
+    excerpt: "a quick reference guide for setting up a modern react development environment with vite and tailwind css. no more searching through different documentation!",
+    tags: ["react", "vite", "tailwind css", "setup guide"],
     content: {
       intro: "Tired of searching through different documentation every time you need to set up a new React project? Here's your go-to guide for creating a modern React development environment with Vite and Tailwind CSS. Save this for future reference!",
       sections: [
         {
-          title: "Prerequisites",
+          title: "prerequisites",
           content: "Make sure you have Node.js installed on your machine. You can download it from nodejs.org",
           note: "Verify your installation by running node --version and npm --version in your terminal."
         },
         {
-          title: "1. Create a New React Project",
+          title: "1. create a new react project",
           content: "First, let's scaffold a new React project using Vite:",
           codeBlocks: [
             {
@@ -26,7 +26,7 @@ export const blogPosts = [
           ]
         },
         {
-          title: "2. Install Dependencies",
+          title: "2. install dependencies",
           content: "Now, let's install Tailwind CSS and its peer dependencies:",
           codeBlocks: [
             {
@@ -36,7 +36,7 @@ export const blogPosts = [
           ]
         },
         {
-          title: "3. Generate Configuration Files",
+          title: "3. generate configuration files",
           content: "Create the Tailwind CSS configuration files:",
           codeBlocks: [
             {
@@ -47,7 +47,7 @@ export const blogPosts = [
           ]
         },
         {
-          title: "4. Configure Tailwind",
+          title: "4. configure tailwind",
           content: "Update your tailwind.config.js to include the paths to your template files:",
           codeBlocks: [
             {
@@ -58,7 +58,7 @@ export const blogPosts = [
           ]
         },
         {
-          title: "5. Add Tailwind to Your CSS",
+          title: "5. add tailwind to your css",
           content: "Create a new CSS file (e.g., src/index.css) and add the Tailwind directives:",
           codeBlocks: [
             {
@@ -69,7 +69,7 @@ export const blogPosts = [
           ]
         },
         {
-          title: "6. Import the CSS",
+          title: "6. import the css",
           content: "Import the CSS file in your main.jsx:",
           note: "Remember to remove the original App.css import in your App.jsx file",
           codeBlocks: [
@@ -81,7 +81,7 @@ export const blogPosts = [
           ]
         },
         {
-          title: "7. Start Development",
+          title: "7. start development",
           content: "Start your development server:",
           codeBlocks: [
             {
@@ -92,7 +92,7 @@ export const blogPosts = [
           note: "Your development server should now be running at http://localhost:5173"
         },
         {
-          title: "Test Your Setup",
+          title: "test your setup",
           content: "Update your App.jsx to test Tailwind CSS:",
           codeBlocks: [
             {
@@ -112,17 +112,17 @@ export const blogPosts = [
   },
   {
     slug: "complex-algorithm-equality",
-    title: "The Complex Algorithm of Equality",
-    date: "December 15, 2024",
-    author: "Stephen Dong",
-    excerpt: "As artificial intelligence becomes increasingly popular in the workplace, its potential to impact equality—both positively and negatively—has sparked widespread debate. This paper explores the hidden costs of automation and AI's current applications...",
-    tags: ["AI", "Ethics", "Workplace", "Equality"],
+    title: "the complex algorithm of equality",
+    date: "december 15, 2024",
+    author: "stephen dong",
+    excerpt: "as artificial intelligence becomes increasingly popular in the workplace, its potential to impact equality—both positively and negatively—has sparked widespread debate. this paper explores the hidden costs of automation and ai's current applications...",
+    tags: ["ai", "ethics", "workplace", "equality"],
     fullDocumentLink: "https://drive.google.com/file/d/1AIOztl34fzqYFN6DB0QrtnxYtlHXJA-J/view?usp=sharing",
     content: {
       abstract: "As artificial intelligence becomes increasingly popular in the workplace, its potential to impact equality—both positively and negatively—has sparked widespread debate. Technologies such as automated resume screening tools and industrial robots designed to streamline labour-intensive tasks are becoming more integrated into various industries. However, they often unknowingly exacerbate existing inequalities within the system, reinforcing social issues such as the gender wage gap, exploitative foreign labour practices, and the displacement of low-skill workers.",
       sections: [
         {
-          title: "Introduction",
+          title: "introduction",
           paragraphs: [
             "Naftali Wambalo, a father of two with a college degree in mathematics, wakes before sunrise every day in Nairobi, Kenya's capital. For eight hours, he sits in front of a screen, weeding out pornography, hate speech, and excessive violence from images used to train OpenAI's ChatGPT. Despite his mentally taxing work, he earns only $1.32 USD an hour, living paycheck to paycheck to support his family."
           ]

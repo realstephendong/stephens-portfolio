@@ -68,9 +68,9 @@ const About = () => {
               </ErrorBoundary>
             )}
             {/* Drag Indicator */}
+            {canRender3D && (
             <div
               className="absolute bottom-20 left-20 right-0 flex items-center justify-center gap-2 text-muted-foreground text-sm animate-pulse pointer-events-none"
-              hidden={!canRender3D}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
@@ -78,8 +78,9 @@ const About = () => {
                 <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
                 <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
               </svg>
-              <span>Drag me</span>
+              <span className="font-mono">drag me</span>
             </div>
+            )}
           </div>
 
           {/* About Description */}
@@ -103,7 +104,7 @@ const About = () => {
                 className="group text-base sm:text-lg bg-primary hover:bg-primary/90 text-primary-foreground font-mono shadow-lg shadow-primary/20"
               >
                 <ChevronRight className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                Open Terminal
+                open terminal
                 <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
