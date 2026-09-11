@@ -13,6 +13,7 @@ import { projects } from '../data/projects';
 
 // Import the faulty terminal animation
 import FaultyTerminal from '../components/FaultyTerminal';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 // Import the new Terminal components
 import Terminal from '../components/Terminal';
@@ -100,7 +101,9 @@ function Home() {
         data-aos="fade-in"
       >
         <div className="absolute inset-0 z-0 bg-background">
-          {faultyTerminalComponent}
+          <ErrorBoundary name="FaultyTerminal">
+            {faultyTerminalComponent}
+          </ErrorBoundary>
           <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/80 via-30% to-transparent pointer-events-none"></div>
         </div>
 

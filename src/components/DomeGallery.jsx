@@ -862,6 +862,8 @@ export default function DomeGallery({
                       src={it.src}
                       draggable={false}
                       alt={it.alt}
+                      decoding="async"
+                      loading="lazy"
                       className="w-full h-full object-cover pointer-events-none"
                       style={{
                         backfaceVisibility: 'hidden',

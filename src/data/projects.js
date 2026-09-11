@@ -1,16 +1,16 @@
 // src/data/projects.js
 
 // image imports - backgrounds
-import gradient1 from "../images/gradient1.jpg"
-import gradient2 from "../images/gradient2.jpg"
-import gradient3 from "../images/gradient3.jpg"
-import gradient4 from "../images/gradient4.jpg"
+import gradient1 from "../images/gradient1.webp"
+import gradient2 from "../images/gradient2.webp"
+import gradient3 from "../images/gradient3.webp"
+import gradient4 from "../images/gradient4.webp"
 
 // image imports - project images
 import sblame from "../images/sblame.svg"
-import kora from "../images/kora.png"
-import oncoalert from "../images/oncoalert.png"
-import styleit from "../images/styleit.png"
+import kora from "../images/kora.webp"
+import oncoalert from "../images/oncoalert.webp"
+import styleit from "../images/styleit.webp"
 
 export const projects = [
     {

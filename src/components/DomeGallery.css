@@ -77,9 +77,18 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.item__image {
+  transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 .item__image:hover {
-  animation: hoverEnter 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
-             hoverPulse 2.5s ease-in-out infinite 400ms;
+  transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(167, 239, 158, 0.3),
+    0 0 30px rgba(167, 239, 158, 0.2),
+    0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .item__image:hover img {
@@ -104,64 +113,13 @@
 
 .item__image:hover::before {
   opacity: 1;
-  transition: none;
 }
 
-/* Smooth hover enter animation with green glow */
-@keyframes hoverEnter {
-  0% { 
-    transform: translateZ(0) scale(1) rotateX(0deg) rotateY(0deg);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+@media (prefers-reduced-motion: reduce) {
+  .sphere-item,
+  .item__image {
+    transition: none;
   }
-  100% { 
-    transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
-    box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.4), 
-      0 0 0 1px rgba(167, 239, 158, 0.3),
-      0 0 30px rgba(167, 239, 158, 0.2),
-      0 20px 60px rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* Smooth hover exit animation with green glow */
-@keyframes hoverExit {
-  0% { 
-    transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
-    box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.4), 
-      0 0 0 1px rgba(167, 239, 158, 0.3),
-      0 0 30px rgba(167, 239, 158, 0.2),
-      0 20px 60px rgba(0, 0, 0, 0.4);
-  }
-  100% { 
-    transform: translateZ(0) scale(1) rotateX(0deg) rotateY(0deg);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* Add a more noticeable pulsing animation with green glow */
-@keyframes hoverPulse {
-  0%, 100% { 
-    transform: translateZ(30px) scale(1.08) rotateX(5deg) rotateY(5deg);
-    box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.4), 
-      0 0 0 1px rgba(167, 239, 158, 0.3),
-      0 0 30px rgba(167, 239, 158, 0.2),
-      0 20px 60px rgba(0, 0, 0, 0.4);
-  }
-  50% { 
-    transform: translateZ(45px) scale(1.12) rotateX(8deg) rotateY(8deg);
-    box-shadow: 
-      0 35px 70px rgba(0, 0, 0, 0.5), 
-      0 0 0 1px rgba(167, 239, 158, 0.4),
-      0 0 50px rgba(167, 239, 158, 0.3),
-      0 30px 80px rgba(0, 0, 0, 0.5);
-  }
-}
-
-/* Ensure smooth transition when leaving hover */
-.item__image:not(:hover) {
-  animation: hoverExit 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .item__image--reference {

@@ -26,6 +26,11 @@ uniform vec3 uBackgroundColor;
 
 float time;
 
+float gNoiseK;
+mat2  gRotSlow;
+mat2  gRot01;
+mat2  gRot1;
+
 float hash21(vec2 p){
   p = fract(p * 234.56);
   p += dot(p, p + 34.56);
@@ -34,7 +39,7 @@ float hash21(vec2 p){
 
 float noise(vec2 p)
 {
-  return sin(p.x * 10.0) * sin(p.y * (3.0 + sin(time * 0.090909))) + 0.2; 
+  return sin(p.x * 10.0) * sin(p.y * gNoiseK) + 0.2;
 }
 
 mat2 rotate(float angle)
@@ -47,33 +52,27 @@ mat2 rotate(float angle)
 float fbm(vec2 p)
 {
   p *= 1.1;
-  float f = 0.0;
   float amp = 0.5 * uNoiseAmp;
-  
-  mat2 modify0 = rotate(time * 0.02);
-  f += amp * noise(p);
-  p = modify0 * p * 2.0;
+
+  float f = amp * noise(p);
+  p = gRotSlow * p * 2.0;
   amp *= 0.454545;
-  
-  mat2 modify1 = rotate(time * 0.02);
+
   f += amp * noise(p);
-  p = modify1 * p * 2.0;
+  p = gRotSlow * p * 2.0;
   amp *= 0.454545;
-  
-  mat2 modify2 = rotate(time * 0.08);
+
   f += amp * noise(p);
-  
+
   return f;
 }
 
 float pattern(vec2 p, out vec2 q, out vec2 r) {
   vec2 offset1 = vec2(1.0);
   vec2 offset0 = vec2(0.0);
-  mat2 rot01 = rotate(0.1 * time);
-  mat2 rot1 = rotate(0.1);
-  
-  q = vec2(fbm(p + offset1), fbm(rot01 * p + offset1));
-  r = vec2(fbm(rot1 * q + offset0), fbm(q + offset0));
+
+  q = vec2(fbm(p + offset1), fbm(gRot01 * p + offset1));
+  r = vec2(fbm(gRot1 * q + offset0), fbm(q + offset0));
   return fbm(p + r);
 }
 
@@ -82,7 +81,7 @@ float drawNumber(vec2 p, float num) {
     int col = int(floor(p.x * 5.0));
     int row = int(floor(p.y * 5.0));
     int n = int(floor(num));
-    
+
     // Number 0
     if (n == 0) {
         if (row == 0) return (col >= 1 && col <= 3) ? 1.0 : 0.0;
@@ -152,7 +151,7 @@ float drawNumber(vec2 p, float num) {
         if (row == 3) return (col == 4) ? 1.0 : 0.0;
         if (row == 4) return (col >= 1 && col <= 3) ? 1.0 : 0.0;
     }
-    
+
     return 0.0;
 }
 
@@ -164,7 +163,7 @@ float drawOriginalShape(vec2 p, float shapeType) {
     float j = floor(px5) - 2.0;
     float n = i * i + j * j;
     float f = n * 0.0625;
-    
+
     // Different shape variations based on shapeType
     if (shapeType < 0.33) {
         // Original circles (concentric)
@@ -184,7 +183,7 @@ float drawOriginalShape(vec2 p, float shapeType) {
 float drawSymbol(vec2 p, float symbolType) {
     int col = int(floor(p.x * 5.0));
     int row = int(floor(p.y * 5.0));
-    
+
     // Hash symbol (#)
     if (symbolType < 0.2) {
         return (col == 1 || col == 3 || row == 1 || row == 3) ? 1.0 : 0.0;
@@ -208,47 +207,52 @@ float drawSymbol(vec2 p, float symbolType) {
     }
 }
 
-float digit(vec2 p){
-    vec2 grid = uGridMul * 15.0;
-    vec2 s = floor(p * grid) / grid;
-    p = p * grid;
+float cellIntensity(vec2 s){
     vec2 q, r;
     float intensity = pattern(s * 0.1, q, r) * 1.3 - 0.03;
-    
+
     if(uUseMouse > 0.5){
         vec2 mouseWorld = uMouse * uScale;
         float distToMouse = distance(s, mouseWorld);
         float mouseInfluence = exp(-distToMouse * 8.0) * uMouseStrength * 10.0;
         intensity += mouseInfluence;
-        
+
         float ripple = sin(distToMouse * 20.0 - iTime * 5.0) * 0.1 * mouseInfluence;
         intensity += ripple;
     }
-    
+
     if(uUsePageLoadAnimation > 0.5){
         float cellRandom = fract(sin(dot(s, vec2(12.9898, 78.233))) * 43758.5453);
         float cellDelay = cellRandom * 0.8;
         float cellProgress = clamp((uPageLoadProgress - cellDelay) / 0.2, 0.0, 1.0);
-        
+
         float fadeAlpha = smoothstep(0.0, 1.0, cellProgress);
         intensity *= fadeAlpha;
     }
-    
+
+    return intensity;
+}
+
+float glyph(vec2 p, float intensity){
+    vec2 grid = uGridMul * 15.0;
+    vec2 s = floor(p * grid) / grid;
+    p = p * grid;
+
     p = fract(p);
     p *= uDigitSize;
-    
+
     // Determine what to draw for this cell
     float cellHash = fract(sin(dot(s, vec2(12.9898, 78.233))) * 43758.5453);
     float contentType = fract(cellHash * 7.123);
-    
+
     float px5 = p.x * 5.0;
     float py5 = (1.0 - p.y) * 5.0;
     float x = fract(px5);
     float y = fract(py5);
-    
+
     float shapeValue;
     float isOn;
-    
+
     // 40% numbers, 25% symbols, 35% original shapes (circles/squares/stars)
     if (contentType < 0.4) {
         // Draw numbers 0-9
@@ -266,9 +270,9 @@ float digit(vec2 p){
         float f = drawOriginalShape(p, shapeChoice);
         isOn = step(0.1, intensity - f);
     }
-    
+
     float brightness = isOn * (0.2 + y * 0.8) * (0.75 + x * 0.25);
-    
+
     return step(0.0, p.x) * step(p.x, 1.0) * step(0.0, p.y) * step(p.y, 1.0) * brightness;
 }
 
@@ -285,10 +289,10 @@ float displace(vec2 look)
 }
 
 vec3 getColor(vec2 p){
-    
+
     float bar = step(mod(p.y + time * 20.0, 1.0), 0.2) * 0.4 + 1.0;
     bar *= uScanlineIntensity;
-    
+
     float displacement = displace(p);
     p.x += displacement;
 
@@ -297,13 +301,20 @@ vec3 getColor(vec2 p){
       p.x += extra;
     }
 
-    float middle = digit(p);
-    
+    vec2 grid = uGridMul * 15.0;
+    float intensity = cellIntensity(floor(p * grid) / grid);
+
+    float middle = glyph(p, intensity);
+
+#ifdef LOW_QUALITY
+    float sum = middle * 9.0;
+#else
     const float off = 0.002;
-    float sum = digit(p + vec2(-off, -off)) + digit(p + vec2(0.0, -off)) + digit(p + vec2(off, -off)) +
-                digit(p + vec2(-off, 0.0)) + digit(p + vec2(0.0, 0.0)) + digit(p + vec2(off, 0.0)) +
-                digit(p + vec2(-off, off)) + digit(p + vec2(0.0, off)) + digit(p + vec2(off, off));
-    
+    float sum = glyph(p + vec2(-off, -off), intensity) + glyph(p + vec2(0.0, -off), intensity) + glyph(p + vec2(off, -off), intensity) +
+                glyph(p + vec2(-off, 0.0), intensity)  + glyph(p + vec2(0.0, 0.0), intensity)  + glyph(p + vec2(off, 0.0), intensity) +
+                glyph(p + vec2(-off, off), intensity)  + glyph(p + vec2(0.0, off), intensity)  + glyph(p + vec2(off, off), intensity);
+#endif
+
     vec3 baseColor = vec3(0.9) * middle + sum * 0.1 * vec3(1.0) * bar;
     return baseColor;
 }
@@ -317,12 +328,18 @@ vec2 barrel(vec2 uv){
 
 void main() {
     time = iTime * 0.333333;
+
+    gNoiseK  = 3.0 + sin(time * 0.090909);
+    gRotSlow = rotate(time * 0.02);
+    gRot01   = rotate(0.1 * time);
+    gRot1    = rotate(0.1);
+
     vec2 uv = vUv;
 
     if(uCurvature != 0.0){
       uv = barrel(uv);
     }
-    
+
     vec2 p = uv * uScale;
     vec3 col = getColor(p);
 
@@ -348,5 +365,3 @@ void main() {
 
     gl_FragColor = vec4(col, 1.0);
 }
-
-

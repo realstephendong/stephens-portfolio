@@ -1,13 +1,16 @@
 // src/pages/About.js
 
-import React, { useState, useEffect } from 'react';
-import DomeGallery from '../components/DomeGallery';
-import Lanyard from '../components/Lanyard';
+import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Button } from '../components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import Terminal from '../components/Terminal';
 import TerminalAbout from '../components/TerminalAbout';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { useTheme } from '../components/theme-provider';
+import { getDeviceTier, isWebGLAvailable, prefersReducedMotion } from '../lib/gpu';
+
+const DomeGallery = lazy(() => import('../components/DomeGallery'));
+const Lanyard = lazy(() => import('../components/Lanyard'));
 
 import IMG_3886 from '../images/gallery/IMG_3886.webp';
 import IMG_4572 from '../images/gallery/IMG_4572.webp';
@@ -25,6 +28,15 @@ import IMG_9260 from '../images/gallery/IMG_9260.webp';
 const About = () => {
   const [isTerminalClosed, setIsTerminalClosed] = useState(false);
   const { theme } = useTheme();
+
+  const segments = useMemo(() => {
+    const tier = getDeviceTier();
+    if (tier === 'low') return 12;
+    if (tier === 'medium') return 18;
+    return 24;
+  }, []);
+
+  const canRender3D = useMemo(() => isWebGLAvailable() && !prefersReducedMotion(), []);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -48,9 +60,18 @@ const About = () => {
             className="w-full lg:w-1/3 pl-8 sm:pl-12 md:pl-16 lg:pl-20 relative" 
             style={{ height: '80vh' }}
           >
-            <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} transparent={false} />
+            {canRender3D && (
+              <ErrorBoundary name="Lanyard">
+                <Suspense fallback={<div className="w-full h-full" />}>
+                  <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} transparent={false} />
+                </Suspense>
+              </ErrorBoundary>
+            )}
             {/* Drag Indicator */}
-            <div className="absolute bottom-20 left-20 right-0 flex items-center justify-center gap-2 text-muted-foreground text-sm animate-pulse pointer-events-none">
+            <div
+              className="absolute bottom-20 left-20 right-0 flex items-center justify-center gap-2 text-muted-foreground text-sm animate-pulse pointer-events-none"
+              hidden={!canRender3D}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
                 <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
@@ -98,6 +119,8 @@ const About = () => {
             minHeight: '600px'
           }}
         >
+          <ErrorBoundary name="DomeGallery">
+          <Suspense fallback={<div className="w-full h-full" />}>
           <DomeGallery 
             images={[
               { src: IMG_3886, alt: "Stephen's photo 1" },
@@ -120,12 +143,14 @@ const About = () => {
             grayscale={false}
             imageBorderRadius="20px"
             openedImageBorderRadius="20px"
-            segments={30}
+            segments={segments}
             autoRotate={true}
             autoRotateSpeed={0.04}
             openedImageWidth="600px"
             openedImageHeight="600px"
           />
+          </Suspense>
+          </ErrorBoundary>
         </section>
       </div>
       

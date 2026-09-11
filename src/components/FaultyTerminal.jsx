@@ -1,21 +1,19 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
-import { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useEffect, useRef, useMemo, useState } from 'react';
 import vertexShader from '../shaders/faultyTerminal/vertex.glsl?raw';
 import fragmentShader from '../shaders/faultyTerminal/fragment.glsl?raw';
 import { useTheme } from './theme-provider';
-
- 
-
- 
+import { isWebGLAvailable, prefersReducedMotion, getDeviceTier, getEffectDpr } from '../lib/gpu';
 
 function hexToRgb(hex) {
-  let h = hex.replace('#', '').trim();
+  let h = String(hex ?? '#ffffff').replace('#', '').trim();
   if (h.length === 3)
     h = h
       .split('')
       .map(c => c + c)
       .join('');
   const num = parseInt(h, 16);
+  if (!Number.isFinite(num)) return [1, 1, 1];
   return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
 }
 
@@ -47,6 +45,22 @@ function hslToRgb(h, s, l) {
   return [r, g, b];
 }
 
+function StaticBackdrop({ theme, className, style }) {
+  const tint = theme === 'light' ? 'rgba(0, 153, 255, 0.10)' : 'rgba(167, 239, 158, 0.08)';
+  const base = theme === 'light' ? 'hsl(105, 30%, 95%)' : 'hsl(0, 0%, 4%)';
+  return (
+    <div
+      aria-hidden="true"
+      className={`w-full h-full relative overflow-hidden ${className ?? ''}`}
+      style={{
+        backgroundColor: base,
+        backgroundImage: `radial-gradient(60% 60% at 50% 35%, ${tint} 0%, transparent 70%)`,
+        ...style
+      }}
+    />
+  );
+}
+
 export default function FaultyTerminal({
   scale = 1,
   gridMul = [2, 1],
@@ -60,101 +74,138 @@ export default function FaultyTerminal({
   chromaticAberration = 0,
   dither = 0,
   curvature = 0.2,
-  tint,
+  tint = '#ffffff',
   mouseReact = true,
   mouseStrength = 0.2,
-  dpr = Math.min(window.devicePixelRatio || 1, 2),
+  dpr,
   pageLoadAnimation = true,
   brightness = 1,
+  maxFps = 30,
   className,
   style,
   ...rest
 }) {
   const { theme } = useTheme();
 
-  // Set theme-aware tint color
-  const themeTint = tint || (theme === 'light' ? '#0099FF' : '#ffffff');
+  const [caps] = useState(() => ({
+    webgl: isWebGLAvailable(),
+    reducedMotion: prefersReducedMotion(),
+    tier: getDeviceTier()
+  }));
+  const [disabled, setDisabled] = useState(false);
+
+  const effectiveDpr = dpr ?? getEffectDpr(caps.tier);
+  const lowQuality = caps.tier === 'low';
 
   // Set theme-aware background color
-  const themeBackgroundColor = useMemo(() => {
-    if (theme === 'light') {
-      return hslToRgb(105, 30, 95); // hsl(105, 30%, 95%)
-    } else {
-      return hslToRgb(0, 0, 4); // hsl(0, 0%, 4%)
-    }
-  }, [theme]);
+  const themeBackgroundColor = useMemo(
+    () => (theme === 'light' ? hslToRgb(105, 30, 95) : hslToRgb(0, 0, 4)),
+    [theme]
+  );
 
   const containerRef = useRef(null);
-  const programRef = useRef(null);
-  const rendererRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
-  const frozenTimeRef = useRef(0);
   const rafRef = useRef(0);
-  const loadAnimationStartRef = useRef(0);
-  const timeOffsetRef = useRef(Math.random() * 100);
+  const visibleRef = useRef(true);
+  const programRef = useRef(null);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
+  const ditherValue = useMemo(
+    () => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither),
+    [dither]
+  );
+  const gridMulX = gridMul?.[0] ?? 2;
+  const gridMulY = gridMul?.[1] ?? 1;
 
-  const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
+  const propsRef = useRef();
+  propsRef.current = {
+    scale, digitSize, timeScale, pause, scanlineIntensity, glitchAmount,
+    flickerAmount, noiseAmp, chromaticAberration, ditherValue, curvature,
+    tintVec, mouseReact, mouseStrength, pageLoadAnimation, brightness,
+    themeBackgroundColor, gridMulX, gridMulY, maxFps
+  };
 
-  const handleMouseMove = useCallback(e => {
-    const ctn = containerRef.current;
-    if (!ctn) return;
-    // Use window dimensions for better tracking across the entire page
-    const x = e.clientX / window.innerWidth;
-    const y = 1 - (e.clientY / window.innerHeight);
-    mouseRef.current = { x, y };
-  }, []);
+  const shouldRender = caps.webgl && !caps.reducedMotion && !disabled;
 
   useEffect(() => {
     const ctn = containerRef.current;
-    if (!ctn) return;
+    if (!ctn || !shouldRender) return;
 
-    const renderer = new Renderer({ dpr });
-    rendererRef.current = renderer;
+    let renderer;
+    let program;
+    let mesh;
+    let canvas;
+    let disposed = false;
+
+    try {
+      renderer = new Renderer({ dpr: effectiveDpr, alpha: false, antialias: false, depth: false });
+      if (!renderer.gl) throw new Error('WebGL context unavailable');
+    } catch (err) {
+      console.warn('[FaultyTerminal] WebGL unavailable, falling back to static backdrop:', err);
+      setDisabled(true);
+      return;
+    }
+
     const gl = renderer.gl;
+    canvas = gl.canvas;
     gl.clearColor(0, 0, 0, 1);
 
-    const geometry = new Triangle(gl);
+    const p = propsRef.current;
 
-    const program = new Program(gl, {
-      vertex: vertexShader,
-      fragment: fragmentShader,
-      uniforms: {
-        iTime: { value: 0 },
-        iResolution: {
-          value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
-        },
-        uScale: { value: scale },
+    try {
+      const geometry = new Triangle(gl);
+      program = new Program(gl, {
+        vertex: vertexShader,
+        fragment: lowQuality ? `#define LOW_QUALITY 1\n${fragmentShader}` : fragmentShader,
+        uniforms: {
+          iTime: { value: 0 },
+          iResolution: {
+            value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
+          },
+          uScale: { value: p.scale },
+          uGridMul: { value: new Float32Array([p.gridMulX, p.gridMulY]) },
+          uDigitSize: { value: p.digitSize },
+          uScanlineIntensity: { value: p.scanlineIntensity },
+          uGlitchAmount: { value: p.glitchAmount },
+          uFlickerAmount: { value: p.flickerAmount },
+          uNoiseAmp: { value: p.noiseAmp },
+          uChromaticAberration: { value: p.chromaticAberration },
+          uDither: { value: p.ditherValue },
+          uCurvature: { value: p.curvature },
+          uTint: { value: new Color(p.tintVec[0], p.tintVec[1], p.tintVec[2]) },
+          uMouse: {
+            value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y])
+          },
+          uMouseStrength: { value: p.mouseStrength },
+          uUseMouse: { value: p.mouseReact ? 1 : 0 },
+          uPageLoadProgress: { value: p.pageLoadAnimation ? 0 : 1 },
+          uUsePageLoadAnimation: { value: p.pageLoadAnimation ? 1 : 0 },
+          uBrightness: { value: p.brightness },
+          uBackgroundColor: {
+            value: new Color(p.themeBackgroundColor[0], p.themeBackgroundColor[1], p.themeBackgroundColor[2])
+          }
+        }
+      });
+      mesh = new Mesh(gl, { geometry, program });
+      programRef.current = program;
+    } catch (err) {
+      console.warn('[FaultyTerminal] shader setup failed, falling back to static backdrop:', err);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      setDisabled(true);
+      return;
+    }
 
-        uGridMul: { value: new Float32Array(gridMul) },
-        uDigitSize: { value: digitSize },
-        uScanlineIntensity: { value: scanlineIntensity },
-        uGlitchAmount: { value: glitchAmount },
-        uFlickerAmount: { value: flickerAmount },
-        uNoiseAmp: { value: noiseAmp },
-        uChromaticAberration: { value: chromaticAberration },
-        uDither: { value: ditherValue },
-        uCurvature: { value: curvature },
-        uTint: { value: new Color(tintVec[0], tintVec[1], tintVec[2]) },
-        uMouse: {
-          value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y])
-        },
-        uMouseStrength: { value: mouseStrength },
-        uUseMouse: { value: mouseReact ? 1 : 0 },
-        uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
-        uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
-        uBrightness: { value: brightness },
-        uBackgroundColor: { value: new Color(themeBackgroundColor[0], themeBackgroundColor[1], themeBackgroundColor[2]) }
-      }
-    });
-    programRef.current = program;
-
-    const mesh = new Mesh(gl, { geometry, program });
+    const handleContextLost = e => {
+      e.preventDefault();
+      cancelAnimationFrame(rafRef.current);
+      console.warn('[FaultyTerminal] WebGL context lost, falling back to static backdrop');
+      if (!disposed) setDisabled(true);
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost);
 
     function resize() {
-      if (!ctn || !renderer) return;
+      if (!ctn || disposed) return;
       renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
       program.uniforms.iResolution.value = new Color(
         gl.canvas.width,
@@ -163,86 +214,133 @@ export default function FaultyTerminal({
       );
     }
 
-    const resizeObserver = new ResizeObserver(() => resize());
+    let resizeRaf = 0;
+    const resizeObserver = new ResizeObserver(() => {
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(resize);
+    });
     resizeObserver.observe(ctn);
     resize();
 
+    const intersectionObserver = new IntersectionObserver(
+      entries => { visibleRef.current = entries[0]?.isIntersecting ?? true; },
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(ctn);
+
+    const handleMouseMove = e => {
+      // Use window dimensions for better tracking across the entire page
+      mouseRef.current = {
+        x: e.clientX / window.innerWidth,
+        y: 1 - e.clientY / window.innerHeight
+      };
+    };
+
+    const timeOffset = Math.random() * 100;
+    let loadAnimationStart = 0;
+    let frozenTime = 0;
+    let lastDraw = 0;
+    let slowFrames = 0;
+    let steppedDown = false;
+
     const update = t => {
       rafRef.current = requestAnimationFrame(update);
+      if (disposed) return;
 
-      if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
-        loadAnimationStartRef.current = t;
-      }
+      const cur = propsRef.current;
+      const minFrameMs = 1000 / Math.max(1, cur.maxFps) - 4;
+      if (t - lastDraw < minFrameMs) return;
+      const frameDelta = lastDraw === 0 ? minFrameMs : t - lastDraw;
+      lastDraw = t;
 
-      if (!pause) {
-        const elapsed = (t * 0.001 + timeOffsetRef.current) * timeScale;
+      if (!visibleRef.current) return;
+
+      if (cur.pageLoadAnimation && loadAnimationStart === 0) loadAnimationStart = t;
+
+      if (!cur.pause) {
+        const elapsed = (t * 0.001 + timeOffset) * cur.timeScale;
         program.uniforms.iTime.value = elapsed;
-        frozenTimeRef.current = elapsed;
+        frozenTime = elapsed;
       } else {
-        program.uniforms.iTime.value = frozenTimeRef.current;
+        program.uniforms.iTime.value = frozenTime;
       }
 
-      if (pageLoadAnimation && loadAnimationStartRef.current > 0) {
-        const animationDuration = 2000;
-        const animationElapsed = t - loadAnimationStartRef.current;
-        const progress = Math.min(animationElapsed / animationDuration, 1);
+      if (cur.pageLoadAnimation && loadAnimationStart > 0) {
+        const progress = Math.min((t - loadAnimationStart) / 2000, 1);
         program.uniforms.uPageLoadProgress.value = progress;
       }
 
-      if (mouseReact) {
+      if (cur.mouseReact) {
         const dampingFactor = 0.08;
         const smoothMouse = smoothMouseRef.current;
         const mouse = mouseRef.current;
         smoothMouse.x += (mouse.x - smoothMouse.x) * dampingFactor;
         smoothMouse.y += (mouse.y - smoothMouse.y) * dampingFactor;
-
         const mouseUniform = program.uniforms.uMouse.value;
         mouseUniform[0] = smoothMouse.x;
         mouseUniform[1] = smoothMouse.y;
       }
 
       renderer.render({ scene: mesh });
-    };
-    rafRef.current = requestAnimationFrame(update);
-    ctn.appendChild(gl.canvas);
 
+      if (frameDelta > minFrameMs * 3) {
+        slowFrames += 1;
+        if (slowFrames > 20) {
+          if (!steppedDown) {
+            steppedDown = true;
+            slowFrames = 0;
+            renderer.dpr = Math.max(0.5, renderer.dpr * 0.5);
+            resize();
+            console.warn('[FaultyTerminal] slow frames, reducing resolution');
+          } else {
+            console.warn('[FaultyTerminal] still slow, disabling animated backdrop');
+            cancelAnimationFrame(rafRef.current);
+            if (!disposed) setDisabled(true);
+          }
+        }
+      } else if (slowFrames > 0) {
+        slowFrames -= 1;
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(update);
+    ctn.appendChild(canvas);
     // Listen to mouse events on window instead of container for full-page tracking
-    if (mouseReact) window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
+      disposed = true;
+      programRef.current = null;
       cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(resizeRaf);
       resizeObserver.disconnect();
-      if (mouseReact) window.removeEventListener('mousemove', handleMouseMove);
-      if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas);
+      intersectionObserver.disconnect();
+      window.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      if (canvas.parentElement === ctn) ctn.removeChild(canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
-      loadAnimationStartRef.current = 0;
-      timeOffsetRef.current = Math.random() * 100;
     };
-  }, [
-    dpr,
-    pause,
-    timeScale,
-    scale,
-    gridMul,
-    digitSize,
-    scanlineIntensity,
-    glitchAmount,
-    flickerAmount,
-    noiseAmp,
-    chromaticAberration,
-    ditherValue,
-    curvature,
-    tintVec,
-    mouseReact,
-    mouseStrength,
-    pageLoadAnimation,
-    brightness,
-    themeBackgroundColor,
-    handleMouseMove
-  ]);
+  }, [shouldRender, effectiveDpr, lowQuality]);
+
+  useEffect(() => {
+    const program = programRef.current;
+    if (!program) return;
+    program.uniforms.uTint.value.set(tintVec[0], tintVec[1], tintVec[2]);
+    program.uniforms.uBackgroundColor.value.set(
+      themeBackgroundColor[0], themeBackgroundColor[1], themeBackgroundColor[2]
+    );
+  }, [tintVec, themeBackgroundColor]);
+
+  if (!shouldRender) {
+    return <StaticBackdrop theme={theme} className={className} style={style} {...rest} />;
+  }
 
   return (
-    <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} {...rest} />
+    <div
+      ref={containerRef}
+      className={`w-full h-full relative overflow-hidden ${className ?? ''}`}
+      style={style}
+      {...rest}
+    />
   );
 }
-

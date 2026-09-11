@@ -10,7 +10,12 @@ const ProjectCard = ({ title, backgroundImage, image, tags, link }) => {
         {/* Background gradient */}
         <img
           src={backgroundImage}
-          alt={`${title} background`}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          width="1079"
+          height="740"
           className="w-full h-full object-cover absolute inset-0"
         />
 
@@ -18,6 +23,10 @@ const ProjectCard = ({ title, backgroundImage, image, tags, link }) => {
         <img
           src={image}
           alt={title}
+          loading="lazy"
+          decoding="async"
+          width="1079"
+          height="740"
           className="w-full h-full object-contain transition-transform duration-500 hover:scale-105 relative z-10"
         />
 
